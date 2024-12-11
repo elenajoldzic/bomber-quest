@@ -3,7 +3,7 @@
     <option name="ALTERNATIVE_JRE_PATH" value="17" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="de.tum.cit.ase.bomberquest.DesktopLauncher" />
-    <module name="itp2425testitp2425projectwork-exercise.desktop.main" />
+    <module name="itp2425itp2425projectwork-exercise.desktop.main" />
     <option name="VM_PARAMETERS" value="-XstartOnFirstThread" />
     <method v="2">
       <option name="Make" enabled="true" />

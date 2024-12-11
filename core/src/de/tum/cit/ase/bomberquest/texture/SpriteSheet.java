@@ -41,6 +41,8 @@ public enum SpriteSheet {
      * Returns the TextureRegion at the specified row and column (1-based coordinates)
      * according to the grid specified by {@code this.width} and {@code this.height}.
      * This method assumes the size of the texture to be a single grid cell.
+     * Keep in mind that since spritesheet textures typically start in the top-left corner,
+     * the row index starts at 1 at the top and the column index starts at 1 on the left.
      *
      * @param row the row of the texture to fetch, starting from 1 at the TOP of the spritesheet
      * @param column the column of the texture to fetch, starting from 1 on the LEFT of the spritesheet

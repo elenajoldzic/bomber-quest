@@ -24,7 +24,10 @@ public enum MusicTrack {
         this.music.setVolume(volume);
     }
     
-    /** Play this music track. Any other music will be stopped. */
+    /**
+     * Play this music track.
+     * This will not stop other music from playing - if you add more tracks, you will have to handle that yourself.
+     */
     public void play() {
         this.music.play();
     }

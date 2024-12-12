@@ -64,6 +64,8 @@ public class Player implements Drawable {
     public void tick(float frameTime) {
         this.elapsedTime += frameTime;
         // Make the player move in a circle with radius 2 tiles
+        // You can change this to make the player move differently, e.g. in response to user input.
+        // See Gdx.input.isKeyPressed() for keyboard input
         float xVelocity = (float) Math.sin(this.elapsedTime) * 2;
         float yVelocity = (float) Math.cos(this.elapsedTime) * 2;
         this.hitbox.setLinearVelocity(xVelocity, yVelocity);

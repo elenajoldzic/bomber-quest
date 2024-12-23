@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * A Heads-Up Display (HUD) that displays information on the screen.
  * It uses a separate camera so that it is always fixed on the screen.
  */
+
 public class Hud {
     
     /** The SpriteBatch used to draw the HUD. This is the same as the one used in the GameScreen. */

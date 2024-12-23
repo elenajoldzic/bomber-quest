@@ -50,6 +50,10 @@ public class GameMap {
     private final Flowers[][] flowers;
 
     private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
+
+    private final IndestructibleWall indestructibleWalls; //THESE ARE THE WALLS
+
+
     
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -61,6 +65,8 @@ public class GameMap {
 
         //CREATE A WALL
         this.destructibleWalls=new DestructibleWall(world,4,5);
+
+        this.indestructibleWalls=new IndestructibleWall(world,5,5); // INITIALIZED WALLS
 
         // Create flowers in a 7x7 grid
         this.flowers = new Flowers[7][7];
@@ -108,6 +114,10 @@ public class GameMap {
     //GETWALLS
     public DestructibleWall getDestructibleWalls(){
         return destructibleWalls;
+    }
+
+    public IndestructibleWall getIndestructibleWalls() {
+        return indestructibleWalls;
     }
 
     /** Returns the flowers on the map. */

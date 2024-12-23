@@ -17,6 +17,7 @@ import de.tum.cit.ase.bomberquest.map.GameMap;
  * The GameScreen class is responsible for rendering the gameplay screen.
  * It handles the game logic and rendering of the game elements.
  */
+
 public class GameScreen implements Screen {
     
     /**

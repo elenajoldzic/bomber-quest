@@ -14,5 +14,8 @@ public class Textures {
     public static final TextureRegion CHEST = SpriteSheet.BASIC_TILES.at(5, 5);
 
     public static final TextureRegion DESTRUCTIBLEWALL = SpriteSheet.BASIC_TILES.at(10, 1);
+
+    //TEXTURE FOR EXIT
+    public static final TextureRegion EXIT = SpriteSheet.BASIC_TILES.at(7, 1);
     
 }

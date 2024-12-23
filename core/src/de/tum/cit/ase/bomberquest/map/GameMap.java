@@ -50,6 +50,8 @@ public class GameMap {
     private final Flowers[][] flowers;
 
     private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
+
+    private final  Exit exit;
     
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -61,6 +63,9 @@ public class GameMap {
 
         //CREATE A WALL
         this.destructibleWalls=new DestructibleWall(world,4,5);
+
+        //CREATE AN EXIT
+        this.exit=new Exit(world, 2,2);
 
         // Create flowers in a 7x7 grid
         this.flowers = new Flowers[7][7];
@@ -108,6 +113,11 @@ public class GameMap {
     //GETWALLS
     public DestructibleWall getDestructibleWalls(){
         return destructibleWalls;
+    }
+
+    //GETEXIT
+    public Exit getExit(){
+        return exit;
     }
 
     /** Returns the flowers on the map. */

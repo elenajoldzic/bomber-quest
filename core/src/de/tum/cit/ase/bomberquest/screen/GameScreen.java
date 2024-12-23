@@ -109,9 +109,14 @@ public class GameScreen implements Screen {
             draw(spriteBatch, flowers);
         }
         draw(spriteBatch, map.getChest());
-        draw(spriteBatch, map.getPlayer());
+
         draw(spriteBatch,map.getDestructibleWalls()); //DRAWS THE DESTRUCTIBLE WALL
         draw(spriteBatch,map.getIndestructibleWalls()); //DRAWS THE INDESTRUCTIBLE WALL
+
+        draw(spriteBatch,map.getExit()); //DRAWS THE EXIT
+
+        draw(spriteBatch, map.getPlayer());
+
 
         
         // Finish drawing, i.e. send the drawn items to the graphics card

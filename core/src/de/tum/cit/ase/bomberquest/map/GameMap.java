@@ -53,6 +53,7 @@ public class GameMap {
 
     private final IndestructibleWall indestructibleWalls; //THESE ARE THE WALLS
 
+    private final Exit exit; // THIS IS THE EXIT
 
     
     public GameMap(BomberQuestGame game) {
@@ -67,6 +68,8 @@ public class GameMap {
         this.destructibleWalls=new DestructibleWall(world,4,5);
 
         this.indestructibleWalls=new IndestructibleWall(world,5,5); // INITIALIZED WALLS
+
+        this.exit = new Exit(world,7,5); // INITIALIZED EXAM
 
         // Create flowers in a 7x7 grid
         this.flowers = new Flowers[7][7];
@@ -118,6 +121,10 @@ public class GameMap {
 
     public IndestructibleWall getIndestructibleWalls() {
         return indestructibleWalls;
+    }
+
+    public Exit getExit() {
+        return exit;
     }
 
     /** Returns the flowers on the map. */

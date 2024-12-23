@@ -1,5 +1,6 @@
 package de.tum.cit.ase.bomberquest.map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -61,6 +62,7 @@ public class Player implements Drawable {
      * This doesn't actually move the player, but it tells the physics engine how the player should move next frame.
      * @param frameTime the time since the last frame.
      */
+    /*
     public void tick(float frameTime) {
         this.elapsedTime += frameTime;
         // Make the player move in a circle with radius 2 tiles
@@ -70,7 +72,32 @@ public class Player implements Drawable {
         float yVelocity = (float) Math.cos(this.elapsedTime) * 2;
         this.hitbox.setLinearVelocity(xVelocity, yVelocity);
     }
-    
+
+     */
+
+//this method makes our player move
+    public void update(float frameTime) {
+        this.elapsedTime += frameTime;
+        float speed=4f; //create a constant speed value for player to move
+        float xVelocity=0;
+        float yVelocity=0;
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.W)) {
+            yVelocity = (float) speed;
+        }
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.S)) {
+            yVelocity = (float) -speed; //on the negative side of y axis, different direction
+        }
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.A)) {
+            xVelocity = (float) -speed; // Move left
+        }
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.D)) {
+            xVelocity = (float) speed;// Move right
+        }
+        this.hitbox.setLinearVelocity(xVelocity, yVelocity); //method for making our player move
+
+    }
+
+
     @Override
     public TextureRegion getCurrentAppearance() {
         // Get the frame of the walk down animation that corresponds to the current time.

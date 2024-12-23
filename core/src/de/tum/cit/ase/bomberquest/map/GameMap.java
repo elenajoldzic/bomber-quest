@@ -71,7 +71,8 @@ public class GameMap {
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
-        this.player.tick(frameTime);
+        //this.player.tick(frameTime);
+        this.player.update(frameTime);
         doPhysicsStep(frameTime);
     }
     

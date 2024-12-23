@@ -12,5 +12,7 @@ public class Textures {
     public static final TextureRegion FLOWERS = SpriteSheet.BASIC_TILES.at(2, 5);
 
     public static final TextureRegion CHEST = SpriteSheet.BASIC_TILES.at(5, 5);
+
+    public static final TextureRegion DESTRUCTIBLEWALL = SpriteSheet.BASIC_TILES.at(10, 1);
     
 }

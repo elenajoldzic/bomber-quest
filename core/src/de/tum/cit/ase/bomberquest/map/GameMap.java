@@ -48,6 +48,8 @@ public class GameMap {
     private final Chest chest;
     
     private final Flowers[][] flowers;
+
+    private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
     
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -56,6 +58,10 @@ public class GameMap {
         this.player = new Player(this.world, 1, 3);
         // Create a chest in the middle of the map
         this.chest = new Chest(world, 3, 3);
+
+        //CREATE A WALL
+        this.destructibleWalls=new DestructibleWall(world,4,5);
+
         // Create flowers in a 7x7 grid
         this.flowers = new Flowers[7][7];
         for (int i = 0; i < flowers.length; i++) {
@@ -98,7 +104,12 @@ public class GameMap {
     public Chest getChest() {
         return chest;
     }
-    
+
+    //GETWALLS
+    public DestructibleWall getDestructibleWalls(){
+        return destructibleWalls;
+    }
+
     /** Returns the flowers on the map. */
     public List<Flowers> getFlowers() {
         return Arrays.stream(flowers).flatMap(Arrays::stream).toList();

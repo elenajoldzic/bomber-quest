@@ -115,6 +115,7 @@ public class GameScreen implements Screen {
 
         draw(spriteBatch,map.getExit()); //DRAWS THE EXIT
 
+
         draw(spriteBatch, map.getPlayer());
 
 

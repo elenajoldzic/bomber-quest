@@ -20,6 +20,9 @@ public class Player implements Drawable {
     
     /** The Box2D hitbox of the player, used for position and collision detection. */
     private final Body hitbox;
+
+    /** Player's current direction. We start with none*/
+    private Direction currentDirection=Direction.NONE;
     
     public Player(World world, float x, float y) {
         this.hitbox = createHitbox(world, x, y);
@@ -60,7 +63,7 @@ public class Player implements Drawable {
     /**
      * Move the player around in a circle by updating the linear velocity of its hitbox every frame.
      * This doesn't actually move the player, but it tells the physics engine how the player should move next frame.
-     * @param frameTime the time since the last frame.
+     *
      */
     /*
     public void tick(float frameTime) {
@@ -75,22 +78,35 @@ public class Player implements Drawable {
 
      */
 
-//this method makes our player move
+    //ENUM FOR DEFINING PLAYERS MOVING DIRECTION
+    public enum Direction{
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        NONE
+    }
+
+    //THIS METHOD MAKES OUR PLAYER MOVE
     public void update(float frameTime) {
         this.elapsedTime += frameTime;
         float speed = 4f; //create a constant speed value for player to move
         float xVelocity = 0;
         float yVelocity = 0;
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.W)) {
+            currentDirection=Direction.UP;
             yVelocity = (float) speed;
         }
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.S)) {
+            currentDirection=Direction.DOWN;
             yVelocity = (float) -speed; //on the negative side of y axis, different direction
         }
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.A)) {
+            currentDirection=Direction.LEFT;
             xVelocity = (float) -speed; // Move left
         }
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.D)) {
+            currentDirection=Direction.RIGHT;
             xVelocity = (float) speed;// Move right
         }
         this.hitbox.setLinearVelocity(xVelocity, yVelocity); //method for making our player move
@@ -101,7 +117,20 @@ public class Player implements Drawable {
     @Override
     public TextureRegion getCurrentAppearance() {
         // Get the frame of the walk down animation that corresponds to the current time.
-        return Animations.CHARACTER_WALK_DOWN.getKeyFrame(this.elapsedTime, true);
+        // return Animations.CHARACTER_WALK_DOWN.getKeyFrame(this.elapsedTime, true);
+        switch (currentDirection){
+            case UP:
+                return Animations.CHARACTER_WALK_UP.getKeyFrame(this.elapsedTime,true);
+            case DOWN:
+                return Animations.CHARACTER_WALK_DOWN.getKeyFrame(this.elapsedTime,true);
+            case LEFT:
+                return Animations.CHARACTER_WALK_LEFT.getKeyFrame(this.elapsedTime,true);
+            case RIGHT:
+                return Animations.CHARACTER_WALK_RIGHT.getKeyFrame(this.elapsedTime,true);
+            case NONE:
+            default:
+                return Animations.CHARACTER_WALK_DOWN.getKeyFrame(this.elapsedTime,true);
+        }
     }
     
     @Override

@@ -122,7 +122,11 @@ public class GameMap {
             this.physicsTime -= TIME_STEP;
         }
     }
-    
+
+    public World getWorld() {
+        return world;
+    }
+
     /** Returns the player on the map. */
     public Player getPlayer() {
         return player;

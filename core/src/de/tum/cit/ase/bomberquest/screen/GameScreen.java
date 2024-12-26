@@ -8,9 +8,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.map.Enemy;
 import de.tum.cit.ase.bomberquest.map.Flowers;
+import de.tum.cit.ase.bomberquest.map.Player;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 
@@ -54,8 +60,42 @@ public class GameScreen implements Screen {
         // Create and configure the camera for the game view
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false);
+
+        // Set up the collision listener
+        setupCollisionListener();
     }
-    
+
+    private void setupCollisionListener() {
+        map.getWorld().setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                Object userDataA = contact.getFixtureA().getBody().getUserData();
+                Object userDataB = contact.getFixtureB().getBody().getUserData();
+
+                // Check if the player and enemy collide
+                if ((userDataA instanceof Player && userDataB instanceof Enemy) ||
+                        (userDataA instanceof Enemy && userDataB instanceof Player)) {
+                    // Transition to the YouLoseScreen
+                    game.setScreen(new YouLoseScreen(game));
+                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold manifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse contactImpulse) {
+
+            }
+        });
+    }
     /**
      * The render method is called every frame to render the game.
      * @param deltaTime The time in seconds since the last render.

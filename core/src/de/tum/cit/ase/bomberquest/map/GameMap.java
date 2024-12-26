@@ -5,6 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,9 +67,13 @@ public class GameMap {
     private final Enemy enemy; // THIS IS THE ENEMY
 
 
-    public GameMap(BomberQuestGame game) {
+    public GameMap(BomberQuestGame game, String mapFilePath) throws IOException {
         this.game = game;
         this.world = new World(Vector2.Zero, true);
+
+        // Load the map from the file
+        loadMapFromFile(mapFilePath);
+
         // Create a player with initial position (1, 3)
         this.player = new Player(this.world, 1, 3);
         // Create a chest in the middle of the map
@@ -94,6 +101,54 @@ public class GameMap {
                 this.flowers[i][j] = new Flowers(i, j);
             }
         }
+    }
+
+    private void loadMapFromFile(String mapFilePath) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(mapFilePath));
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+            line = line.trim();
+
+            // Skip empty lines or comments
+            if (line.isEmpty() || line.startsWith("#")) continue;
+
+            String[] parts = line.split("=");
+            if (parts.length != 2) continue; // Invalid line, skip it
+
+            String[] coordinates = parts[0].split(",");
+            if (coordinates.length != 2) continue; // Invalid coordinates, skip
+
+            int x = Integer.parseInt(coordinates[0].trim());
+            int y = Integer.parseInt(coordinates[1].trim());
+            int elementType = Integer.parseInt(parts[1].trim());
+
+            // Initialize map elements based on the type
+            switch (elementType) {
+                case 0: // Wall
+                    new IndestructibleWall(world, x, y);
+                    break;
+                case 1: // Destructible wall
+                    new DestructibleWall(world, x, y);
+                    break;
+                case 2: // Entrance
+                    new Entrance(world, x, y);
+                    break;
+                case 3: // Exit
+                    new Exit(world, x, y);
+                    break;
+                case 4: // Chest
+                    new Chest(world, x, y);
+                    break;
+                case 5: // Player
+                    new Player(world, x, y);
+                    break;
+                default:
+                    System.err.println("Unknown element type: " + elementType);
+            }
+        }
+
+        reader.close();
     }
     
     /**

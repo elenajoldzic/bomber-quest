@@ -20,5 +20,11 @@ public class Textures {
     public static final TextureRegion EXIT = SpriteSheet.BASIC_TILES.at(7, 1);
 
     public static final TextureRegion ENTRANCE = SpriteSheet.BASIC_TILES.at(7, 3);
-    
+
+    public static final TextureRegion CONCURRENTBOMB = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 1);
+
+    public static final TextureRegion BLASTRADIUS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 2);
+
+    public static final TextureRegion ENEMY = SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 7);
+
 }

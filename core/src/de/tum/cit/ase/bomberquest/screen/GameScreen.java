@@ -116,7 +116,10 @@ public class GameScreen implements Screen {
         draw(spriteBatch,map.getExit()); // DRAWS THE EXIT
         draw(spriteBatch,map.getEntrance()); // DRAWS THE ENTRANCE
 
+        draw(spriteBatch,map.getConcurrentBomb()); // DRAWS THE CONCURRENT BOMB
+        draw(spriteBatch,map.getBlastRadius()); // DRAWS THE BLAST RADIUS
 
+        draw(spriteBatch,map.getEnemy()); // DRAWS THE ENEMY
         draw(spriteBatch, map.getPlayer());
 
 

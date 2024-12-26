@@ -57,6 +57,12 @@ public class GameMap {
 
     private final Entrance entrance; // THIS IS THE ENTRANCE
 
+    private final ConcurrentBomb concurrentBomb; // THIS IS THE CONCURRENT BOMB
+
+    private final BlastRadius blastRadius; // THIS IS THE BLAST RADIUS
+
+    private final Enemy enemy; // THIS IS THE ENEMY
+
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -66,14 +72,20 @@ public class GameMap {
         // Create a chest in the middle of the map
         this.chest = new Chest(world, 3, 3);
 
-        //CREATE A WALL
-        this.destructibleWalls=new DestructibleWall(world,4,5);
+
+        this.destructibleWalls=new DestructibleWall(world,4,5); // INITIALIZED WALLS
 
         this.indestructibleWalls=new IndestructibleWall(world,5,5); // INITIALIZED WALLS
 
         this.exit = new Exit(world,7,5); // INITIALIZED EXIT
 
-        this.entrance = new Entrance(world,7,6);
+        this.entrance = new Entrance(world,7,6); // INITIALIZED ENTRANCE
+
+        this.concurrentBomb = new ConcurrentBomb(world,5,3); // INITIALIZED CONCURRENT BOMB
+
+        this.blastRadius = new BlastRadius(world,4,2); // INITIALIZED BLAST RADIUS
+
+        this.enemy = new Enemy(world,5,2); // INITIALIZED ENEMY
 
         // Create flowers in a 7x7 grid
         this.flowers = new Flowers[7][7];
@@ -133,6 +145,18 @@ public class GameMap {
 
     public Entrance getEntrance() {
         return entrance;
+    }
+
+    public ConcurrentBomb getConcurrentBomb() {
+        return concurrentBomb;
+    }
+
+    public BlastRadius getBlastRadius() {
+        return blastRadius;
+    }
+
+    public Enemy getEnemy() {
+        return enemy;
     }
 
     /** Returns the flowers on the map. */

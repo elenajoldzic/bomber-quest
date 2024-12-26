@@ -18,7 +18,9 @@ public enum SpriteSheet {
     /** The character spritesheet, which has a grid size of 16x32. */
     CHARACTER("character.png", 16, 32),
     /** The basic tiles spritesheet, which has a grid size of 16x16. */
-    BASIC_TILES("basictiles.png", 16, 16);
+    BASIC_TILES("basictiles.png", 16, 16),
+
+    ORIGINAL_BOMBERMAN("original-bomberman.png", 16, 16);
     
     private final Texture spritesheet;
     private final int width;

@@ -113,7 +113,8 @@ public class GameScreen implements Screen {
         draw(spriteBatch,map.getDestructibleWalls()); //DRAWS THE DESTRUCTIBLE WALL
         draw(spriteBatch,map.getIndestructibleWalls()); //DRAWS THE INDESTRUCTIBLE WALL
 
-        draw(spriteBatch,map.getExit()); //DRAWS THE EXIT
+        draw(spriteBatch,map.getExit()); // DRAWS THE EXIT
+        draw(spriteBatch,map.getEntrance()); // DRAWS THE ENTRANCE
 
 
         draw(spriteBatch, map.getPlayer());

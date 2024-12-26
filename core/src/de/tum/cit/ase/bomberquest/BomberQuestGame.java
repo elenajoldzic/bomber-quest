@@ -62,20 +62,7 @@ public class BomberQuestGame extends Game {
     public void create() {
         this.spriteBatch = new SpriteBatch(); // Create SpriteBatch for rendering
         this.skin = new Skin(Gdx.files.internal("skin/craftacular/craftacular-ui.json")); // Load UI skin
-
-        // Use MapFileSelector to get the map file path from the user
-        String mapFilePath = MapFileSelector.selectMapFile();
-
-        try {
-            // Pass both the game instance and the map file path to the GameMap constructor
-            this.map = new GameMap(this, mapFilePath);
-        } catch (IOException e) {
-            System.err.println("Failed to load the map: " + e.getMessage());
-            e.printStackTrace();
-            System.exit(1); // Exit the game if the map cannot be loaded
-        }
-
-        //this.map = new GameMap(this); // Create a new game map (you should change this to load the map from a file instead)
+        this.map = new GameMap(this); // Create a new game map (you should change this to load the map from a file instead)
         MusicTrack.BACKGROUND.play(); // Play some background music
         goToMenu(); // Navigate to the menu screen
     }

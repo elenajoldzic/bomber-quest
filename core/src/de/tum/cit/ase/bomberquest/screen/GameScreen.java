@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.map.Flowers;
@@ -91,8 +92,13 @@ public class GameScreen implements Screen {
      */
     private void updateCamera() {
         mapCamera.setToOrtho(false);
-        mapCamera.position.x = 3.5f * TILE_SIZE_PX * SCALE;
-        mapCamera.position.y = 3.5f * TILE_SIZE_PX * SCALE;
+        //mapCamera.position.x = 3.5f * TILE_SIZE_PX * SCALE;
+        //mapCamera.position.y = 3.5f * TILE_SIZE_PX * SCALE;
+
+        //THIS CODE MAKES THE CAMERA MOVE WITH PLAYER
+        mapCamera.position.x = map.getPlayer().getX() * TILE_SIZE_PX * SCALE;
+        mapCamera.position.y = map.getPlayer().getY() * TILE_SIZE_PX * SCALE;
+
         mapCamera.update(); // This is necessary to apply the changes
     }
     

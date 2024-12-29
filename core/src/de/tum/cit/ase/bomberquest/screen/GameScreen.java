@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.GameTimer;
 import de.tum.cit.ase.bomberquest.map.Enemy;
 import de.tum.cit.ase.bomberquest.map.Flowers;
 import de.tum.cit.ase.bomberquest.map.Player;
@@ -46,6 +47,7 @@ public class GameScreen implements Screen {
     private final GameMap map;
     private final Hud hud;
     private final OrthographicCamera mapCamera;
+    private GameTimer gameTimer;
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -56,13 +58,19 @@ public class GameScreen implements Screen {
         this.game = game;
         this.spriteBatch = game.getSpriteBatch();
         this.map = game.getMap();
-        this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"));
+
+        // Initialize the timer
+        this.gameTimer = new GameTimer(game);
+
+        this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"),gameTimer);
         // Create and configure the camera for the game view
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false);
 
         // Set up the collision listener
         setupCollisionListener();
+
+
     }
 
     private void setupCollisionListener() {
@@ -77,6 +85,7 @@ public class GameScreen implements Screen {
                         (userDataA instanceof Enemy && userDataB instanceof Player)) {
                     // Transition to the YouLoseScreen
                     game.setScreen(new YouLoseScreen(game));
+
                 }
             }
 
@@ -115,7 +124,11 @@ public class GameScreen implements Screen {
         
         // Update the map state
         map.tick(frameTime);
-        
+
+        // Update and render the timer
+        gameTimer.update();
+        //gameTimer.render(spriteBatch);
+
         // Update the camera
         updateCamera();
         
@@ -124,7 +137,11 @@ public class GameScreen implements Screen {
         
         // Render the HUD on the screen
         hud.render();
-    }
+
+
+
+        }
+
     
     /**
      * Updates the camera to match the current state of the game.
@@ -214,7 +231,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
     }
 
     @Override

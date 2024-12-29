@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import de.tum.cit.ase.bomberquest.GameTimer;
+import de.tum.cit.ase.bomberquest.map.Player;
 
 /**
  * A Heads-Up Display (HUD) that displays information on the screen.
@@ -21,12 +22,16 @@ public class Hud {
     /** The camera used to render the HUD. */
     private final OrthographicCamera camera;
     private final GameTimer gameTimer;
+
+    private final Player player;
+
     
-    public Hud(SpriteBatch spriteBatch, BitmapFont font, GameTimer gameTimer) {
+    public Hud(SpriteBatch spriteBatch, BitmapFont font, GameTimer gameTimer, Player player) {
         this.spriteBatch = spriteBatch;
         this.font = font;
         this.camera = new OrthographicCamera();
         this.gameTimer=gameTimer;
+        this.player=player;
     }
     
     /**
@@ -49,10 +54,11 @@ public class Hud {
         long minutes = remainingTimeMillis / 60000;
         long seconds = (remainingTimeMillis % 60000) / 1000;
         String timeText = String.format("Time Remaining: %02d:%02d", minutes, seconds);
-
         font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 50);
 
+        font.draw(spriteBatch, "Bombs placeable: "+player.getConcurrentBombCount(), 10, Gdx.graphics.getHeight() - 90);
 
+        font.draw(spriteBatch, "Blast radius:  "+player.getBlastRadius(), 10, Gdx.graphics.getHeight() - 130);
 
         // Finish drawing
         spriteBatch.end();

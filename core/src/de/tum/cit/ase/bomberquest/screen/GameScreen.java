@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -45,6 +44,7 @@ public class GameScreen implements Screen {
     private final Hud hud;
     private final OrthographicCamera mapCamera;
     private GameTimer gameTimer;
+    private Player player;
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -59,7 +59,9 @@ public class GameScreen implements Screen {
         // Initialize the timer
         this.gameTimer = new GameTimer(game);
 
-        this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"),gameTimer);
+        this.player=map.getPlayer();
+
+        this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"),gameTimer,player);
         // Create and configure the camera for the game view
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false);

@@ -23,9 +23,16 @@ public class Player implements Drawable {
 
     /** Player's current direction. We start with none*/
     private Direction currentDirection=Direction.NONE;
-    
+
+    /** Player's concurrentBombCount and blastRadius attributes  */
+    private int concurrentBombCount; // Maximum bombs the player can place
+    private int blastRadius;         // Blast radius of bombs
+
+
     public Player(World world, float x, float y) {
         this.hitbox = createHitbox(world, x, y);
+        this.concurrentBombCount = 1; // Default bomb count
+        this.blastRadius = 1;
     }
     
     /**
@@ -143,5 +150,21 @@ public class Player implements Drawable {
     public float getY() {
         // The y-coordinate of the player is the y-coordinate of the hitbox (this can change every frame).
         return hitbox.getPosition().y;
+    }
+
+    public int getConcurrentBombCount() {
+        return concurrentBombCount;
+    }
+
+    public void setConcurrentBombCount(int concurrentBombCount) {
+        this.concurrentBombCount = concurrentBombCount;
+    }
+
+    public int getBlastRadius() {
+        return blastRadius;
+    }
+
+    public void setBlastRadius(int blastRadius) {
+        this.blastRadius = blastRadius;
     }
 }

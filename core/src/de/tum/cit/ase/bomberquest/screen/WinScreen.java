@@ -48,6 +48,7 @@ public class WinScreen implements Screen {
         goToMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                game.create();
                 game.goToMenu(); // Go to the main menu screen when button is pressed
             }
         });

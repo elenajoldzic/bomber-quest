@@ -75,8 +75,8 @@ public class Player implements Drawable {
         float yVelocity = (float) Math.cos(this.elapsedTime) * 2;
         this.hitbox.setLinearVelocity(xVelocity, yVelocity);
     }
+*/
 
-     */
 
     //ENUM FOR DEFINING PLAYERS MOVING DIRECTION
     public enum Direction{

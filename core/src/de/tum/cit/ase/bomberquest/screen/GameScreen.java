@@ -73,6 +73,7 @@ public class GameScreen implements Screen {
 
     }
 
+    //THIS METHOD LOOKS FOR A COLLISION BETWEEN PLAYER AND ENEMY
     private void setupCollisionListener() {
         map.getWorld().setContactListener(new ContactListener() {
             @Override

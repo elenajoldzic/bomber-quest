@@ -48,6 +48,7 @@ public class YouLoseScreen implements Screen {
         goToGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                game.create();
                 game.goToGame(); // Change to the game screen when button is pressed
             }
         });

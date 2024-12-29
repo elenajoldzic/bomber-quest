@@ -80,9 +80,9 @@ public class GameMap {
 
         this.indestructibleWalls=new IndestructibleWall(world,5,5); // INITIALIZED WALLS
 
-        this.exit = new Exit(world,7,5); // INITIALIZED EXIT
+        this.exit = new Exit(world,6,5); // INITIALIZED EXIT
 
-        this.entrance = new Entrance(world,7,6); // INITIALIZED ENTRANCE
+        this.entrance = new Entrance(world,6,6); // INITIALIZED ENTRANCE
 
         this.concurrentBomb = new ConcurrentBomb(world,5,3); // INITIALIZED CONCURRENT BOMB
 

@@ -17,9 +17,9 @@ public class Textures {
 
     public static final TextureRegion INDESTRUCTIBLEWALL = SpriteSheet.BASIC_TILES.at(1, 1);
 
-    public static final TextureRegion EXIT = SpriteSheet.BASIC_TILES.at(7, 1);
+    public static final TextureRegion EXIT = SpriteSheet.BASIC_TILES.at(7, 3);
 
-    public static final TextureRegion ENTRANCE = SpriteSheet.BASIC_TILES.at(7, 3);
+    public static final TextureRegion ENTRANCE = SpriteSheet.BASIC_TILES.at(7, 1);
 
     public static final TextureRegion CONCURRENTBOMB = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 1);
 

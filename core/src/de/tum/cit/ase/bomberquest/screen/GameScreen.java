@@ -15,11 +15,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.GameTimer;
-import de.tum.cit.ase.bomberquest.map.Enemy;
-import de.tum.cit.ase.bomberquest.map.Flowers;
-import de.tum.cit.ase.bomberquest.map.Player;
+import de.tum.cit.ase.bomberquest.map.*;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
-import de.tum.cit.ase.bomberquest.map.GameMap;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -86,6 +83,13 @@ public class GameScreen implements Screen {
                         (userDataA instanceof Enemy && userDataB instanceof Player)) {
                     // Transition to the YouLoseScreen
                     game.setScreen(new YouLoseScreen(game));
+                }
+
+                // Check if the player and enemy collide
+                if ((userDataA instanceof Player && userDataB instanceof Exit) ||
+                        (userDataA instanceof Exit && userDataB instanceof Player)) {
+                    // Transition to the YouLoseScreen
+                    game.setScreen(new WinScreen(game));
 
                 }
             }

@@ -23,7 +23,7 @@ import de.tum.cit.ase.bomberquest.texture.Drawable;
  */
 
 public class GameScreen implements Screen {
-    
+
     /**
      * The size of a grid cell in pixels.
      * This allows us to think of coordinates in terms of square grid tiles
@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
      * rather than absolute pixel coordinates.
      */
     public static final int TILE_SIZE_PX = 16;
-    
+
     /**
      * The scale of the game.
      * This is used to make everything in the game look bigger or smaller.
@@ -59,20 +59,18 @@ public class GameScreen implements Screen {
         // Initialize the timer
         this.gameTimer = new GameTimer(game);
 
-        this.player=map.getPlayer();
+        this.player = map.getPlayer();
 
-        this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"),gameTimer,player);
+        this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"), gameTimer, player);
         // Create and configure the camera for the game view
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false);
 
         // Set up the collision listener
         setupCollisionListener();
-
-
     }
 
-    //THIS METHOD LOOKS FOR A COLLISION BETWEEN PLAYER AND ENEMY
+    // THIS METHOD LOOKS FOR A COLLISION BETWEEN PLAYER AND OTHER OBJECTS
     private void setupCollisionListener() {
         map.getWorld().setContactListener(new ContactListener() {
             @Override
@@ -87,12 +85,11 @@ public class GameScreen implements Screen {
                     game.setScreen(new YouLoseScreen(game));
                 }
 
-                // Check if the player and enemy collide
+                // Check if the player reaches the exit
                 if ((userDataA instanceof Player && userDataB instanceof Exit) ||
                         (userDataA instanceof Exit && userDataB instanceof Player)) {
-                    // Transition to the YouLoseScreen
+                    // Transition to the WinScreen
                     game.setScreen(new WinScreen(game));
-
                 }
             }
 
@@ -112,6 +109,7 @@ public class GameScreen implements Screen {
             }
         });
     }
+
     /**
      * The render method is called every frame to render the game.
      * @param deltaTime The time in seconds since the last render.
@@ -122,86 +120,88 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
         }
-        
-        // Clear the previous frame from the screen, or else the picture smears
+
+        // Elena
+        // Check for space key press to plant a bomb
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            map.placeBomb(player.getX(), player.getY(), player.getBlastRadius());
+        }
+
+        // Clear the previous frame from the screen
         ScreenUtils.clear(Color.BLACK);
-        
+
         // Cap frame time to 250ms to prevent spiral of death
         float frameTime = Math.min(deltaTime, 0.250f);
-        
+
         // Update the map state
         map.tick(frameTime);
 
         // Update and render the timer
         gameTimer.update();
-        //gameTimer.render(spriteBatch);
 
         // Update the camera
         updateCamera();
-        
+
         // Render the map on the screen
         renderMap();
-        
+
         // Render the HUD on the screen
         hud.render();
+    }
 
-
-
-        }
-
-    
     /**
      * Updates the camera to match the current state of the game.
      * Currently, this just centers the camera at the origin.
      */
     private void updateCamera() {
         mapCamera.setToOrtho(false);
-        //mapCamera.position.x = 3.5f * TILE_SIZE_PX * SCALE;
-        //mapCamera.position.y = 3.5f * TILE_SIZE_PX * SCALE;
 
-        //THIS CODE MAKES THE CAMERA MOVE WITH PLAYER
+        // THIS CODE MAKES THE CAMERA MOVE WITH PLAYER
         mapCamera.position.x = map.getPlayer().getX() * TILE_SIZE_PX * SCALE;
         mapCamera.position.y = map.getPlayer().getY() * TILE_SIZE_PX * SCALE;
 
         mapCamera.update(); // This is necessary to apply the changes
     }
-    
+
     private void renderMap() {
         // This configures the spriteBatch to use the camera's perspective when rendering
         spriteBatch.setProjectionMatrix(mapCamera.combined);
-        
+
         // Start drawing
         spriteBatch.begin();
-        
+
         // Render everything in the map here, in order from lowest to highest (later things appear on top)
-        // You may want to add a method to GameMap to return all the drawables in the correct order
         for (Flowers flowers : map.getFlowers()) {
             draw(spriteBatch, flowers);
         }
         draw(spriteBatch, map.getChest());
 
-        draw(spriteBatch,map.getDestructibleWalls()); //DRAWS THE DESTRUCTIBLE WALL
-        draw(spriteBatch,map.getIndestructibleWalls()); //DRAWS THE INDESTRUCTIBLE WALL
+        draw(spriteBatch, map.getDestructibleWalls()); // DRAWS THE DESTRUCTIBLE WALL
+        draw(spriteBatch, map.getIndestructibleWalls()); // DRAWS THE INDESTRUCTIBLE WALL
 
-        draw(spriteBatch,map.getExit()); // DRAWS THE EXIT
-        draw(spriteBatch,map.getEntrance()); // DRAWS THE ENTRANCE
+        draw(spriteBatch, map.getExit()); // DRAWS THE EXIT
+        draw(spriteBatch, map.getEntrance()); // DRAWS THE ENTRANCE
 
-        draw(spriteBatch,map.getConcurrentBomb()); // DRAWS THE CONCURRENT BOMB
-        draw(spriteBatch,map.getBlastRadius()); // DRAWS THE BLAST RADIUS
+        draw(spriteBatch, map.getConcurrentBomb()); // DRAWS THE CONCURRENT BOMB
+        draw(spriteBatch, map.getBlastRadius()); // DRAWS THE BLAST RADIUS
 
-        draw(spriteBatch,map.getEnemy()); // DRAWS THE ENEMY
+        draw(spriteBatch, map.getEnemy()); // DRAWS THE ENEMY
         draw(spriteBatch, map.getPlayer());
 
+        // Elena
+        // Draw bombs
+        for (Bomb bomb : map.getBombs()) {
+            draw(spriteBatch, bomb);
+        }
 
-        
-        // Finish drawing, i.e. send the drawn items to the graphics card
+        // Finish drawing, i.e., send the drawn items to the graphics card
         spriteBatch.end();
     }
-    
+
     /**
      * Draws this object on the screen.
      * The texture will be scaled by the game scale and the tile size.
-     * This should only be called between spriteBatch.begin() and spriteBatch.end(), e.g. in the renderMap() method.
+     * This should only be called between spriteBatch.begin() and spriteBatch.end(), e.g., in the renderMap() method.
      * @param spriteBatch The SpriteBatch to draw with.
      */
     private static void draw(SpriteBatch spriteBatch, Drawable drawable) {
@@ -214,7 +214,7 @@ public class GameScreen implements Screen {
         float height = texture.getRegionHeight() * SCALE;
         spriteBatch.draw(texture, x, y, width, height);
     }
-    
+
     /**
      * Called when the window is resized.
      * This is where the camera is updated to match the new window size.
@@ -247,5 +247,4 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
     }
-
 }

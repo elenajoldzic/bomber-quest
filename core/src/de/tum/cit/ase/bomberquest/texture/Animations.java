@@ -43,4 +43,13 @@ public class Animations {
     );
 
 
+    // Define the bomb animation in Animations (Elena)
+    public static final Animation<TextureRegion> BOMB_IDLE = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(5, 1), // Bomb frame 1
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(5, 2), // Bomb frame 2
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(6, 1), // Bomb frame 3
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(6, 2)  // Bomb frame 4
+    );
+
+
 }

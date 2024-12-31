@@ -14,10 +14,10 @@ import de.tum.cit.ase.bomberquest.texture.Drawable;
  * The player has a hitbox, so it can collide with other objects in the game.
  */
 public class Player implements Drawable {
-    
+
     /** Total time elapsed since the game started. We use this for calculating the player movement and animating it. */
     private float elapsedTime;
-    
+
     /** The Box2D hitbox of the player, used for position and collision detection. */
     private final Body hitbox;
 
@@ -28,13 +28,17 @@ public class Player implements Drawable {
     private int concurrentBombCount; // Maximum bombs the player can place
     private int blastRadius;         // Blast radius of bombs
 
+    // (Elena)
+    private Bomb carriedBomb;        // player carried bomb
+    private boolean isCarryingBomb = false;
+
 
     public Player(World world, float x, float y) {
         this.hitbox = createHitbox(world, x, y);
         this.concurrentBombCount = 1; // Default bomb count
         this.blastRadius = 1;
     }
-    
+
     /**
      * Creates a Box2D body for the player.
      * This is what the physics engine uses to move the player around and detect collisions with other bodies.
@@ -66,7 +70,7 @@ public class Player implements Drawable {
         body.setUserData(this);
         return body;
     }
-    
+
     /**
      * Move the player around in a circle by updating the linear velocity of its hitbox every frame.
      * This doesn't actually move the player, but it tells the physics engine how the player should move next frame.
@@ -139,13 +143,13 @@ public class Player implements Drawable {
                 return Animations.CHARACTER_WALK_DOWN.getKeyFrame(this.elapsedTime,true);
         }
     }
-    
+
     @Override
     public float getX() {
         // The x-coordinate of the player is the x-coordinate of the hitbox (this can change every frame).
         return hitbox.getPosition().x;
     }
-    
+
     @Override
     public float getY() {
         // The y-coordinate of the player is the y-coordinate of the hitbox (this can change every frame).
@@ -167,4 +171,22 @@ public class Player implements Drawable {
     public void setBlastRadius(int blastRadius) {
         this.blastRadius = blastRadius;
     }
+
+    // (Elena)
+    public void pickUpBomb(Bomb bomb) {
+        if (!isCarryingBomb) {
+            this.carriedBomb = bomb;
+            isCarryingBomb = true;
+        }
+    }
+
+    public void dropBomb(World world) {
+        if (isCarryingBomb) {
+            // Place bomb at the player's current position
+            carriedBomb.placeAt(world, getX(), getY());
+            isCarryingBomb = false;
+            carriedBomb = null;
+        }
+    }
+
 }

@@ -27,4 +27,6 @@ public class Textures {
 
     public static final TextureRegion ENEMY = SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 7);
 
+    // Elena
+    public static final TextureRegion BOMB = SpriteSheet.ORIGINAL_BOMBERMAN.at(14, 7);
 }

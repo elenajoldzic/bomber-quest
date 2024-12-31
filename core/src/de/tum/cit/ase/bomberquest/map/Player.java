@@ -2,6 +2,7 @@ package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -35,7 +36,7 @@ public class Player implements Drawable {
 
     public Player(World world, float x, float y) {
         this.hitbox = createHitbox(world, x, y);
-        this.concurrentBombCount = 1; // Default bomb count
+        this.concurrentBombCount = 2; // Default bomb count
         this.blastRadius = 1;
     }
 
@@ -172,21 +173,5 @@ public class Player implements Drawable {
         this.blastRadius = blastRadius;
     }
 
-    // (Elena)
-    public void pickUpBomb(Bomb bomb) {
-        if (!isCarryingBomb) {
-            this.carriedBomb = bomb;
-            isCarryingBomb = true;
-        }
-    }
-
-    public void dropBomb(World world) {
-        if (isCarryingBomb) {
-            // Place bomb at the player's current position
-            carriedBomb.placeAt(world, getX(), getY());
-            isCarryingBomb = false;
-            carriedBomb = null;
-        }
-    }
 
 }

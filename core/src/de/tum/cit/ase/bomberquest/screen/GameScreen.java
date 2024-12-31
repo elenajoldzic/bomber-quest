@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -124,7 +125,7 @@ public class GameScreen implements Screen {
         // Elena
         // Check for space key press to plant a bomb
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            map.placeBomb(player.getX(), player.getY(), player.getBlastRadius());
+            placeBomb();
         }
 
         // Clear the previous frame from the screen
@@ -213,6 +214,15 @@ public class GameScreen implements Screen {
         float width = texture.getRegionWidth() * SCALE;
         float height = texture.getRegionHeight() * SCALE;
         spriteBatch.draw(texture, x, y, width, height);
+    }
+
+    private void placeBomb() {
+        if (map.getBombs().size() < player.getConcurrentBombCount()) {
+            float bombX = MathUtils.round(player.getX());
+            float bombY = MathUtils.round(player.getY());
+            Bomb bomb = new Bomb(bombX, bombY, player.getBlastRadius()); // 2 seconds timer
+            map.addBomb(bomb);
+        }
     }
 
     /**

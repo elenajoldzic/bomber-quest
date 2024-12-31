@@ -14,16 +14,16 @@ import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 // (Elena)
 public class Bomb implements Drawable {
+    private float x, y;
+    private float timer=3; // Time until explosion
+    private int blastRadius;
+    //private float elapsedTime=0;
 
-    private final Body body;
-    private final int blastRadius;
-    private float timer;
-    private static final float EXPLOSION_TIME = 3.0f; // Bomb explodes after 3 seconds
-
-    public Bomb(World world, float x, float y, int blastRadius) {
+    public Bomb(float x, float y, int blastRadius) {
+        this.x = x;
+        this.y = y;
+        //this.timer = timer;
         this.blastRadius = blastRadius;
-        this.timer = 0;
-        this.body = createBody(world, x, y);
     }
 
     /**
@@ -48,15 +48,17 @@ public class Bomb implements Drawable {
         return body;
     }
 
+    /*
     /**
      * Updates the bomb's state and checks if it should explode.
      * @param deltaTime Time elapsed since the last frame.
      * @return True if the bomb explodes, false otherwise.
-     */
+
     public boolean update(float deltaTime) {
         timer += deltaTime;
-        return timer >= EXPLOSION_TIME;
+        return timer >= EXPLOSION_TIE;
     }
+     */
 
     /**
      * Gets the blast radius of the bomb.
@@ -73,21 +75,27 @@ public class Bomb implements Drawable {
 
     @Override
     public float getX() {
-        return body.getPosition().x;
+        return x;
     }
 
     @Override
     public float getY() {
-        return body.getPosition().y;
+        return y;
+    }
+
+    public float getTimer() {
+        return timer;
+    }
+
+    public void setTimer(float timer) {
+        this.timer = timer;
     }
 
     /**
      * Destroys the bomb's physical body in the game world.
      * @param world The Box2D world.
      */
-    public void explode(World world) {
-        world.destroyBody(body);
-    }
+
 
     public void placeAt(World world, float x, float y) {
         BodyDef bodyDef = new BodyDef();

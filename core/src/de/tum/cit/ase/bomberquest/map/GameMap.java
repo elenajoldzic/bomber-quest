@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
+import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,93 +24,108 @@ public class GameMap {
         com.badlogic.gdx.physics.box2d.Box2D.init();
     }
 
-    // Box2D physics simulation parameters
+    // Box2D physics simulation parameters (you can experiment with these if you want, but they work well as they are)
+    /**
+     * The time step for the physics simulation.
+     * This is the amount of time that the physics simulation advances by in each frame.
+     * It is set to 1/refreshRate, where refreshRate is the refresh rate of the monitor, e.g., 1/60 for 60 Hz.
+     */
     private static final float TIME_STEP = 1f / Gdx.graphics.getDisplayMode().refreshRate;
+    /**
+     * The number of velocity iterations for the physics simulation.
+     */
     private static final int VELOCITY_ITERATIONS = 6;
+    /**
+     * The number of position iterations for the physics simulation.
+     */
     private static final int POSITION_ITERATIONS = 2;
-
+    /**
+     * The accumulated time since the last physics step.
+     * We use this to keep the physics simulation at a constant rate even if the frame rate is variable.
+     */
     private float physicsTime = 0;
 
+    /**
+     * The game, in case the map needs to access it.
+     */
     private final BomberQuestGame game;
+    /**
+     * The Box2D world for physics simulation.
+     */
     private final World world;
 
+    // Game objects
     private final Player player;
-    private final Chest chest;
-    private final Flowers[][] flowers;
-    private final DestructibleWall destructibleWalls;
-    private final IndestructibleWall indestructibleWalls;
-    private final Exit exit;
-    private final Entrance entrance;
-    private final ConcurrentBomb concurrentBomb;
-    private final BlastRadius blastRadius;
-    private final Enemy enemy;
 
-    // (Elena)
-    private final List<Bomb> bombs; // List to store active bombs
+    private final Chest chest;
+
+    private final Flowers[][] flowers;
+
+    private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
+
+    private final IndestructibleWall indestructibleWalls; //THESE ARE THE WALLS
+
+    private final Exit exit; // THIS IS THE EXIT
+
+    private final Entrance entrance; // THIS IS THE ENTRANCE
+
+    private final ConcurrentBomb concurrentBomb; // THIS IS THE CONCURRENT BOMB
+
+    private final BlastRadius blastRadius; // THIS IS THE BLAST RADIUS
+
+    private final Enemy enemy; // THIS IS THE ENEMY
+
+    private List<Bomb> bombs = new ArrayList<>();
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
         this.world = new World(Vector2.Zero, true);
-
+        // Create a player with initial position (1, 3)
         this.player = new Player(this.world, 1, 3);
+        // Create a chest in the middle of the map
         this.chest = new Chest(world, 3, 3);
 
-        this.destructibleWalls = new DestructibleWall(world, 4, 5);
-        this.indestructibleWalls = new IndestructibleWall(world, 5, 5);
-        this.exit = new Exit(world, 6, 5);
-        this.entrance = new Entrance(world, 6, 6);
-        this.concurrentBomb = new ConcurrentBomb(world, 5, 3);
-        this.blastRadius = new BlastRadius(world, 4, 2);
-        this.enemy = new Enemy(world, 5, 2);
 
+        this.destructibleWalls = new DestructibleWall(world, 4, 5); // INITIALIZED WALLS
+
+        this.indestructibleWalls = new IndestructibleWall(world, 5, 5); // INITIALIZED WALLS
+
+        this.exit = new Exit(world, 6, 5); // INITIALIZED EXIT
+
+        this.entrance = new Entrance(world, 6, 6); // INITIALIZED ENTRANCE
+
+        this.concurrentBomb = new ConcurrentBomb(world, 5, 3); // INITIALIZED CONCURRENT BOMB
+
+        this.blastRadius = new BlastRadius(world, 4, 2); // INITIALIZED BLAST RADIUS
+
+        this.enemy = new Enemy(world, 5, 2); // INITIALIZED ENEMY
+
+        // Create flowers in a 7x7 grid
         this.flowers = new Flowers[7][7];
         for (int i = 0; i < flowers.length; i++) {
             for (int j = 0; j < flowers[i].length; j++) {
                 this.flowers[i][j] = new Flowers(i, j);
             }
         }
-
-        // Elena
-        this.bombs = new ArrayList<>(); // Initialize the bomb list
     }
 
     /**
      * Updates the game state. This is called once per frame.
      * Every dynamic object in the game should update its state here.
+     *
      * @param frameTime the time that has passed since the last update
      */
     public void tick(float frameTime) {
+        //this.player.tick(frameTime);
         this.enemy.tick(frameTime);
         this.player.update(frameTime);
-
-        // Update bombs
-        Iterator<Bomb> iterator = bombs.iterator();
-        while (iterator.hasNext()) {
-            Bomb bomb = iterator.next();
-            if (bomb.update(frameTime)) {
-                bomb.explode(world);
-                iterator.remove();
-                // TODO: Handle explosion effects and damage logic
-            }
-        }
-
         doPhysicsStep(frameTime);
-    }
-
-    /**
-     * Places a bomb at the specified position.
-     * @param x The x-coordinate of the bomb.
-     * @param y The y-coordinate of the bomb.
-     * @param blastRadius The blast radius of the bomb.
-     */
-    public void placeBomb(float x, float y, int blastRadius) {
-        Bomb bomb = new Bomb(world, x, y, blastRadius);
-        bombs.add(bomb);
     }
 
     /**
      * Performs as many physics steps as necessary to catch up to the given frame time.
      * This will update the Box2D world by the given time step.
+     *
      * @param frameTime Time since last frame in seconds
      */
     private void doPhysicsStep(float frameTime) {
@@ -123,14 +140,21 @@ public class GameMap {
         return world;
     }
 
+    /**
+     * Returns the player on the map.
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Returns the chest on the map.
+     */
     public Chest getChest() {
         return chest;
     }
 
+    //GETWALLS
     public DestructibleWall getDestructibleWalls() {
         return destructibleWalls;
     }
@@ -159,16 +183,25 @@ public class GameMap {
         return enemy;
     }
 
+    /**
+     * Returns the flowers on the map.
+     */
     public List<Flowers> getFlowers() {
         return Arrays.stream(flowers).flatMap(Arrays::stream).toList();
     }
 
-    // Elena
-    /**
-     * Returns the list of active bombs.
-     * @return List of bombs.
-     */
     public List<Bomb> getBombs() {
         return bombs;
     }
+
+    public void addBomb(Bomb bomb) {
+        bombs.add(bomb);
+    }
+
+    public void removeBomb(Bomb bomb) {
+        bombs.remove(bomb);
+    }
+
+
+
 }

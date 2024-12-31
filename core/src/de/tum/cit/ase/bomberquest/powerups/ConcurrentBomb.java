@@ -1,4 +1,4 @@
-package de.tum.cit.ase.bomberquest.map;
+package de.tum.cit.ase.bomberquest.powerups;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;

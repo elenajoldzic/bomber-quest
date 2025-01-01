@@ -51,5 +51,12 @@ public class Animations {
             //SpriteSheet.ORIGINAL_BOMBERMAN.at(6, 2)  // Bomb frame 4
     );
 
+    public static final Animation<TextureRegion> BOMB_EXPLOSION = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(3, 2), // Bomb frame 1
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(3, 3), // Bomb frame 2
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(3, 4) // Bomb frame 3
+            //SpriteSheet.ORIGINAL_BOMBERMAN.at(6, 2)  // Bomb frame 4
+    );
+
 
 }

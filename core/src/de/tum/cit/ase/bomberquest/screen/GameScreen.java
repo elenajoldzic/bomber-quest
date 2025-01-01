@@ -16,6 +16,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.GameTimer;
 import de.tum.cit.ase.bomberquest.map.*;
+import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
+import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
+import de.tum.cit.ase.bomberquest.powerups.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
 /**
@@ -92,9 +95,34 @@ public class GameScreen implements Screen {
                     // Transition to the WinScreen
                     game.setScreen(new WinScreen(game));
                 }
+
+                //Check if the player touches a powerup
+                if (userDataA instanceof Player && userDataB instanceof PowerUp) {
+                    handlePowerUpPickup((Player) userDataA, (PowerUp) userDataB);
+                } else if (userDataB instanceof Player && userDataA instanceof PowerUp) {
+                    handlePowerUpPickup((Player) userDataB, (PowerUp) userDataA);
+                }
             }
 
-            @Override
+
+
+        private void handlePowerUpPickup(Player player, PowerUp powerUp) {
+            if (!map.getPowerUps().contains(powerUp)) {
+                return; // Power-up already picked up or removed
+            }
+
+            if (powerUp instanceof BlastRadius) {
+                player.setBlastRadius(Math.min(player.getBlastRadius() + 1, 9));
+            } else if (powerUp instanceof ConcurrentBomb) {
+                player.setConcurrentBombCount(Math.min(player.getConcurrentBombCount() + 1, 9));
+            }
+
+            // Remove the power-up from the map
+            map.removePowerUp(powerUp);
+        }
+
+
+        @Override
             public void endContact(Contact contact) {
 
             }
@@ -125,7 +153,7 @@ public class GameScreen implements Screen {
         // Elena
         // Check for space key press to plant a bomb
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            placeBomb();
+            map.placeBomb();
         }
 
         // Clear the previous frame from the screen
@@ -183,17 +211,20 @@ public class GameScreen implements Screen {
         draw(spriteBatch, map.getExit()); // DRAWS THE EXIT
         draw(spriteBatch, map.getEntrance()); // DRAWS THE ENTRANCE
 
-        draw(spriteBatch, map.getConcurrentBomb()); // DRAWS THE CONCURRENT BOMB
-        draw(spriteBatch, map.getBlastRadius()); // DRAWS THE BLAST RADIUS
-
-        draw(spriteBatch, map.getEnemy()); // DRAWS THE ENEMY
-        draw(spriteBatch, map.getPlayer());
+        //draw(spriteBatch, map.getConcurrentBomb()); // DRAWS THE CONCURRENT BOMB
+        //draw(spriteBatch, map.getBlastRadius()); // DRAWS THE BLAST RADIUS
+        renderPowerUps();
 
         // Elena
         // Draw bombs
         for (Bomb bomb : map.getBombs()) {
             draw(spriteBatch, bomb);
         }
+
+
+        draw(spriteBatch, map.getEnemy()); // DRAWS THE ENEMY
+        draw(spriteBatch, map.getPlayer());
+
 
         // Finish drawing, i.e., send the drawn items to the graphics card
         spriteBatch.end();
@@ -216,14 +247,21 @@ public class GameScreen implements Screen {
         spriteBatch.draw(texture, x, y, width, height);
     }
 
-    private void placeBomb() {
+    /*private void placeBomb() {
         if (map.getBombs().size() < player.getConcurrentBombCount()) {
             float bombX = MathUtils.round(player.getX());
             float bombY = MathUtils.round(player.getY());
             Bomb bomb = new Bomb(bombX, bombY, player.getBlastRadius()); // 2 seconds timer
             map.addBomb(bomb);
         }
+    }*/
+    private void renderPowerUps() {
+        for (PowerUp powerUp : map.getPowerUps()) {
+            draw(spriteBatch, powerUp);
+        }
     }
+
+
 
     /**
      * Called when the window is resized.

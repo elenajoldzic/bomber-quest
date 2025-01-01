@@ -17,30 +17,58 @@ public class Bomb implements Drawable {
     private float x, y;
     private float timer=3; // Time until explosion
     private int blastRadius;
-    //private float elapsedTime=0;
+    private float elapsedTime = 0; // For animation purposes
+    private boolean isExploded = false;
 
-    public Bomb(float x, float y, int blastRadius) {
+
+    public Bomb(World world,float x, float y, int blastRadius) {
         this.x = x;
         this.y = y;
         //this.timer = timer;
         this.blastRadius = blastRadius;
+        createBody(world);
+
+    }
+
+    /**
+     * Updates the bomb's state, including the timer and animation.
+     * @param deltaTime Time elapsed since the last frame.
+     */
+    public void update(float deltaTime, World world) {
+        if (!isExploded) {
+            elapsedTime += deltaTime; // Update animation time
+            timer -= deltaTime; // Count down the timer
+
+            if (timer <= 0) {
+                explode(world);
+            }
+        }
+    }
+
+    /**
+     * Triggers the bomb's explosion.
+     * @param world The Box2D world.
+     */
+    private void explode(World world) {
+        isExploded = true;
+        // Logic for handling explosion effect (destroy walls, damage enemies, etc.)
+        // Example:
+        // map.handleExplosion(this);
     }
 
     /**
      * Creates the physical body of the bomb in the game world.
      * @param world The Box2D world.
-     * @param x The x-coordinate where the bomb is placed.
-     * @param y The y-coordinate where the bomb is placed.
      * @return The created body.
      */
-    private Body createBody(World world, float x, float y) {
+    private Body createBody(World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(x, y);
 
         Body body = world.createBody(bodyDef);
         CircleShape shape = new CircleShape();
-        shape.setRadius(0.3f); // Bomb size
+        shape.setRadius(0.5f); // Bomb size
 
         body.createFixture(shape, 1.0f).setUserData(this);
         shape.dispose();
@@ -60,6 +88,18 @@ public class Bomb implements Drawable {
     }
      */
 
+    public boolean isExploded() {
+        return isExploded;
+    }
+
+    @Override
+    public TextureRegion getCurrentAppearance() {
+        if (isExploded) {
+            return Animations.BOMB_EXPLOSION.getKeyFrame(elapsedTime, false);
+        }
+        return Animations.BOMB_IDLE.getKeyFrame(elapsedTime, true);
+    }
+
     /**
      * Gets the blast radius of the bomb.
      * @return The blast radius.
@@ -68,10 +108,6 @@ public class Bomb implements Drawable {
         return blastRadius;
     }
 
-    @Override
-    public TextureRegion getCurrentAppearance() {
-        return Animations.BOMB_IDLE.getKeyFrame(timer, true);
-    }
 
     @Override
     public float getX() {
@@ -104,8 +140,8 @@ public class Bomb implements Drawable {
         Body hitbox = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(0.2f); // Adjust bomb size
-        hitbox.createFixture(circle, 0.0f);
+        circle.setRadius(0.5f); // Adjust bomb size
+        hitbox.createFixture(circle, 1.0f);
         circle.dispose();
     }
 }

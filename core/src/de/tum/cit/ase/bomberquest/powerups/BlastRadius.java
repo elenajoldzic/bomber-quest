@@ -8,11 +8,11 @@ import de.tum.cit.ase.bomberquest.texture.Textures;
 /**
  * A chest is a static object with a hitbox, so the player cannot walk through it.
  */
-public class BlastRadius implements Drawable {
+public class BlastRadius extends PowerUp implements Drawable {
 
     // We would normally get the position from the hitbox, but since we don't need to move the chest, we can store the position directly.
-    private final float x;
-    private final float y;
+    //private final float x;
+    //private final float y;
 
     /**
      * Create a chest at the given position.
@@ -21,10 +21,11 @@ public class BlastRadius implements Drawable {
      * @param y The Y position.
      */
     public BlastRadius(World world, float x, float y) {
-        this.x = x;
+        /*this.x = x;
         this.y = y;
         // Since the hitbox never moves, and we never need to change it, we don't need to store a reference to it.
-        createHitbox(world);
+        createHitbox(world);*/
+        super(world, x, y);
     }
 
     /**

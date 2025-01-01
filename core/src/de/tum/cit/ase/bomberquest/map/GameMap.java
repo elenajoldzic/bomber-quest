@@ -1,11 +1,14 @@
 package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
 import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
+import de.tum.cit.ase.bomberquest.powerups.PowerUp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,9 +72,11 @@ public class GameMap {
 
     private final Entrance entrance; // THIS IS THE ENTRANCE
 
-    private final ConcurrentBomb concurrentBomb; // THIS IS THE CONCURRENT BOMB
+    //private final ConcurrentBomb concurrentBomb; // THIS IS THE CONCURRENT BOMB
 
-    private final BlastRadius blastRadius; // THIS IS THE BLAST RADIUS
+    //private final BlastRadius blastRadius; // THIS IS THE BLAST RADIUS
+
+    private List<PowerUp> powerUps = new ArrayList<>();
 
     private final Enemy enemy; // THIS IS THE ENEMY
 
@@ -94,10 +99,10 @@ public class GameMap {
 
         this.entrance = new Entrance(world, 6, 6); // INITIALIZED ENTRANCE
 
-        this.concurrentBomb = new ConcurrentBomb(world, 5, 3); // INITIALIZED CONCURRENT BOMB
-
-        this.blastRadius = new BlastRadius(world, 4, 2); // INITIALIZED BLAST RADIUS
-
+        //this.concurrentBomb = new ConcurrentBomb(world, 5, 3); // INITIALIZED CONCURRENT BOMB
+        addPowerUp(new ConcurrentBomb(world, 5, 3));
+        //this.blastRadius = new BlastRadius(world, 4, 2); // INITIALIZED BLAST RADIUS
+        addPowerUp(new BlastRadius(world, 4, 2));
         this.enemy = new Enemy(world, 5, 2); // INITIALIZED ENEMY
 
         // Create flowers in a 7x7 grid
@@ -109,16 +114,21 @@ public class GameMap {
         }
     }
 
+
+
     /**
      * Updates the game state. This is called once per frame.
      * Every dynamic object in the game should update its state here.
      *
      * @param frameTime the time that has passed since the last update
      */
+
+    //WE NEED TO PUT UPDATE METHODS IN HERE IN ORDER ANIMATIONS TO WORK
     public void tick(float frameTime) {
         //this.player.tick(frameTime);
         this.enemy.tick(frameTime);
         this.player.update(frameTime);
+        updateBombs(frameTime);
         doPhysicsStep(frameTime);
     }
 
@@ -171,12 +181,41 @@ public class GameMap {
         return entrance;
     }
 
-    public ConcurrentBomb getConcurrentBomb() {
+    /*public ConcurrentBomb getConcurrentBomb() {
         return concurrentBomb;
+    }*/
+
+    /*public BlastRadius getBlastRadius() {
+        return blastRadius;
+    }*/
+
+    public void addPowerUp(PowerUp powerUp) {
+        powerUps.add(powerUp);
     }
 
-    public BlastRadius getBlastRadius() {
-        return blastRadius;
+    public void removePowerUp(PowerUp powerUp) {
+        if (powerUp == null) return;
+
+        // Safely remove the power-up's physics body from the Box2D world
+        if (powerUp.getBody() != null) {
+            getWorld().destroyBody(powerUp.getBody());
+            powerUp.setBody(null); // Nullify to avoid accessing destroyed bodies
+        }
+
+        // Remove the power-up from the map's list of power-ups
+        getPowerUps().remove(powerUp);
+
+        /*powerUps.remove(powerUp);
+        //world.destroyBody(powerUp.getBody());
+        // Remove the Box2D body from the world
+        Body body = powerUp.getBody();
+        if (body != null) {
+            world.destroyBody(body);
+        }*/
+    }
+
+    public List<PowerUp> getPowerUps() {
+        return powerUps;
     }
 
     public Enemy getEnemy() {
@@ -202,6 +241,25 @@ public class GameMap {
         bombs.remove(bomb);
     }
 
+    public void placeBomb() {
+        if (getBombs().size() < player.getConcurrentBombCount()) {
+            float bombX = MathUtils.round(player.getX());
+            float bombY = MathUtils.round(player.getY());
+            Bomb bomb = new Bomb(world,bombX, bombY, player.getBlastRadius()); // 2 seconds timer
+            addBomb(bomb);
+        }
+    }
+
+    public void updateBombs(float deltaTime) {
+        Iterator<Bomb> iterator = bombs.iterator();
+        while (iterator.hasNext()) {
+            Bomb bomb = iterator.next();
+            bomb.update(deltaTime, world);
+            if (bomb.isExploded()) {
+                iterator.remove(); // Remove exploded bombs
+            }
+        }
+    }
 
 
 }

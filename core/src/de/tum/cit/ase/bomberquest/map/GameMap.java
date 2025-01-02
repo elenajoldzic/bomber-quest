@@ -64,9 +64,12 @@ public class GameMap {
 
     private final Flowers[][] flowers;
 
-    private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
+    //private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
+    private List<DestructibleWall> destructibleWalls= new ArrayList<>();
 
-    private final IndestructibleWall indestructibleWalls; //THESE ARE THE WALLS
+    //private final IndestructibleWall indestructibleWalls; //THESE ARE THE WALLS
+    private List<IndestructibleWall> indestructibleWalls= new ArrayList<>();
+
 
     private final Exit exit; // THIS IS THE EXIT
 
@@ -78,7 +81,8 @@ public class GameMap {
 
     private List<PowerUp> powerUps = new ArrayList<>();
 
-    private final Enemy enemy; // THIS IS THE ENEMY
+    //private final Enemy enemy; // THIS IS THE ENEMY
+    private List<Enemy> enemies = new ArrayList<>();
 
     private List<Bomb> bombs = new ArrayList<>();
 
@@ -93,19 +97,23 @@ public class GameMap {
         this.chest = new Chest(world, 3, 3);
 
 
-        this.destructibleWalls = new DestructibleWall(world, 4, 5); // INITIALIZED WALLS
 
-        this.indestructibleWalls = new IndestructibleWall(world, 5, 5); // INITIALIZED WALLS
+
+        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
 
         this.exit = new Exit(world, 6, 5); // INITIALIZED EXIT
 
         this.entrance = new Entrance(world, 6, 6); // INITIALIZED ENTRANCE
 
+        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
+        addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
         //this.concurrentBomb = new ConcurrentBomb(world, 5, 3); // INITIALIZED CONCURRENT BOMB
         addPowerUp(new ConcurrentBomb(world, 5, 3));
         //this.blastRadius = new BlastRadius(world, 4, 2); // INITIALIZED BLAST RADIUS
         addPowerUp(new BlastRadius(world, 4, 2));
-        this.enemy = new Enemy(world, 5, 2); // INITIALIZED ENEMY
+        addEnemies(new Enemy(world, 5, 2)); // INITIALIZED ENEMY
+        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
+        addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
 
         // Create flowers in a 7x7 grid
         this.flowers = new Flowers[7][7];
@@ -128,7 +136,7 @@ public class GameMap {
     //WE NEED TO PUT UPDATE METHODS IN HERE IN ORDER ANIMATIONS TO WORK
     public void tick(float frameTime) {
         //this.player.tick(frameTime);
-        this.enemy.tick(frameTime);
+        updateEnemies(frameTime);
         this.player.update(frameTime);
         updateBombs(frameTime);
         doPhysicsStep(frameTime);
@@ -166,14 +174,6 @@ public class GameMap {
         return chest;
     }
 
-    //GETWALLS
-    public DestructibleWall getDestructibleWalls() {
-        return destructibleWalls;
-    }
-
-    public IndestructibleWall getIndestructibleWalls() {
-        return indestructibleWalls;
-    }
 
     public Exit getExit() {
         return exit;
@@ -194,6 +194,45 @@ public class GameMap {
     public void addPowerUp(PowerUp powerUp) {
         powerUps.add(powerUp);
     }
+
+    public void addEnemies(Enemy enemy){
+        enemies.add(enemy);
+    }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public void updateEnemies(float deltaTime) {
+        for (Enemy enemy : enemies) {
+            enemy.update(deltaTime);
+        }
+    }
+
+    public void addDestructibleWalls(DestructibleWall destructibleWall) {
+        destructibleWalls.add(destructibleWall);
+    }
+
+    public List<DestructibleWall> getDestructibleWalls() {
+        return destructibleWalls;
+    }
+
+    public void removeDestructibleWalls(DestructibleWall destructibleWall) {
+        if (destructibleWall == null) {
+            return;
+        }else if (destructibleWalls.contains(destructibleWall)) {
+            destructibleWalls.remove(destructibleWall);
+        }
+    }
+
+    public void addIndestructibleWalls(IndestructibleWall indestructibleWall) {
+        indestructibleWalls.add(indestructibleWall);
+    }
+
+    public List<IndestructibleWall> getIndestructibleWalls() {
+        return indestructibleWalls;
+    }
+
 
     public void removePowerUp(PowerUp powerUp) {
         if (powerUp == null) return;
@@ -235,9 +274,7 @@ public class GameMap {
         return powerUps;
     }
 
-    public Enemy getEnemy() {
-        return enemy;
-    }
+
 
     /**
      * Returns the flowers on the map.

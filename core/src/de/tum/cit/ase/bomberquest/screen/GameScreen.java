@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
@@ -17,9 +16,6 @@ import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
 import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
 import de.tum.cit.ase.bomberquest.powerups.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -212,8 +208,15 @@ public class GameScreen implements Screen {
         }
         draw(spriteBatch, map.getChest());
 
-        draw(spriteBatch, map.getDestructibleWalls()); // DRAWS THE DESTRUCTIBLE WALL
-        draw(spriteBatch, map.getIndestructibleWalls()); // DRAWS THE INDESTRUCTIBLE WALL
+        //draw(spriteBatch, map.getDestructibleWalls()); // DRAWS THE DESTRUCTIBLE WALL
+        for(DestructibleWall destructibleWall: map.getDestructibleWalls()){
+            draw(spriteBatch, destructibleWall);
+        }
+
+        //draw(spriteBatch, map.getIndestructibleWalls()); // DRAWS THE INDESTRUCTIBLE WALL
+        for(IndestructibleWall indestructibleWall: map.getIndestructibleWalls()){
+            draw(spriteBatch, indestructibleWall);
+        }
 
         draw(spriteBatch, map.getExit()); // DRAWS THE EXIT
         draw(spriteBatch, map.getEntrance()); // DRAWS THE ENTRANCE
@@ -232,7 +235,11 @@ public class GameScreen implements Screen {
         }
 
 
-        draw(spriteBatch, map.getEnemy()); // DRAWS THE ENEMY
+        //draw(spriteBatch, map.getEnemy()); // DRAWS THE ENEMY
+        for (Enemy enemy : map.getEnemies()) {
+            draw(spriteBatch, enemy);
+        }
+
         draw(spriteBatch, map.getPlayer());
 
 

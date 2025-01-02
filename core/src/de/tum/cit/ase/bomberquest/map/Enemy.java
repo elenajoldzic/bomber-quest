@@ -115,4 +115,28 @@ public class Enemy implements Drawable {
         this.hitbox.setLinearVelocity(xVelocity, yVelocity);
     }
 
+    public void update(float deltaTime) {
+        /*// Calculate the next position
+        float nextX = x + direction.x * speed * deltaTime;
+        float nextY = y + direction.y * speed * deltaTime;
+
+        // Check for collisions with walls or obstacles
+        if (!gameMap.isWalkable(nextX, nextY)) {
+            changeDirection(); // If not walkable, change direction
+        } else {
+            // Update position
+            x = nextX;
+            y = nextY;
+        }*/
+
+        this.elapsedTime += deltaTime;
+        // Make the player move in a circle with radius 2 tiles
+        // You can change this to make the player move differently, e.g. in response to user input.
+        // See Gdx.input.isKeyPressed() for keyboard input
+        float xVelocity = (float) Math.sin(this.elapsedTime) * 2;
+        float yVelocity = (float) Math.cos(this.elapsedTime) * 2;
+        this.hitbox.setLinearVelocity(xVelocity, yVelocity);
+    }
+
+
 }

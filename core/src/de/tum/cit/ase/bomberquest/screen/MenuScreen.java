@@ -15,6 +15,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 
+import java.io.IOException;
+
 /**
  * The MenuScreen class is responsible for displaying the main menu of the game.
  * It extends the LibGDX Screen class and sets up the UI components for the menu.
@@ -40,19 +42,44 @@ public class MenuScreen implements Screen {
         stage.addActor(table); // Add the table to the stage
 
         // Add a label as a title
-        table.add(new Label("Hello World from the Menu!", game.getSkin(), "title")).padBottom(80).row();
+        table.add(new Label("BomberQuest Menu", game.getSkin(), "title")).padBottom(80).row();
 
-        // Create and add a button to go to the game screen
-        TextButton goToGameButton = new TextButton("Go To Game", game.getSkin());
-        table.add(goToGameButton).width(300).row();
-        goToGameButton.addListener(new ChangeListener() {
+        // Continue Game button
+        TextButton continueButton = new TextButton("Continue Game", game.getSkin());
+        table.add(continueButton).width(300).row();
+        continueButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.goToGame(); // Change to the game screen when button is pressed
+                game.goToGame(); // Resume the current game
+            }
+        });
+
+        // New Game button
+        TextButton newGameButton = new TextButton("New Game", game.getSkin());
+        table.add(newGameButton).width(300).row();
+        newGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    game.loadNewGame(); // Load a new game map and start the game
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        // Exit button
+        TextButton exitButton = new TextButton("Exit", game.getSkin());
+        table.add(exitButton).width(300).row();
+        exitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.exit(); // Exit the game
             }
         });
     }
-    
+
+
     /**
      * The render method is called every frame to render the menu screen.
      * It clears the screen and draws the stage.

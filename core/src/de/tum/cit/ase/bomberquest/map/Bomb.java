@@ -19,14 +19,14 @@ public class Bomb implements Drawable {
     private int blastRadius;
     private float elapsedTime = 0; // For animation purposes
     private boolean isExploded = false;
-
+    private final Body body;
 
     public Bomb(World world,float x, float y, int blastRadius) {
         this.x = x;
         this.y = y;
         //this.timer = timer;
         this.blastRadius = blastRadius;
-        createBody(world);
+        this.body=createBody(world);
 
     }
 
@@ -54,6 +54,7 @@ public class Bomb implements Drawable {
         // Logic for handling explosion effect (destroy walls, damage enemies, etc.)
         // Example:
         // map.handleExplosion(this);
+
     }
 
     /**
@@ -127,6 +128,9 @@ public class Bomb implements Drawable {
         this.timer = timer;
     }
 
+    public Body getBody() {
+        return body;
+    }
     /**
      * Destroys the bomb's physical body in the game world.
      * @param world The Box2D world.

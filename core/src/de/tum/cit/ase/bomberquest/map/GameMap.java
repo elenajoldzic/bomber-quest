@@ -82,6 +82,8 @@ public class GameMap {
 
     private List<Bomb> bombs = new ArrayList<>();
 
+    List<Body> bodiesToDestroy = new ArrayList<>();  // Queue to hold bodies to remove
+
     public GameMap(BomberQuestGame game) {
         this.game = game;
         this.world = new World(Vector2.Zero, true);
@@ -194,7 +196,16 @@ public class GameMap {
     }
 
     public void removePowerUp(PowerUp powerUp) {
-            if (powerUp == null) return;
+        if (powerUp == null) return;
+
+        if (powerUp.getBody() != null) {
+            bodiesToDestroy.add(powerUp.getBody()); // Queue the body for destruction
+            powerUp.setBody(null); // Nullify to avoid reuse of the destroyed body
+        }
+
+        powerUps.remove(powerUp); // Remove the power-up from the game list
+
+        /*if (powerUp == null) return;
 
             // Safely remove the power-up's physics body from the Box2D world
             if (powerUp.getBody() != null) {
@@ -203,9 +214,21 @@ public class GameMap {
             }
 
             // Remove the power-up from the map's list of power-ups
-            //getPowerUps().remove(powerUp);
-            powerUps.remove(powerUp);
 
+            powerUps.remove(powerUp);*/
+    }
+
+    public void processPendingBodyDestruction() {
+        for (Body body : bodiesToDestroy) {
+            try {
+                if (body != null) {
+                    world.destroyBody(body);
+                }
+            } catch (Exception e) {
+                System.err.println("Error destroying body: " + e.getMessage());
+            }
+        }
+        bodiesToDestroy.clear(); // Clear the list after processing
     }
 
     public List<PowerUp> getPowerUps() {
@@ -232,7 +255,14 @@ public class GameMap {
     }
 
     public void removeBomb(Bomb bomb) {
-        bombs.remove(bomb);
+            // Trigger explosion effects (e.g., damaging nearby objects)
+
+            // Queue the bomb's body for destruction
+            bodiesToDestroy.add(bomb.getBody());
+
+            // Remove the bomb from the list of active bombs
+            bombs.remove(bomb);
+
     }
 
     public void placeBomb() {
@@ -244,13 +274,15 @@ public class GameMap {
         }
     }
 
+    //CHECKS THE BOMB AND IF IT IS EXPLODED, REMOVES FROM THE LIST AND ALSO REMOVES THE BODY
     public void updateBombs(float deltaTime) {
         Iterator<Bomb> iterator = bombs.iterator();
         while (iterator.hasNext()) {
             Bomb bomb = iterator.next();
             bomb.update(deltaTime, world);
             if (bomb.isExploded()) {
-                iterator.remove(); // Remove exploded bombs
+                iterator.remove();
+                removeBomb(bomb);// Remove exploded bombs
             }
         }
     }

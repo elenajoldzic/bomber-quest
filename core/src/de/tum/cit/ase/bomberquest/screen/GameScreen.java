@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.GameTimer;
@@ -20,6 +17,9 @@ import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
 import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
 import de.tum.cit.ase.bomberquest.powerups.PowerUp;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -49,6 +49,7 @@ public class GameScreen implements Screen {
     private final OrthographicCamera mapCamera;
     private GameTimer gameTimer;
     private Player player;
+
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -97,19 +98,21 @@ public class GameScreen implements Screen {
                 }
 
                 //Check if the player touches a powerup
-                if (userDataA instanceof Player && userDataB instanceof PowerUp) {
-                    handlePowerUpPickup((Player) userDataA, (PowerUp) userDataB);
-                } else if (userDataB instanceof Player && userDataA instanceof PowerUp) {
-                    handlePowerUpPickup((Player) userDataB, (PowerUp) userDataA);
+                if ((userDataA instanceof Player && userDataB instanceof PowerUp) ||
+                        (userDataB instanceof Player && userDataA instanceof PowerUp)) {
+                    Player player = (userDataA instanceof Player) ? (Player) userDataA : (Player) userDataB;
+                    PowerUp powerUp = (userDataA instanceof PowerUp) ? (PowerUp) userDataA : (PowerUp) userDataB;
+
+                    handlePowerUpPickup(player, powerUp);
                 }
             }
 
 
 
         private void handlePowerUpPickup(Player player, PowerUp powerUp) {
-            if (!map.getPowerUps().contains(powerUp)) {
+            /*if (!map.getPowerUps().contains(powerUp)) {
                 return; // Power-up already picked up or removed
-            }
+            }*/
 
             if (powerUp instanceof BlastRadius) {
                 player.setBlastRadius(Math.min(player.getBlastRadius() + 1, 9));
@@ -120,6 +123,7 @@ public class GameScreen implements Screen {
             // Remove the power-up from the map
             map.removePowerUp(powerUp);
         }
+
 
 
         @Override
@@ -164,6 +168,9 @@ public class GameScreen implements Screen {
 
         // Update the map state
         map.tick(frameTime);
+
+        // Process deferred body destructions
+        map.processPendingBodyDestruction();
 
         // Update and render the timer
         gameTimer.update();

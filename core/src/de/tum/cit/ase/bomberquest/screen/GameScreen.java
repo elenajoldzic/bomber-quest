@@ -185,14 +185,26 @@ public class GameScreen implements Screen {
      * Updates the camera to match the current state of the game.
      * Currently, this just centers the camera at the origin.
      */
+    private float lastPlayerX = -1, lastPlayerY = -1;
     private void updateCamera() {
-        mapCamera.setToOrtho(false);
+        /*mapCamera.setToOrtho(false);
 
         // THIS CODE MAKES THE CAMERA MOVE WITH PLAYER
         mapCamera.position.x = map.getPlayer().getX() * TILE_SIZE_PX * SCALE;
         mapCamera.position.y = map.getPlayer().getY() * TILE_SIZE_PX * SCALE;
 
-        mapCamera.update(); // This is necessary to apply the changes
+        mapCamera.update(); // This is necessary to apply the changes*/
+        float playerX = map.getPlayer().getX();
+        float playerY = map.getPlayer().getY();
+
+        if (playerX != lastPlayerX || playerY != lastPlayerY) {
+            mapCamera.position.x = playerX * TILE_SIZE_PX * SCALE;
+            mapCamera.position.y = playerY * TILE_SIZE_PX * SCALE;
+            mapCamera.update();
+            lastPlayerX = playerX;
+            lastPlayerY = playerY;
+        }
+
     }
 
     private void renderMap() {

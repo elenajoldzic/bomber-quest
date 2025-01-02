@@ -194,24 +194,18 @@ public class GameMap {
     }
 
     public void removePowerUp(PowerUp powerUp) {
-        if (powerUp == null) return;
+            if (powerUp == null) return;
 
-        // Safely remove the power-up's physics body from the Box2D world
-        if (powerUp.getBody() != null) {
-            getWorld().destroyBody(powerUp.getBody());
-            powerUp.setBody(null); // Nullify to avoid accessing destroyed bodies
-        }
+            // Safely remove the power-up's physics body from the Box2D world
+            if (powerUp.getBody() != null) {
+                world.destroyBody(powerUp.getBody());
+                powerUp.setBody(null); // Nullify to avoid accessing destroyed bodies
+            }
 
-        // Remove the power-up from the map's list of power-ups
-        getPowerUps().remove(powerUp);
+            // Remove the power-up from the map's list of power-ups
+            //getPowerUps().remove(powerUp);
+            powerUps.remove(powerUp);
 
-        /*powerUps.remove(powerUp);
-        //world.destroyBody(powerUp.getBody());
-        // Remove the Box2D body from the world
-        Body body = powerUp.getBody();
-        if (body != null) {
-            world.destroyBody(body);
-        }*/
     }
 
     public List<PowerUp> getPowerUps() {

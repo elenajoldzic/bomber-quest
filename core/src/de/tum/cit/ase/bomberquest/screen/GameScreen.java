@@ -213,7 +213,10 @@ public class GameScreen implements Screen {
 
         //draw(spriteBatch, map.getConcurrentBomb()); // DRAWS THE CONCURRENT BOMB
         //draw(spriteBatch, map.getBlastRadius()); // DRAWS THE BLAST RADIUS
-        renderPowerUps();
+        //Draw Powerups
+        for (PowerUp powerUp : map.getPowerUps()) {
+            draw(spriteBatch, powerUp);
+        }
 
         // Elena
         // Draw bombs
@@ -255,11 +258,7 @@ public class GameScreen implements Screen {
             map.addBomb(bomb);
         }
     }*/
-    private void renderPowerUps() {
-        for (PowerUp powerUp : map.getPowerUps()) {
-            draw(spriteBatch, powerUp);
-        }
-    }
+
 
 
 

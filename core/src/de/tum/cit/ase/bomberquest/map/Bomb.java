@@ -132,16 +132,4 @@ public class Bomb implements Drawable {
      * @param world The Box2D world.
      */
 
-
-    public void placeAt(World world, float x, float y) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody; // Bomb is static once placed
-        bodyDef.position.set(x, y);
-        Body hitbox = world.createBody(bodyDef);
-
-        CircleShape circle = new CircleShape();
-        circle.setRadius(0.5f); // Adjust bomb size
-        hitbox.createFixture(circle, 1.0f);
-        circle.dispose();
-    }
 }

@@ -102,7 +102,7 @@ public class Player implements Drawable {
     //THIS METHOD MAKES OUR PLAYER MOVE
     public void update(float frameTime) {
         this.elapsedTime += frameTime;
-        float speed = 4f; //create a constant speed value for player to move
+        float speed = 3f; //create a constant speed value for player to move
         float xVelocity = 0;
         float yVelocity = 0;
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.W)) {

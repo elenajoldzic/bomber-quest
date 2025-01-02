@@ -109,6 +109,15 @@ public class BomberQuestGame extends Game {
         }
     }
 
+    /**
+     * Loads a new game map and starts the game.
+     */
+    public void loadNewGame() throws IOException {
+        map = new GameMap(this); // Load a new game map here (you might use fileChooser or default)
+        goToGame();
+    }
+
+
     /** Cleans up resources when the game is disposed. */
     @Override
     public void dispose() {

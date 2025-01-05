@@ -218,8 +218,8 @@ public class GameScreen implements Screen {
         for (Flowers flowers : map.getFlowers()) {
             draw(spriteBatch, flowers);
         }
-        draw(spriteBatch, map.getChest());
-
+        //draw(spriteBatch, map.getChest());
+        draw(spriteBatch, map.getExit()); // DRAWS THE EXIT
         //draw(spriteBatch, map.getDestructibleWalls()); // DRAWS THE DESTRUCTIBLE WALL
         for(DestructibleWall destructibleWall: map.getDestructibleWalls()){
             draw(spriteBatch, destructibleWall);
@@ -230,8 +230,8 @@ public class GameScreen implements Screen {
             draw(spriteBatch, indestructibleWall);
         }
 
-        draw(spriteBatch, map.getExit()); // DRAWS THE EXIT
-        draw(spriteBatch, map.getEntrance()); // DRAWS THE ENTRANCE
+
+       //draw(spriteBatch, map.getEntrance()); // DRAWS THE ENTRANCE
 
         //draw(spriteBatch, map.getConcurrentBomb()); // DRAWS THE CONCURRENT BOMB
         //draw(spriteBatch, map.getBlastRadius()); // DRAWS THE BLAST RADIUS

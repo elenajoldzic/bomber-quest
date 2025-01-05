@@ -1,0 +1,86 @@
+package de.tum.cit.ase.bomberquest.map;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+
+import java.util.*;
+
+public class MapLoader {
+
+    public static final int INDESTRUCTIBLE_WALL = 0;
+    public static final int DESTRUCTIBLE_WALL = 1;
+    public static final int ENTRANCE = 2;
+    public static final int ENEMY = 3;
+    public static final int EXIT = 4;
+    public static final int BOMB_POWER_UP = 5;
+    public static final int BLAST_RADIUS_POWER_UP = 6;
+
+    private final Map<String, Integer> mapData = new HashMap<>();
+
+    /**
+     * Loads a map file from a given file path and parses it.
+     *
+     * @param filePath The path to the map file.
+     */
+    public void loadMap(String filePath) {
+        FileHandle fileHandle = Gdx.files.absolute(filePath);
+
+        if (!fileHandle.exists()) {
+            throw new RuntimeException("Map file not found: " + filePath);
+        }
+
+        String mapContent = fileHandle.readString();
+        String[] lines = mapContent.split("\n");
+
+        for (String line : lines) {
+            line = line.trim();
+            if (line.isEmpty() || line.startsWith("#")) {
+                continue; // Skip empty lines and comments
+            }
+
+            String[] keyValue = line.split("=");
+            if (keyValue.length != 2) {
+                throw new IllegalArgumentException("Invalid map line: " + line);
+            }
+
+            String coordinates = keyValue[0].trim();
+            int objectType = Integer.parseInt(keyValue[1].trim());
+
+            mapData.put(coordinates, objectType);
+        }
+
+        // Ensure there is at least one exit
+        ensureExit();
+    }
+
+    /**
+     * Ensures there is at least one exit in the map by placing it under a random destructible wall.
+     */
+    private void ensureExit() {
+        if (!mapData.containsValue(EXIT)) {
+            List<String> destructibleWalls = new ArrayList<>();
+            for (Map.Entry<String, Integer> entry : mapData.entrySet()) {
+                if (entry.getValue() == DESTRUCTIBLE_WALL) {
+                    destructibleWalls.add(entry.getKey());
+                }
+            }
+
+            if (destructibleWalls.isEmpty()) {
+                throw new RuntimeException("No destructible walls found to place an exit!");
+            }
+
+            Random random = new Random();
+            String randomWall = destructibleWalls.get(random.nextInt(destructibleWalls.size()));
+            mapData.put(randomWall, EXIT);
+        }
+    }
+
+    /**
+     * Returns the parsed map data.
+     *
+     * @return A map of coordinates to object types.
+     */
+    public Map<String, Integer> getMapData() {
+        return mapData;
+    }
+}

@@ -10,10 +10,7 @@ import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
 import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
 import de.tum.cit.ase.bomberquest.powerups.PowerUp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Represents the game map.
@@ -58,9 +55,9 @@ public class GameMap {
     private final World world;
 
     // Game objects
-    private final Player player;
+    private Player player;
 
-    private final Chest chest;
+    //private final Chest chest;
 
     private final Flowers[][] flowers;
 
@@ -71,9 +68,9 @@ public class GameMap {
     private List<IndestructibleWall> indestructibleWalls= new ArrayList<>();
 
 
-    private final Exit exit; // THIS IS THE EXIT
+    private Exit exit; // THIS IS THE EXIT
 
-    private final Entrance entrance; // THIS IS THE ENTRANCE
+    //private Entrance entrance; // THIS IS THE ENTRANCE
 
     //private final ConcurrentBomb concurrentBomb; // THIS IS THE CONCURRENT BOMB
 
@@ -88,32 +85,72 @@ public class GameMap {
 
     List<Body> bodiesToDestroy = new ArrayList<>();  // Queue to hold bodies to remove
 
+
     public GameMap(BomberQuestGame game) {
         this.game = game;
         this.world = new World(Vector2.Zero, true);
         // Create a player with initial position (1, 3)
-        this.player = new Player(this.world, 1, 3);
+        //this.player = new Player(this.world, 1, 3);
         // Create a chest in the middle of the map
-        this.chest = new Chest(world, 3, 3);
+        //this.chest = new Chest(world, 3, 3);
 
+        MapLoader mapLoader = new MapLoader();
+        mapLoader.loadMap("/Users/bcelik/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
+        System.out.println(mapLoader.getMapData());
+        // Iterate through the map data and create objects
+        for (Map.Entry<String, Integer> entry : mapLoader.getMapData().entrySet()) {
+            String[] coordinates = entry.getKey().split(","); // "x,y"
+            int x = Integer.parseInt(coordinates[0].trim());
+            int y = Integer.parseInt(coordinates[1].trim());
+            int objectType = entry.getValue(); // Value indicates the object type
 
+            // Create objects based on the type
+            switch (objectType) {
+                case MapLoader.INDESTRUCTIBLE_WALL:
+                    indestructibleWalls.add(new IndestructibleWall(world, x, y));
+                    break;
 
+                case MapLoader.DESTRUCTIBLE_WALL:
+                    destructibleWalls.add(new DestructibleWall(world, x, y));
+                    break;
 
+                case MapLoader.ENTRANCE:
+                    this.player = new Player(world, x, y);// Create the player object
+                    break;
+
+                case MapLoader.EXIT:
+                    this.exit = new Exit(world, x, y); // Create the exit object
+                    break;
+
+                case MapLoader.ENEMY:
+                    enemies.add(new Enemy(world, x, y)); // Create an enemy
+                    break;
+
+                case MapLoader.BOMB_POWER_UP:
+                    powerUps.add(new ConcurrentBomb(world, x, y)); // Power-up (e.g., bomb power-up)
+                    break;
+
+                case MapLoader.BLAST_RADIUS_POWER_UP:
+                    powerUps.add(new BlastRadius(world, x, y)); // Power-up (e.g., blast radius)
+                    break;
+
+                default:
+                    throw new RuntimeException("Unknown object type: " + objectType);
+            }
+        }
+        /*
         addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
-
         this.exit = new Exit(world, 6, 5); // INITIALIZED EXIT
-
         this.entrance = new Entrance(world, 6, 6); // INITIALIZED ENTRANCE
-
         addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
         addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
-        //this.concurrentBomb = new ConcurrentBomb(world, 5, 3); // INITIALIZED CONCURRENT BOMB
         addPowerUp(new ConcurrentBomb(world, 5, 3));
-        //this.blastRadius = new BlastRadius(world, 4, 2); // INITIALIZED BLAST RADIUS
         addPowerUp(new BlastRadius(world, 4, 2));
         addEnemies(new Enemy(world, 5, 2)); // INITIALIZED ENEMY
         addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
         addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
+        */
+
 
         // Create flowers in a 7x7 grid
         this.flowers = new Flowers[7][7];
@@ -170,18 +207,18 @@ public class GameMap {
     /**
      * Returns the chest on the map.
      */
-    public Chest getChest() {
+    /*public Chest getChest() {
         return chest;
-    }
+    }*/
 
 
     public Exit getExit() {
         return exit;
     }
 
-    public Entrance getEntrance() {
+    /*public Entrance getEntrance() {
         return entrance;
-    }
+    }*/
 
     /*public ConcurrentBomb getConcurrentBomb() {
         return concurrentBomb;

@@ -58,5 +58,28 @@ public class Animations {
             //SpriteSheet.ORIGINAL_BOMBERMAN.at(6, 2)  // Bomb frame 4
     );
 
+    public static final Animation<TextureRegion> EXPLOSION_CENTER = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 3) // explosion center
+    );
+    public static final Animation<TextureRegion> EXPLOSION_HORIZONTAL = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 2) // explosion center
+    );
+    public static final Animation<TextureRegion> EXPLOSION_VERTICAL = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(11, 3) // explosion center
+    );
+    public static final Animation<TextureRegion> EXPLOSION_END_UP = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(10, 3) // explosion center
+    );
+    public static final Animation<TextureRegion> EXPLOSION_END_DOWN = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(14, 3) // explosion center
+    );
+    public static final Animation<TextureRegion> EXPLOSION_END_R = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 5) // explosion center
+    );
+    public static final Animation<TextureRegion> EXPLOSION_END_L = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(12, 1) // explosion center
+    );
+
+
 
 }

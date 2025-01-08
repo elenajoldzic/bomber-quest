@@ -1,5 +1,6 @@
 package de.tum.cit.ase.bomberquest.map;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -9,6 +10,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a bomb that can be placed by the player in the game.
@@ -23,6 +28,7 @@ public class Bomb implements Drawable {
     private boolean isExploded = false;
     private final GameMap gameMap;
     //private final Body body;
+
 
     public Bomb(World world, float x, float y, int blastRadius, GameMap gameMap) {
         this.x = x;
@@ -47,6 +53,16 @@ public class Bomb implements Drawable {
                 explode();
             }
         }
+        if (isExploded) {
+            Iterator<ExplosionTile> iterator = gameMap.getExplosionTiles().iterator();
+            while (iterator.hasNext()) {
+                ExplosionTile tile = iterator.next();
+                tile.update(deltaTime);
+                if (tile.isAnimationFinished()) {
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     /**
@@ -55,9 +71,13 @@ public class Bomb implements Drawable {
      */
     private void explode() {
         isExploded = true;
+        createExplosionTiles();
         Vector2 bombPosition = new Vector2(x, y);
         gameMap.handleExplosion(bombPosition, blastRadius,this);
 
+        for (ExplosionTile tile : gameMap.getExplosionTiles()) {
+            checkTile(tile.getX(), tile.getY());
+        }
     }
 
     /**
@@ -80,17 +100,44 @@ public class Bomb implements Drawable {
         return body;
     }
 
-    /*
-    /**
-     * Updates the bomb's state and checks if it should explode.
-     * @param deltaTime Time elapsed since the last frame.
-     * @return True if the bomb explodes, false otherwise.
-
-    public boolean update(float deltaTime) {
-        timer += deltaTime;
-        return timer >= EXPLOSION_TIE;
+    private boolean isTileAvailable(float x, float y) {
+        for (IndestructibleWall wall : gameMap.getIndestructibleWalls()) {
+            if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
+                return false; // Blocked by a wall
+            }
+        }
+        return true; // The tile is available
     }
-     */
+
+    private void createExplosionTiles() {
+        // Center
+        gameMap.getExplosionTiles().add(new ExplosionTile(x, y, Animations.EXPLOSION_CENTER));
+
+        // Horizontal and vertical explosions
+        for (int i = 1; i <= blastRadius; i++) {
+            // Right
+            if (isTileAvailable(x + i, y)) {
+                gameMap.getExplosionTiles().add(new ExplosionTile(x + i, y,
+                        i == blastRadius ? Animations.EXPLOSION_END_R : Animations.EXPLOSION_HORIZONTAL));
+            }
+            // Left
+            if (isTileAvailable(x - i, y)) {
+                gameMap.getExplosionTiles().add(new ExplosionTile(x - i, y,
+                        i == blastRadius ? Animations.EXPLOSION_END_L : Animations.EXPLOSION_HORIZONTAL));
+            }
+            // Up
+            if (isTileAvailable(x, y + i)) {
+                gameMap.getExplosionTiles().add(new ExplosionTile(x, y + i,
+                        i == blastRadius ? Animations.EXPLOSION_END_UP : Animations.EXPLOSION_VERTICAL));
+            }
+            // Down
+            if (isTileAvailable(x, y - i)) {
+                gameMap.getExplosionTiles().add(new ExplosionTile(x, y - i,
+                        i == blastRadius ? Animations.EXPLOSION_END_DOWN : Animations.EXPLOSION_VERTICAL));
+            }
+        }
+    }
+
 
     public boolean isExploded() {
         return isExploded;
@@ -98,9 +145,9 @@ public class Bomb implements Drawable {
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        if (isExploded) {
+        /*if (isExploded) {
             return Animations.BOMB_EXPLOSION.getKeyFrame(elapsedTime, false);
-        }
+        }*/
         return Animations.BOMB_IDLE.getKeyFrame(elapsedTime, true);
     }
 
@@ -112,7 +159,18 @@ public class Bomb implements Drawable {
         return blastRadius;
     }
 
+    public void renderExplosion(SpriteBatch batch) {
+        if (isExploded) {
+            for (ExplosionTile tile : gameMap.getExplosionTiles()) {
+                batch.draw(tile.getCurrentAppearance(), tile.getX(), tile.getY(), 1, 1); // Tile size = 1x1
+                if (tile.isAnimationFinished()) {
+                    gameMap.getExplosionTiles().remove(tile);
+                }
+            }
 
+        }
+
+    }
     @Override
     public float getX() {
         return x;
@@ -154,7 +212,7 @@ public class Bomb implements Drawable {
         }
 
         if (Math.round(gameMap.getPlayer().getX()) == x && Math.round(gameMap.getPlayer().getY()) == y) {
-            //.setScreen(new YouLoseScreen(game)); // Game over
+            gameMap.getGame().setScreen(new YouLoseScreen(gameMap.getGame())); // Game over
         }
     }
 

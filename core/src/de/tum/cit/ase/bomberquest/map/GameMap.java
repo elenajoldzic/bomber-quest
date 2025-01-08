@@ -1,6 +1,7 @@
 package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -67,7 +68,7 @@ public class GameMap {
 
     //private final IndestructibleWall indestructibleWalls; //THESE ARE THE WALLS
     private List<IndestructibleWall> indestructibleWalls= new ArrayList<>();
-
+    private List<ExplosionTile> explosionTiles = new ArrayList<>();
 
     private Exit exit; // THIS IS THE EXIT
 
@@ -179,6 +180,8 @@ public class GameMap {
         updateEnemies(frameTime);
         this.player.update(frameTime);
         updateBombs(frameTime);
+
+        System.out.println(explosionTiles);
         doPhysicsStep(frameTime);
     }
 
@@ -317,7 +320,9 @@ public class GameMap {
         return powerUps;
     }
 
-
+    public List<ExplosionTile> getExplosionTiles() {
+        return explosionTiles;
+    }
 
     /**
      * Returns the flowers on the map.
@@ -328,6 +333,10 @@ public class GameMap {
 
     public List<Bomb> getBombs() {
         return bombs;
+    }
+
+    public BomberQuestGame getGame() {
+        return game;
     }
 
     public void addBomb(Bomb bomb) {
@@ -374,6 +383,17 @@ public class GameMap {
             bomb.checkTile(position.x, position.y + i); // Vertical
         }
     }
+    /*public void updateExplosions(float deltaTime) {
+        for (Bomb bomb : bombs) {
+            bomb.updateExplosions(deltaTime);
+        }
+    }*/
+
+    /*public void renderExplosions(SpriteBatch batch) {
+        for (Bomb bomb : bombs) {
+            bomb.renderExplosion(batch);
+        }
+    }*/
     public void queueWallForRemoval(DestructibleWall wall) {
         if (!wallsToRemove.contains(wall)) {
             wallsToRemove.add(wall);

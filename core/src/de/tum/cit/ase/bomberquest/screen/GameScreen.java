@@ -165,6 +165,7 @@ public class GameScreen implements Screen {
         // Update the map state
         map.tick(frameTime);
 
+        //map.renderExplosions(spriteBatch);
         // Process deferred body destructions
         map.processPendingBodyDestruction();
         map.processPendingWallRemovals();
@@ -248,6 +249,9 @@ public class GameScreen implements Screen {
             draw(spriteBatch, bomb);
         }
 
+        for (ExplosionTile tile : map.getExplosionTiles()) {
+            draw(spriteBatch, tile);
+        }
 
         //draw(spriteBatch, map.getEnemy()); // DRAWS THE ENEMY
         for (Enemy enemy : map.getEnemies()) {

@@ -167,6 +167,8 @@ public class GameScreen implements Screen {
 
         // Process deferred body destructions
         map.processPendingBodyDestruction();
+        map.processPendingWallRemovals();
+        map.processPendingEnemyRemovals();
 
         // Update and render the timer
         gameTimer.update();

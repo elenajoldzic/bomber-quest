@@ -13,6 +13,7 @@ public class DestructibleWall implements Drawable {
     // We would normally get the position from the hitbox, but since we don't need to move the chest, we can store the position directly.
     private final float x;
     private final float y;
+    private Body body;
 
     /**
      * Create a chest at the given position.
@@ -32,7 +33,7 @@ public class DestructibleWall implements Drawable {
      * @param world The Box2D world to add the body to.
      */
     private void createHitbox(World world) {
-        // BodyDef is like a blueprint for the movement properties of the body.
+        /*// BodyDef is like a blueprint for the movement properties of the body.
         BodyDef bodyDef = new BodyDef();
         // Static bodies never move, but static bodies can collide with them.
         bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -51,6 +52,20 @@ public class DestructibleWall implements Drawable {
         box.dispose();
         // Set the chest as the user data of the body so we can look up the chest from the body later.
         body.setUserData(this);
+        return body;*/
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(this.x, this.y);
+
+        this.body = world.createBody(bodyDef);
+
+        PolygonShape box = new PolygonShape();
+        box.setAsBox(0.5f, 0.5f);
+
+        body.createFixture(box, 1.0f);
+        box.dispose();
+
+        body.setUserData(this);
     }
 
     @Override
@@ -66,5 +81,18 @@ public class DestructibleWall implements Drawable {
     @Override
     public float getY() {
         return y;
+    }
+    public Body getBody(){
+        return body;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
+    public void destroy(World world){
+        if(body!=null){
+            world.destroyBody(body);
+        }
     }
 }

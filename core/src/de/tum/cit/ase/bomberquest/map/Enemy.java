@@ -104,6 +104,9 @@ public class Enemy implements Drawable {
         return hitbox.getPosition().y;
     }
 
+    public Body getBody() {
+        return hitbox;
+    }
 
     public void tick(float frameTime) {
         this.elapsedTime += frameTime;

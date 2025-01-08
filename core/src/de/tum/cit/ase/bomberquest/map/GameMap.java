@@ -9,6 +9,7 @@ import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
 import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
 import de.tum.cit.ase.bomberquest.powerups.PowerUp;
+import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
 
 import java.util.*;
 
@@ -62,7 +63,7 @@ public class GameMap {
     private final Flowers[][] flowers;
 
     //private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
-    private List<DestructibleWall> destructibleWalls= new ArrayList<>();
+    private List<DestructibleWall> destructibleWalls;
 
     //private final IndestructibleWall indestructibleWalls; //THESE ARE THE WALLS
     private List<IndestructibleWall> indestructibleWalls= new ArrayList<>();
@@ -84,7 +85,8 @@ public class GameMap {
     private List<Bomb> bombs = new ArrayList<>();
 
     List<Body> bodiesToDestroy = new ArrayList<>();  // Queue to hold bodies to remove
-
+    private List<DestructibleWall> wallsToRemove = new ArrayList<>();
+    private List<Enemy> enemiesToRemove = new ArrayList<>();
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -94,6 +96,7 @@ public class GameMap {
         // Create a chest in the middle of the map
         //this.chest = new Chest(world, 3, 3);
 
+        this.destructibleWalls=new ArrayList<>();
         MapLoader mapLoader = new MapLoader();
         mapLoader.loadMap("/Users/bcelik/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
         System.out.println(mapLoader.getMapData());
@@ -236,6 +239,17 @@ public class GameMap {
         enemies.add(enemy);
     }
 
+    public void removeEnemies(Enemy enemy) {
+        if (enemy == null) return;
+
+        // Safely destroy the physics body associated with the wall
+        if (enemy.getBody() != null) {
+            bodiesToDestroy.add(enemy.getBody());
+        }
+        // Remove the wall from the list of destructible walls
+        getEnemies().remove(enemy);
+    }
+
     public List<Enemy> getEnemies() {
         return enemies;
     }
@@ -254,12 +268,15 @@ public class GameMap {
         return destructibleWalls;
     }
 
-    public void removeDestructibleWalls(DestructibleWall destructibleWall) {
-        if (destructibleWall == null) {
-            return;
-        }else if (destructibleWalls.contains(destructibleWall)) {
-            destructibleWalls.remove(destructibleWall);
+    public void removeDestructibleWalls(DestructibleWall wall) {
+        if (wall == null) return;
+
+        // Safely destroy the physics body associated with the wall
+        if (wall.getBody() != null) {
+            bodiesToDestroy.add(wall.getBody());
         }
+        // Remove the wall from the list of destructible walls
+        getDestructibleWalls().remove(wall);
     }
 
     public void addIndestructibleWalls(IndestructibleWall indestructibleWall) {
@@ -278,20 +295,9 @@ public class GameMap {
             bodiesToDestroy.add(powerUp.getBody()); // Queue the body for destruction
             powerUp.setBody(null); // Nullify to avoid reuse of the destroyed body
         }
-
+        System.out.println(powerUps);
         powerUps.remove(powerUp); // Remove the power-up from the game list
-
-        /*if (powerUp == null) return;
-
-            // Safely remove the power-up's physics body from the Box2D world
-            if (powerUp.getBody() != null) {
-                world.destroyBody(powerUp.getBody());
-                powerUp.setBody(null); // Nullify to avoid accessing destroyed bodies
-            }
-
-            // Remove the power-up from the map's list of power-ups
-
-            powerUps.remove(powerUp);*/
+        System.out.println(powerUps);
     }
 
     public void processPendingBodyDestruction() {
@@ -332,7 +338,7 @@ public class GameMap {
             // Trigger explosion effects (e.g., damaging nearby objects)
 
             // Queue the bomb's body for destruction
-            bodiesToDestroy.add(bomb.getBody());
+
 
             // Remove the bomb from the list of active bombs
             bombs.remove(bomb);
@@ -343,7 +349,7 @@ public class GameMap {
         if (getBombs().size() < player.getConcurrentBombCount()) {
             float bombX = MathUtils.round(player.getX());
             float bombY = MathUtils.round(player.getY());
-            Bomb bomb = new Bomb(world,bombX, bombY, player.getBlastRadius()); // 2 seconds timer
+            Bomb bomb = new Bomb(world,bombX, bombY, player.getBlastRadius(),this); // 2 seconds timer
             addBomb(bomb);
         }
     }
@@ -353,12 +359,43 @@ public class GameMap {
         Iterator<Bomb> iterator = bombs.iterator();
         while (iterator.hasNext()) {
             Bomb bomb = iterator.next();
-            bomb.update(deltaTime, world);
+            bomb.update(deltaTime);
             if (bomb.isExploded()) {
                 iterator.remove();
                 removeBomb(bomb);// Remove exploded bombs
             }
         }
+    }
+
+    public void handleExplosion(Vector2 position, int blastRadius,Bomb bomb) {
+        // Check horizontally and vertically for affected objects
+        for (int i = -blastRadius; i <= blastRadius; i++) {
+            bomb.checkTile(position.x + i, position.y); // Horizontal
+            bomb.checkTile(position.x, position.y + i); // Vertical
+        }
+    }
+    public void queueWallForRemoval(DestructibleWall wall) {
+        if (!wallsToRemove.contains(wall)) {
+            wallsToRemove.add(wall);
+        }
+    }
+    public void processPendingWallRemovals() {
+        for (DestructibleWall wall : wallsToRemove) {
+            removeDestructibleWalls(wall);
+        }
+        wallsToRemove.clear();
+    }
+
+    public void queueEnemyForRemoval(Enemy enemy) {
+        if (!enemiesToRemove.contains(enemy)) {
+            enemiesToRemove.add(enemy);
+        }
+    }
+    public void processPendingEnemyRemovals() {
+        for (Enemy enemy: enemiesToRemove) {
+            removeEnemies(enemy);
+        }
+        enemiesToRemove.clear();
     }
 
 

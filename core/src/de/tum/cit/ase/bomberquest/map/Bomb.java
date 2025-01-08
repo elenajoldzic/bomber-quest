@@ -1,10 +1,12 @@
 package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
+import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
@@ -19,41 +21,42 @@ public class Bomb implements Drawable {
     private int blastRadius;
     private float elapsedTime = 0; // For animation purposes
     private boolean isExploded = false;
-    private final Body body;
+    private final GameMap gameMap;
+    //private final Body body;
 
-    public Bomb(World world,float x, float y, int blastRadius) {
+    public Bomb(World world, float x, float y, int blastRadius, GameMap gameMap) {
         this.x = x;
         this.y = y;
         //this.timer = timer;
         this.blastRadius = blastRadius;
-        this.body=createBody(world);
+        //this.body=createBody(world);
 
+        this.gameMap = gameMap;
     }
 
     /**
      * Updates the bomb's state, including the timer and animation.
      * @param deltaTime Time elapsed since the last frame.
      */
-    public void update(float deltaTime, World world) {
+    public void update(float deltaTime) {
         if (!isExploded) {
             elapsedTime += deltaTime; // Update animation time
             timer -= deltaTime; // Count down the timer
 
             if (timer <= 0) {
-                explode(world);
+                explode();
             }
         }
     }
 
     /**
      * Triggers the bomb's explosion.
-     * @param world The Box2D world.
+     * @paramworld The Box2D world.
      */
-    private void explode(World world) {
+    private void explode() {
         isExploded = true;
-        // Logic for handling explosion effect (destroy walls, damage enemies, etc.)
-        // Example:
-        // map.handleExplosion(this);
+        Vector2 bombPosition = new Vector2(x, y);
+        gameMap.handleExplosion(bombPosition, blastRadius,this);
 
     }
 
@@ -128,12 +131,31 @@ public class Bomb implements Drawable {
         this.timer = timer;
     }
 
-    public Body getBody() {
+    /*public Body getBody() {
         return body;
-    }
+    }*/
     /**
      * Destroys the bomb's physical body in the game world.
-     * @param world The Box2D world.
+     * @paramworld The Box2D world.
      */
+
+    public void checkTile(float x, float y) {
+        // Check for enemies, walls, or the player at (x, y)
+        for (Enemy enemy : gameMap.getEnemies()) {
+            if (Math.round(enemy.getX()) == x && Math.round(enemy.getY()) == y) {
+                gameMap.queueEnemyForRemoval(enemy);
+            }
+        }
+
+        for (DestructibleWall wall : gameMap.getDestructibleWalls()) {
+            if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
+                gameMap.queueWallForRemoval(wall);
+            }
+        }
+
+        if (Math.round(gameMap.getPlayer().getX()) == x && Math.round(gameMap.getPlayer().getY()) == y) {
+            //.setScreen(new YouLoseScreen(game)); // Game over
+        }
+    }
 
 }

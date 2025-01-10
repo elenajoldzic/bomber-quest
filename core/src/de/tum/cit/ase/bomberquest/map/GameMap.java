@@ -180,8 +180,7 @@ public class GameMap {
         updateEnemies(frameTime);
         this.player.update(frameTime);
         updateBombs(frameTime);
-
-        System.out.println(explosionTiles);
+        updateExplosionTiles(frameTime);
         doPhysicsStep(frameTime);
     }
 
@@ -221,18 +220,9 @@ public class GameMap {
     public Exit getExit() {
         return exit;
     }
-
-    /*public Entrance getEntrance() {
-        return entrance;
-    }*/
-
-    /*public ConcurrentBomb getConcurrentBomb() {
-        return concurrentBomb;
-    }*/
-
-    /*public BlastRadius getBlastRadius() {
-        return blastRadius;
-    }*/
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
 
     public void addPowerUp(PowerUp powerUp) {
         powerUps.add(powerUp);
@@ -253,9 +243,7 @@ public class GameMap {
         getEnemies().remove(enemy);
     }
 
-    public List<Enemy> getEnemies() {
-        return enemies;
-    }
+
 
     public void updateEnemies(float deltaTime) {
         for (Enemy enemy : enemies) {
@@ -303,18 +291,7 @@ public class GameMap {
         System.out.println(powerUps);
     }
 
-    public void processPendingBodyDestruction() {
-        for (Body body : bodiesToDestroy) {
-            try {
-                if (body != null) {
-                    world.destroyBody(body);
-                }
-            } catch (Exception e) {
-                System.err.println("Error destroying body: " + e.getMessage());
-            }
-        }
-        bodiesToDestroy.clear(); // Clear the list after processing
-    }
+
 
     public List<PowerUp> getPowerUps() {
         return powerUps;
@@ -376,24 +353,48 @@ public class GameMap {
         }
     }
 
-    public void handleExplosion(Vector2 position, int blastRadius,Bomb bomb) {
-        // Check horizontally and vertically for affected objects
-        for (int i = -blastRadius; i <= blastRadius; i++) {
-            bomb.checkTile(position.x + i, position.y); // Horizontal
-            bomb.checkTile(position.x, position.y + i); // Vertical
+    public void updateExplosionTiles(float deltaTime){
+        Iterator<ExplosionTile> iterator = explosionTiles.iterator();
+        while (iterator.hasNext()) {
+            ExplosionTile tile = iterator.next();
+            tile.update(deltaTime);
+            if (tile.isAnimationFinished()) {
+                iterator.remove();
+            }
         }
     }
-    /*public void updateExplosions(float deltaTime) {
-        for (Bomb bomb : bombs) {
-            bomb.updateExplosions(deltaTime);
-        }
-    }*/
 
-    /*public void renderExplosions(SpriteBatch batch) {
-        for (Bomb bomb : bombs) {
-            bomb.renderExplosion(batch);
+    public void handleExplosion(Vector2 position, int blastRadius,Bomb bomb) {
+        // Check horizontally and vertically for affected objects
+        /*for (int i = -blastRadius; i <= blastRadius; i++) {
+            bomb.checkTile(position.x + i, position.y); // Horizontal
+            bomb.checkTile(position.x, position.y + i); // Vertical
+        }*/
+        // Horizontal explosion
+        for (int i = 1; i <= blastRadius; i++) {
+            // Right
+            if (!bomb.isTileAvailable(position.x + i, position.y)) break;
+            bomb.checkTile(position.x + i, position.y);
+
+            // Left
+            if (!bomb.isTileAvailable(position.x - i, position.y)) break;
+            bomb.checkTile(position.x - i, position.y);
         }
-    }*/
+
+        // Vertical explosion
+        for (int i = 1; i <= blastRadius; i++) {
+            // Up
+            if (!bomb.isTileAvailable(position.x, position.y + i)) break;
+            bomb.checkTile(position.x, position.y + i);
+
+            // Down
+            if (!bomb.isTileAvailable(position.x, position.y - i)) break;
+            bomb.checkTile(position.x, position.y - i);
+        }
+    }
+
+
+    //THESE ARE FOR REMOVING OBJECTS
     public void queueWallForRemoval(DestructibleWall wall) {
         if (!wallsToRemove.contains(wall)) {
             wallsToRemove.add(wall);
@@ -418,5 +419,17 @@ public class GameMap {
         enemiesToRemove.clear();
     }
 
+    public void processPendingBodyDestruction() {
+        for (Body body : bodiesToDestroy) {
+            try {
+                if (body != null) {
+                    world.destroyBody(body);
+                }
+            } catch (Exception e) {
+                System.err.println("Error destroying body: " + e.getMessage());
+            }
+        }
+        bodiesToDestroy.clear(); // Clear the list after processing
+    }
 
 }

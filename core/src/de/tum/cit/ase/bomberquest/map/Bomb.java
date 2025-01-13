@@ -100,7 +100,7 @@ public class Bomb implements Drawable {
         return body;
     }
 
-    private boolean isTileAvailable(float x, float y) {
+    public boolean isTileAvailable(float x, float y) {
         for (IndestructibleWall wall : gameMap.getIndestructibleWalls()) {
             if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
                 return false; // Blocked by a wall
@@ -113,27 +113,52 @@ public class Bomb implements Drawable {
         // Center
         gameMap.getExplosionTiles().add(new ExplosionTile(x, y, Animations.EXPLOSION_CENTER));
 
+        // Boolean values indicating whether the explosion stopped in each 4 directions.
+        boolean RightStop=false;
+        boolean LeftStop=false;
+        boolean UpStop=false;
+        boolean DownStop=false;
+
         // Horizontal and vertical explosions
         for (int i = 1; i <= blastRadius; i++) {
-            // Right
-            if (isTileAvailable(x + i, y)) {
-                gameMap.getExplosionTiles().add(new ExplosionTile(x + i, y,
-                        i == blastRadius ? Animations.EXPLOSION_END_R : Animations.EXPLOSION_HORIZONTAL));
+            //Right
+            if (!RightStop) {
+                if (isTileAvailable(x + i, y)) {
+                    gameMap.getExplosionTiles().add(new ExplosionTile(x + i, y,
+                            i == blastRadius ? Animations.EXPLOSION_END_R : Animations.EXPLOSION_HORIZONTAL));
+                } else {
+                    RightStop=true;
+                }
             }
+
             // Left
-            if (isTileAvailable(x - i, y)) {
-                gameMap.getExplosionTiles().add(new ExplosionTile(x - i, y,
-                        i == blastRadius ? Animations.EXPLOSION_END_L : Animations.EXPLOSION_HORIZONTAL));
+            if (!LeftStop) {
+                if (isTileAvailable(x - i, y)) {
+                    gameMap.getExplosionTiles().add(new ExplosionTile(x - i, y,
+                            i == blastRadius ? Animations.EXPLOSION_END_L : Animations.EXPLOSION_HORIZONTAL));
+                } else {
+                    LeftStop=true;
+                }
             }
+
             // Up
-            if (isTileAvailable(x, y + i)) {
-                gameMap.getExplosionTiles().add(new ExplosionTile(x, y + i,
-                        i == blastRadius ? Animations.EXPLOSION_END_UP : Animations.EXPLOSION_VERTICAL));
+            if(!UpStop) {
+                if (isTileAvailable(x, y + i)) {
+                    gameMap.getExplosionTiles().add(new ExplosionTile(x, y + i,
+                            i == blastRadius ? Animations.EXPLOSION_END_UP : Animations.EXPLOSION_VERTICAL));
+                } else {
+                    UpStop=true;
+                }
             }
+
             // Down
-            if (isTileAvailable(x, y - i)) {
-                gameMap.getExplosionTiles().add(new ExplosionTile(x, y - i,
-                        i == blastRadius ? Animations.EXPLOSION_END_DOWN : Animations.EXPLOSION_VERTICAL));
+            if(!DownStop) {
+                if (isTileAvailable(x, y - i)) {
+                    gameMap.getExplosionTiles().add(new ExplosionTile(x, y - i,
+                            i == blastRadius ? Animations.EXPLOSION_END_DOWN : Animations.EXPLOSION_VERTICAL));
+                } else {
+                    DownStop=true;
+                }
             }
         }
     }
@@ -198,6 +223,11 @@ public class Bomb implements Drawable {
      */
 
     public void checkTile(float x, float y) {
+
+        if(!isTileAvailable(x,y)){
+            return;
+        }
+
         // Check for enemies, walls, or the player at (x, y)
         for (Enemy enemy : gameMap.getEnemies()) {
             if (Math.round(enemy.getX()) == x && Math.round(enemy.getY()) == y) {

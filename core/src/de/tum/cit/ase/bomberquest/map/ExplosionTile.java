@@ -25,7 +25,7 @@ public class ExplosionTile implements Drawable {
     public void update(float deltaTime) {
         elapsedTime += deltaTime;
         // If the animation is finished (after 2 seconds), mark it as finished
-        if (elapsedTime >= 1.0f) {
+        if (elapsedTime >= 0.5f) {
             finished = true;
         }
     }

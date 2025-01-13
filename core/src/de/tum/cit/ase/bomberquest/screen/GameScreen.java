@@ -147,7 +147,7 @@ public class GameScreen implements Screen {
     public void render(float deltaTime) {
         // Check for escape key press to go back to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.goToMenu();
+            game.goToPause();
         }
 
         // Elena

@@ -60,7 +60,7 @@ public class YouLoseScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.create();
-                game.goToMenu(); // Go to the main menu screen when button is pressed
+                game.goToStart(); // Go to the main menu screen when button is pressed
             }
         });
     }

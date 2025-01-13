@@ -36,7 +36,7 @@ public class Player implements Drawable {
 
     public Player(World world, float x, float y) {
         this.hitbox = createHitbox(world, x, y);
-        this.concurrentBombCount = 2; // Default bomb count
+        this.concurrentBombCount = 1; // Default bomb count
         this.blastRadius = 1;
     }
 

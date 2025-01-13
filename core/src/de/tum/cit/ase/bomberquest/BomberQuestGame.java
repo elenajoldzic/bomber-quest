@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.map.GameMap;
-import de.tum.cit.ase.bomberquest.map.MapFileSelector;
 import de.tum.cit.ase.bomberquest.screen.GameScreen;
-import de.tum.cit.ase.bomberquest.screen.MenuScreen;
+import de.tum.cit.ase.bomberquest.screen.PauseScreen;
+import de.tum.cit.ase.bomberquest.screen.StartScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 import java.io.IOException;
@@ -64,14 +64,17 @@ public class BomberQuestGame extends Game {
         this.skin = new Skin(Gdx.files.internal("skin/craftacular/craftacular-ui.json")); // Load UI skin
         this.map = new GameMap(this); // Create a new game map (you should change this to load the map from a file instead)
         MusicTrack.BACKGROUND.play(); // Play some background music
-        goToMenu(); // Navigate to the menu screen
+        goToStart();
     }
 
+    public void goToStart() {
+        this.setScreen(new StartScreen(this)); // Set the current screen to MenuScreen
+    }
     /**
      * Switches to the menu screen.
      */
-    public void goToMenu() {
-        this.setScreen(new MenuScreen(this)); // Set the current screen to MenuScreen
+    public void goToPause() {
+        this.setScreen(new PauseScreen(this)); // Set the current screen to PauseScreen
     }
 
     /**

@@ -21,7 +21,7 @@ import java.io.IOException;
  * The MenuScreen class is responsible for displaying the main menu of the game.
  * It extends the LibGDX Screen class and sets up the UI components for the menu.
  */
-public class MenuScreen implements Screen {
+public class StartScreen implements Screen {
 
     private final Stage stage;
 
@@ -30,7 +30,7 @@ public class MenuScreen implements Screen {
      *
      * @param game The main game class, used to access global resources and methods.
      */
-    public MenuScreen(BomberQuestGame game) {
+    public StartScreen(BomberQuestGame game) {
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
 
@@ -42,17 +42,7 @@ public class MenuScreen implements Screen {
         stage.addActor(table); // Add the table to the stage
 
         // Add a label as a title
-        table.add(new Label("BomberQuest Menu", game.getSkin(), "title")).padBottom(80).row();
-
-        // Continue Game button
-        TextButton continueButton = new TextButton("Continue Game", game.getSkin());
-        table.add(continueButton).width(300).row();
-        continueButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                game.goToGame(); // Resume the current game
-            }
-        });
+        table.add(new Label("Welcome to the game!", game.getSkin(), "title")).padBottom(80).row();
 
         // New Game button
         TextButton newGameButton = new TextButton("New Game", game.getSkin());
@@ -92,7 +82,7 @@ public class MenuScreen implements Screen {
         stage.act(frameTime); // Update the stage
         stage.draw(); // Draw the stage
     }
-    
+
     /**
      * Resize the stage when the screen is resized.
      * @param width The new width of the screen.

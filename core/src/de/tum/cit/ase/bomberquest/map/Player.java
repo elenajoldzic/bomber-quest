@@ -102,22 +102,22 @@ public class Player implements Drawable {
     //THIS METHOD MAKES OUR PLAYER MOVE
     public void update(float frameTime) {
         this.elapsedTime += frameTime;
-        float speed = 3f; //create a constant speed value for player to move
+        float speed = 3.5f; //create a constant speed value for player to move
         float xVelocity = 0;
         float yVelocity = 0;
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.UP)) {
             currentDirection=Direction.UP;
             yVelocity = (float) speed;
         }
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.DOWN)) {
             currentDirection=Direction.DOWN;
             yVelocity = (float) -speed; //on the negative side of y axis, different direction
         }
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.LEFT)) {
             currentDirection=Direction.LEFT;
             xVelocity = (float) -speed; // Move left
         }
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.RIGHT)) {
             currentDirection=Direction.RIGHT;
             xVelocity = (float) speed;// Move right
         }

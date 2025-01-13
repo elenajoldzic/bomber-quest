@@ -51,7 +51,6 @@ public class Bomb implements Drawable {
             timer -= deltaTime; // Count down the timer
 
             if (timer <= 0) {
-                MusicTrack.BOMBEXPLODE.play();
                 explode();
             }
         }
@@ -73,7 +72,8 @@ public class Bomb implements Drawable {
      */
     private void explode() {
         isExploded = true;
-
+        MusicTrack.BOMBEXPLODE.dispose();
+        MusicTrack.BOMBEXPLODE.play();
         createExplosionTiles();
         Vector2 bombPosition = new Vector2(x, y);
         gameMap.handleExplosion(bombPosition, blastRadius,this);

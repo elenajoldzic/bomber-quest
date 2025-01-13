@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 
 import java.io.IOException;
 
@@ -31,6 +32,8 @@ public class StartScreen implements Screen {
      * @param game The main game class, used to access global resources and methods.
      */
     public StartScreen(BomberQuestGame game) {
+        /*MusicTrack.BACKGROUND.stop();
+        MusicTrack.MENUMUSIC.play();*/
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
 
@@ -51,6 +54,7 @@ public class StartScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 try {
+                    MusicTrack.BUTTONSOUND.play();
                     game.loadNewGame(); // Load a new game map and start the game
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -64,6 +68,7 @@ public class StartScreen implements Screen {
         exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                MusicTrack.BUTTONSOUND.play();
                 Gdx.app.exit(); // Exit the game
             }
         });

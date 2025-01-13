@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.GameTimer;
+import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.map.*;
 import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
 import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
@@ -82,6 +83,7 @@ public class GameScreen implements Screen {
                 // Check if the player and enemy collide
                 if ((userDataA instanceof Player && userDataB instanceof Enemy) ||
                         (userDataA instanceof Enemy && userDataB instanceof Player)) {
+                    MusicTrack.PLAYERDIE.play();
                     // Transition to the YouLoseScreen
                     game.setScreen(new YouLoseScreen(game));
                 }
@@ -111,8 +113,10 @@ public class GameScreen implements Screen {
             }*/
 
             if (powerUp instanceof BlastRadius) {
+                MusicTrack.POWERUPSOUND.play();
                 player.setBlastRadius(Math.min(player.getBlastRadius() + 1, 9));
             } else if (powerUp instanceof ConcurrentBomb) {
+                MusicTrack.POWERUPSOUND.play();
                 player.setConcurrentBombCount(Math.min(player.getConcurrentBombCount() + 1, 9));
             }
 
@@ -147,6 +151,7 @@ public class GameScreen implements Screen {
     public void render(float deltaTime) {
         // Check for escape key press to go back to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            MusicTrack.BUTTONSOUND.play();
             game.goToPause();
         }
 

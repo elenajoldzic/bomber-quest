@@ -13,14 +13,25 @@ import com.badlogic.gdx.audio.Music;
  */
 public enum MusicTrack {
     
-    BACKGROUND("background.mp3", 0.2f);
+    BACKGROUND("background.mp3", 0.2f,true),
+    BOMBEXPLODE("bombexplode.mp3",0.2f,false),
+    ENEMYDIE("enemydie.mp3",0.2f,false),
+    BUTTONSOUND("menubuttonsound.mp3",0.2f,false),
+    POWERUPSOUND("powerup.mp3",0.2f,false),
+    GAMEOVERSOUND("gameoversound.mp3",0.07f,false),
+    MENUMUSIC("menumusic.mp3",0.7f,true),
+    WINSOUND("winsound.mp3",0.8f,false),
+    PLAYERDIE("playerdie.mp3",0.1f,false)
+
+    ;
+
     
     /** The music file owned by this variant. */
     private final Music music;
     
-    MusicTrack(String fileName, float volume) {
+    MusicTrack(String fileName, float volume, boolean isLooping) {
         this.music = Gdx.audio.newMusic(Gdx.files.internal("audio/" + fileName));
-        this.music.setLooping(true);
+        this.music.setLooping(isLooping);
         this.music.setVolume(volume);
     }
     
@@ -31,4 +42,6 @@ public enum MusicTrack {
     public void play() {
         this.music.play();
     }
+    public void dispose() {this.music.dispose();}
+    public void stop(){this.music.pause();}
 }

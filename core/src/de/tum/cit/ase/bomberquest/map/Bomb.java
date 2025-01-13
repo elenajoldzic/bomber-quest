@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
+import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
@@ -50,6 +51,7 @@ public class Bomb implements Drawable {
             timer -= deltaTime; // Count down the timer
 
             if (timer <= 0) {
+                MusicTrack.BOMBEXPLODE.play();
                 explode();
             }
         }
@@ -71,6 +73,7 @@ public class Bomb implements Drawable {
      */
     private void explode() {
         isExploded = true;
+
         createExplosionTiles();
         Vector2 bombPosition = new Vector2(x, y);
         gameMap.handleExplosion(bombPosition, blastRadius,this);
@@ -231,7 +234,9 @@ public class Bomb implements Drawable {
         // Check for enemies, walls, or the player at (x, y)
         for (Enemy enemy : gameMap.getEnemies()) {
             if (Math.round(enemy.getX()) == x && Math.round(enemy.getY()) == y) {
+                MusicTrack.ENEMYDIE.play();
                 gameMap.queueEnemyForRemoval(enemy);
+
             }
         }
 
@@ -242,6 +247,7 @@ public class Bomb implements Drawable {
         }
 
         if (Math.round(gameMap.getPlayer().getX()) == x && Math.round(gameMap.getPlayer().getY()) == y) {
+            MusicTrack.PLAYERDIE.play();
             gameMap.getGame().setScreen(new YouLoseScreen(gameMap.getGame())); // Game over
         }
     }

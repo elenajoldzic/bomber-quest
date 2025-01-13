@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 
 /**
  * The WinScreen class is responsible for displaying the win screen of the game.
@@ -48,6 +49,7 @@ public class WinScreen implements Screen {
         tryAgainButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                MusicTrack.BUTTONSOUND.play();
                 game.create(); // Restart the game
                 game.goToGame(); // Go to the game screen
             }
@@ -59,6 +61,7 @@ public class WinScreen implements Screen {
         goToMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                MusicTrack.BUTTONSOUND.play();
                 game.create();
                 game.goToStart(); // Go to the main menu screen when button is pressed
             }

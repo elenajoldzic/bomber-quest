@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 
 /**
  * The MenuScreen class is responsible for displaying the main menu of the game.
@@ -29,6 +30,9 @@ public class YouLoseScreen implements Screen {
      * @param game The main game class, used to access global resources and methods.
      */
     public YouLoseScreen(BomberQuestGame game) {
+        MusicTrack.MENUMUSIC.stop();
+        MusicTrack.BACKGROUND.stop();
+        MusicTrack.GAMEOVERSOUND.play();
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
 
@@ -48,6 +52,7 @@ public class YouLoseScreen implements Screen {
         goToGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                MusicTrack.BUTTONSOUND.play();
                 game.create();
                 game.goToGame(); // Change to the game screen when button is pressed
             }
@@ -59,6 +64,7 @@ public class YouLoseScreen implements Screen {
         goToMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                MusicTrack.BUTTONSOUND.play();
                 game.create();
                 game.goToStart(); // Go to the main menu screen when button is pressed
             }

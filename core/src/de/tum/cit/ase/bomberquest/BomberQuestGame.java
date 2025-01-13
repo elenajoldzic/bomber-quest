@@ -10,6 +10,7 @@ import de.tum.cit.ase.bomberquest.map.GameMap;
 import de.tum.cit.ase.bomberquest.screen.GameScreen;
 import de.tum.cit.ase.bomberquest.screen.PauseScreen;
 import de.tum.cit.ase.bomberquest.screen.StartScreen;
+import de.tum.cit.ase.bomberquest.screen.WinScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 import java.io.IOException;
@@ -63,7 +64,7 @@ public class BomberQuestGame extends Game {
         this.spriteBatch = new SpriteBatch(); // Create SpriteBatch for rendering
         this.skin = new Skin(Gdx.files.internal("skin/craftacular/craftacular-ui.json")); // Load UI skin
         this.map = new GameMap(this); // Create a new game map (you should change this to load the map from a file instead)
-        MusicTrack.BACKGROUND.play(); // Play some background music
+        MusicTrack.MENUMUSIC.play(); // Play some background music
         goToStart();
     }
 
@@ -110,13 +111,31 @@ public class BomberQuestGame extends Game {
         if (previousScreen != null) {
             previousScreen.dispose();
         }
+        if(screen instanceof GameScreen){
+            MusicTrack.MENUMUSIC.stop();
+            MusicTrack.BACKGROUND.play();
+        }
+        if(screen instanceof StartScreen){
+            MusicTrack.BACKGROUND.stop();
+            MusicTrack.MENUMUSIC.play();
+        }
+        if (screen instanceof WinScreen){
+            MusicTrack.BACKGROUND.stop();
+            MusicTrack.WINSOUND.play();
+        }
+        if (screen instanceof PauseScreen){
+            MusicTrack.BACKGROUND.stop();
+            MusicTrack.MENUMUSIC.play();
+        }
     }
 
     /**
      * Loads a new game map and starts the game.
      */
     public void loadNewGame() throws IOException {
-        map = new GameMap(this); // Load a new game map here (you might use fileChooser or default)
+        map = new GameMap(this);// Load a new game map here (you might use fileChooser or default)
+        MusicTrack.BACKGROUND.dispose();
+        MusicTrack.BACKGROUND.play();
         goToGame();
     }
 

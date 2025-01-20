@@ -76,12 +76,60 @@ public class Bomb implements Drawable {
         MusicTrack.BOMBEXPLODE.play();
         createExplosionTiles();
         Vector2 bombPosition = new Vector2(x, y);
-        gameMap.handleExplosion(bombPosition, blastRadius,this);
+        //gameMap.handleExplosion(bombPosition, blastRadius,this);
+        handleExplosion(bombPosition, blastRadius,this);
 
         for (ExplosionTile tile : gameMap.getExplosionTiles()) {
             checkTile(tile.getX(), tile.getY());
         }
     }
+
+    public void handleExplosion(Vector2 position, int blastRadius, Bomb bomb) {
+        for (int i = 1; i <= blastRadius; i++) {
+            // Right
+            float targetX = position.x + i;
+            if (!bomb.isTileAvailable(targetX, position.y)) {
+                if (bomb.isDestructibleWall(targetX, position.y)) {
+                    bomb.checkTile(targetX, position.y); // Trigger wall destruction
+                }
+                break;
+            }
+            bomb.checkTile(targetX, position.y);
+
+            // Left
+            targetX = position.x - i;
+            if (!bomb.isTileAvailable(targetX, position.y)) {
+                if (bomb.isDestructibleWall(targetX, position.y)) {
+                    bomb.checkTile(targetX, position.y); // Trigger wall destruction
+                }
+                break;
+            }
+            bomb.checkTile(targetX, position.y);
+        }
+
+        for (int i = 1; i <= blastRadius; i++) {
+            // Up
+            float targetY = position.y + i;
+            if (!bomb.isTileAvailable(position.x, targetY)) {
+                if (bomb.isDestructibleWall(position.x, targetY)) {
+                    bomb.checkTile(position.x, targetY); // Trigger wall destruction
+                }
+                break;
+            }
+            bomb.checkTile(position.x, targetY);
+
+            // Down
+            targetY = position.y - i;
+            if (!bomb.isTileAvailable(position.x, targetY)) {
+                if (bomb.isDestructibleWall(position.x, targetY)) {
+                    bomb.checkTile(position.x, targetY); // Trigger wall destruction
+                }
+                break;
+            }
+            bomb.checkTile(position.x, targetY);
+        }
+    }
+
 
     /**
      * Creates the physical body of the bomb in the game world.
@@ -109,7 +157,22 @@ public class Bomb implements Drawable {
                 return false; // Blocked by a wall
             }
         }
+        // Check for destructible walls
+        for (DestructibleWall wall : gameMap.getDestructibleWalls()) {
+            if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
+                return false; // Blocked by a destructible wall (for continuation logic)
+            }
+        }
         return true; // The tile is available
+    }
+
+    private boolean isDestructibleWall(float x, float y) {
+        for (DestructibleWall wall : gameMap.getDestructibleWalls()) {
+            if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
+                return true; // The tile has a destructible wall
+            }
+        }
+        return false; // No destructible wall on the tile
     }
 
     private void createExplosionTiles() {
@@ -130,7 +193,11 @@ public class Bomb implements Drawable {
                     gameMap.getExplosionTiles().add(new ExplosionTile(x + i, y,
                             i == blastRadius ? Animations.EXPLOSION_END_R : Animations.EXPLOSION_HORIZONTAL));
                 } else {
-                    RightStop=true;
+                    if (isDestructibleWall(x+i, y)) {
+                        gameMap.getExplosionTiles().add(new ExplosionTile(x+i, y, Animations.EXPLOSION_END_R));
+                        gameMap.queueWallForRemoval(findDestructibleWall(x+i, y));
+                    }
+                    RightStop = true;
                 }
             }
 
@@ -140,7 +207,11 @@ public class Bomb implements Drawable {
                     gameMap.getExplosionTiles().add(new ExplosionTile(x - i, y,
                             i == blastRadius ? Animations.EXPLOSION_END_L : Animations.EXPLOSION_HORIZONTAL));
                 } else {
-                    LeftStop=true;
+                    if (isDestructibleWall(x-i, y)) {
+                        gameMap.getExplosionTiles().add(new ExplosionTile(x-i, y, Animations.EXPLOSION_END_L));
+                        gameMap.queueWallForRemoval(findDestructibleWall(x-i, y));
+                    }
+                    LeftStop = true;
                 }
             }
 
@@ -150,7 +221,11 @@ public class Bomb implements Drawable {
                     gameMap.getExplosionTiles().add(new ExplosionTile(x, y + i,
                             i == blastRadius ? Animations.EXPLOSION_END_UP : Animations.EXPLOSION_VERTICAL));
                 } else {
-                    UpStop=true;
+                    if (isDestructibleWall(x, y+i)) {
+                        gameMap.getExplosionTiles().add(new ExplosionTile(x, y+i, Animations.EXPLOSION_END_UP));
+                        gameMap.queueWallForRemoval(findDestructibleWall(x, y+i));
+                    }
+                    UpStop = true;
                 }
             }
 
@@ -160,12 +235,23 @@ public class Bomb implements Drawable {
                     gameMap.getExplosionTiles().add(new ExplosionTile(x, y - i,
                             i == blastRadius ? Animations.EXPLOSION_END_DOWN : Animations.EXPLOSION_VERTICAL));
                 } else {
-                    DownStop=true;
+                    if (isDestructibleWall(x, y-i)) {
+                        gameMap.getExplosionTiles().add(new ExplosionTile(x, y-i, Animations.EXPLOSION_END_DOWN));
+                        gameMap.queueWallForRemoval(findDestructibleWall(x, y-i));
+                    }
+                    DownStop = true;
                 }
             }
         }
     }
-
+    private DestructibleWall findDestructibleWall(float x, float y) {
+        for (DestructibleWall wall : gameMap.getDestructibleWalls()) {
+            if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
+                return wall;
+            }
+        }
+        return null; // No destructible wall found
+    }
 
     public boolean isExploded() {
         return isExploded;

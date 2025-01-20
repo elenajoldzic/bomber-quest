@@ -101,7 +101,7 @@ public class GameMap {
 
         //this.destructibleWalls=new ArrayList<>();
         MapLoader mapLoader = new MapLoader();
-        mapLoader.loadMap("/Users/user/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
+        mapLoader.loadMap("/Users/bcelik/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
         //mapLoader.loadMap(mapPath);
         //System.out.println(mapLoader.getMapData());
         // Iterate through the map data and create objects
@@ -372,11 +372,7 @@ public class GameMap {
     }
 
     public void handleExplosion(Vector2 position, int blastRadius,Bomb bomb) {
-        // Check horizontally and vertically for affected objects
-        /*for (int i = -blastRadius; i <= blastRadius; i++) {
-            bomb.checkTile(position.x + i, position.y); // Horizontal
-            bomb.checkTile(position.x, position.y + i); // Vertical
-        }*/
+        /*
         // Horizontal explosion
         for (int i = 1; i <= blastRadius; i++) {
             // Right
@@ -398,6 +394,11 @@ public class GameMap {
             if (!bomb.isTileAvailable(position.x, position.y - i)) break;
             bomb.checkTile(position.x, position.y - i);
         }
+
+         */
+
+
+
     }
 
 

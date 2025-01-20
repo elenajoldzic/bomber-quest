@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
 
         this.player = map.getPlayer();
 
-        this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"), gameTimer, player);
+        this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"), gameTimer, player,map);
         // Create and configure the camera for the game view
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false);
@@ -230,7 +230,10 @@ public class GameScreen implements Screen {
         if (map.getExit().isActive()) {
             draw(spriteBatch, map.getExit());
         }// DRAWS THE EXIT
-
+        //Draw Powerups
+        for (PowerUp powerUp : map.getPowerUps()) {
+            draw(spriteBatch, powerUp);
+        }
 
         for(DestructibleWall destructibleWall: map.getDestructibleWalls()){
             draw(spriteBatch, destructibleWall);
@@ -241,10 +244,7 @@ public class GameScreen implements Screen {
             draw(spriteBatch, indestructibleWall);
         }
 
-        //Draw Powerups
-        for (PowerUp powerUp : map.getPowerUps()) {
-            draw(spriteBatch, powerUp);
-        }
+
 
         // Elena
         // Draw bombs
@@ -252,15 +252,15 @@ public class GameScreen implements Screen {
             draw(spriteBatch, bomb);
         }
 
-        for (ExplosionTile tile : map.getExplosionTiles()) {
-            draw(spriteBatch, tile);
-        }
+
 
         //draw(spriteBatch, map.getEnemy()); // DRAWS THE ENEMY
         for (Enemy enemy : map.getEnemies()) {
             draw(spriteBatch, enemy);
         }
-
+        for (ExplosionTile tile : map.getExplosionTiles()) {
+            draw(spriteBatch, tile);
+        }
         draw(spriteBatch, map.getPlayer());
 
 

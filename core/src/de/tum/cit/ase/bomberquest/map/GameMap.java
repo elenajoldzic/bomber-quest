@@ -64,7 +64,7 @@ public class GameMap {
     private final Flowers[][] flowers;
 
     //private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
-    private List<DestructibleWall> destructibleWalls;
+    private List<DestructibleWall> destructibleWalls= new ArrayList<>();;
 
     //private final IndestructibleWall indestructibleWalls; //THESE ARE THE WALLS
     private List<IndestructibleWall> indestructibleWalls= new ArrayList<>();
@@ -88,6 +88,8 @@ public class GameMap {
     List<Body> bodiesToDestroy = new ArrayList<>();  // Queue to hold bodies to remove
     private List<DestructibleWall> wallsToRemove = new ArrayList<>();
     private List<Enemy> enemiesToRemove = new ArrayList<>();
+    public boolean enemiesCleared=false;
+
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -97,10 +99,11 @@ public class GameMap {
         // Create a chest in the middle of the map
         //this.chest = new Chest(world, 3, 3);
 
-        this.destructibleWalls=new ArrayList<>();
+        //this.destructibleWalls=new ArrayList<>();
         MapLoader mapLoader = new MapLoader();
-        mapLoader.loadMap("/Users/user/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
-        System.out.println(mapLoader.getMapData());
+        mapLoader.loadMap("/Users/bcelik/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
+        //mapLoader.loadMap(mapPath);
+        //System.out.println(mapLoader.getMapData());
         // Iterate through the map data and create objects
         for (Map.Entry<String, Integer> entry : mapLoader.getMapData().entrySet()) {
             String[] coordinates = entry.getKey().split(","); // "x,y"
@@ -251,6 +254,7 @@ public class GameMap {
         }
         if(enemies.isEmpty()&& !exit.isActive()){
             exit.getBody().setActive(true);
+            enemiesCleared=true;
         }
     }
 
@@ -435,4 +439,7 @@ public class GameMap {
         bodiesToDestroy.clear(); // Clear the list after processing
     }
 
+    public boolean isEnemiesCleared() {
+        return enemiesCleared;
+    }
 }

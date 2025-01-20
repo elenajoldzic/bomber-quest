@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.map.GameMap;
+import de.tum.cit.ase.bomberquest.map.MapFileSelector;
 import de.tum.cit.ase.bomberquest.screen.GameScreen;
 import de.tum.cit.ase.bomberquest.screen.PauseScreen;
 import de.tum.cit.ase.bomberquest.screen.StartScreen;
@@ -50,6 +51,7 @@ public class BomberQuestGame extends Game {
      * @param fileChooser The file chooser for the game, typically used in desktop environment.
      */
     public BomberQuestGame(NativeFileChooser fileChooser) {
+        super();
         this.fileChooser = fileChooser;
     }
 
@@ -137,6 +139,7 @@ public class BomberQuestGame extends Game {
         MusicTrack.BACKGROUND.dispose();
         MusicTrack.BACKGROUND.play();
         goToGame();
+
     }
 
 

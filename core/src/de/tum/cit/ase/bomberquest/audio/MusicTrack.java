@@ -21,8 +21,8 @@ public enum MusicTrack {
     GAMEOVERSOUND("gameoversound.mp3",0.07f,false),
     MENUMUSIC("menumusic.mp3",0.7f,true),
     WINSOUND("winsound.mp3",0.8f,false),
-    PLAYERDIE("playerdie.mp3",0.1f,false)
-
+    PLAYERDIE("playerdie.mp3",0.1f,false),
+    PAUSEMUSIC("intro.mp3",0.3f,true)
     ;
 
     

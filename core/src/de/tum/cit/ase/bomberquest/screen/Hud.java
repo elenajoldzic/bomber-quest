@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import de.tum.cit.ase.bomberquest.GameTimer;
+import de.tum.cit.ase.bomberquest.map.GameMap;
 import de.tum.cit.ase.bomberquest.map.Player;
 
 /**
@@ -24,14 +25,15 @@ public class Hud {
     private final GameTimer gameTimer;
 
     private final Player player;
-
+    private final GameMap map;
     
-    public Hud(SpriteBatch spriteBatch, BitmapFont font, GameTimer gameTimer, Player player) {
+    public Hud(SpriteBatch spriteBatch, BitmapFont font, GameTimer gameTimer, Player player,GameMap map) {
         this.spriteBatch = spriteBatch;
         this.font = font;
         this.camera = new OrthographicCamera();
         this.gameTimer=gameTimer;
         this.player=player;
+        this.map=map;
     }
     
     /**
@@ -60,6 +62,11 @@ public class Hud {
 
         font.draw(spriteBatch, "Blast radius:  "+player.getBlastRadius(), 10, Gdx.graphics.getHeight() - 130);
 
+        if(!map.enemiesCleared){
+            font.draw(spriteBatch, "Clear enemies to unlock the exit!", 10, Gdx.graphics.getHeight() - 170);
+        }else{
+            font.draw(spriteBatch, "Exit unlocked!", 10, Gdx.graphics.getHeight() - 170);
+        }
         // Finish drawing
         spriteBatch.end();
     }

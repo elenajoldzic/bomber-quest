@@ -1,6 +1,7 @@
 package de.tum.cit.ase.bomberquest.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -46,9 +47,9 @@ public class Hud {
 
         // Start drawing
         spriteBatch.begin();
+        font.getData().setScale(0.75f,0.75f);
         // Draw the HUD elements
         font.draw(spriteBatch, "Press Esc to Pause!", 10, Gdx.graphics.getHeight() - 10);
-
 
         // Calculate and display the remaining time in MM:SS format
         long elapsedTime = TimeUtils.timeSinceMillis(gameTimer.getStartTime());
@@ -56,21 +57,28 @@ public class Hud {
         long minutes = remainingTimeMillis / 60000;
         long seconds = (remainingTimeMillis % 60000) / 1000;
         String timeText = String.format("Time Remaining: %02d:%02d", minutes, seconds);
-        font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 50);
+        font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 40);
 
+        font.setColor(Color.YELLOW);
+        font.draw(spriteBatch, "Bombs placeable: "+player.getConcurrentBombCount(), 10, Gdx.graphics.getHeight() - 80);
+        font.setColor(Color.WHITE);
 
-        font.draw(spriteBatch, "Bombs placeable: "+player.getConcurrentBombCount(), 10, Gdx.graphics.getHeight() - 90);
-
-        font.draw(spriteBatch, "Blast radius:  "+player.getBlastRadius(), 10, Gdx.graphics.getHeight() - 130);
+        font.setColor(Color.YELLOW);
+        font.draw(spriteBatch, "Blast radius:  "+player.getBlastRadius(), 10, Gdx.graphics.getHeight() - 110);
+        font.setColor(Color.WHITE);
 
         if(!map.enemiesCleared){
-            font.draw(spriteBatch, "Clear enemies to unlock the exit!", 10, Gdx.graphics.getHeight() - 170);
+            font.setColor(Color.RED);
+            font.draw(spriteBatch, "Clear enemies to unlock the exit!", 10, Gdx.graphics.getHeight() - 150);
+            font.setColor(Color.WHITE);
         }else{
-            font.draw(spriteBatch, "EXIT UNLOCKED!", 10, Gdx.graphics.getHeight() - 170);
+            font.setColor(Color.GREEN);
+            font.draw(spriteBatch, "EXIT UNLOCKED!", 10, Gdx.graphics.getHeight() - 180);
+            font.setColor(Color.WHITE);
         }
 
         if(!map.enemiesCleared) {
-            font.draw(spriteBatch, "Enemies left: " + map.getEnemies().size(), 10, Gdx.graphics.getHeight() - 210);
+            font.draw(spriteBatch, "Enemies left: " + map.getEnemies().size(), 10, Gdx.graphics.getHeight() - 180);
         }
 
         // Finish drawing

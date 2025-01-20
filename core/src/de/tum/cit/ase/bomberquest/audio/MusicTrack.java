@@ -22,7 +22,8 @@ public enum MusicTrack {
     MENUMUSIC("menumusic.mp3",0.7f,true),
     WINSOUND("winsound.mp3",0.8f,false),
     PLAYERDIE("playerdie.mp3",0.1f,false),
-    PAUSEMUSIC("intro.mp3",0.3f,true)
+    PAUSEMUSIC("intro.mp3",0.3f,true),
+    BOMBPLACE("bombdropsound.mp3",0.06f,false)
     ;
 
     

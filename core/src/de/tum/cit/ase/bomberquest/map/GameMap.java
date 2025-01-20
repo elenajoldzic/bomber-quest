@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
 import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
 import de.tum.cit.ase.bomberquest.powerups.PowerUp;
@@ -344,6 +345,7 @@ public class GameMap {
             float bombY = MathUtils.round(player.getY());
             Bomb bomb = new Bomb(world,bombX, bombY, player.getBlastRadius(),this); // 2 seconds timer
             addBomb(bomb);
+            MusicTrack.BOMBPLACE.play();
         }
     }
 

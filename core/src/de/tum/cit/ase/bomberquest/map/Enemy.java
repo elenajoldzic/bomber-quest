@@ -2,6 +2,7 @@ package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
+import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 import de.tum.cit.ase.bomberquest.texture.Textures;
 
@@ -91,7 +92,8 @@ public class Enemy implements Drawable {
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        return Textures.ENEMY;
+        //return Textures.ENEMY;
+        return Animations.ENEMY_WALK.getKeyFrame(this.elapsedTime,true);
     }
 
     @Override

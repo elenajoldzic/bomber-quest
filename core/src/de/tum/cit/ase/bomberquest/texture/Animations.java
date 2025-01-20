@@ -42,6 +42,15 @@ public class Animations {
             SpriteSheet.CHARACTER.at(4, 4)
     );
 
+    public static final Animation<TextureRegion> ENEMY_WALK = new Animation<>(0.1f,
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 1),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 2),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 3),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 4),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 5),
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 6)
+    );
+
 
     // Define the bomb animation in Animations (Elena)
     public static final Animation<TextureRegion> BOMB_IDLE = new Animation<>(0.1f,

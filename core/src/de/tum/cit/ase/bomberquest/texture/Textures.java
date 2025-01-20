@@ -15,6 +15,8 @@ public class Textures {
 
     public static final TextureRegion DESTRUCTIBLEWALL = SpriteSheet.BASIC_TILES.at(10, 1);
 
+    //public static final TextureRegion DESTRUCTIBLEWALL = SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 5);
+
     public static final TextureRegion INDESTRUCTIBLEWALL = SpriteSheet.BASIC_TILES.at(1, 1);
 
     public static final TextureRegion EXIT = SpriteSheet.BASIC_TILES.at(7, 3);

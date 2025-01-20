@@ -227,7 +227,9 @@ public class GameScreen implements Screen {
             draw(spriteBatch, flowers);
         }
         //draw(spriteBatch, map.getChest());
-        draw(spriteBatch, map.getExit()); // DRAWS THE EXIT
+        if (map.getExit().isActive()) {
+            draw(spriteBatch, map.getExit());
+        }// DRAWS THE EXIT
 
 
         for(DestructibleWall destructibleWall: map.getDestructibleWalls()){

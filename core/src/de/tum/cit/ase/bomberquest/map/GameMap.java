@@ -249,6 +249,9 @@ public class GameMap {
         for (Enemy enemy : enemies) {
             enemy.update(deltaTime);
         }
+        if(enemies.isEmpty()&& !exit.isActive()){
+            exit.getBody().setActive(true);
+        }
     }
 
     public void addDestructibleWalls(DestructibleWall destructibleWall) {

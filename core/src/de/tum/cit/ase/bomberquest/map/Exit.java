@@ -13,6 +13,7 @@ public class Exit implements Drawable {
     // We would normally get the position from the hitbox, but since we don't need to move the chest, we can store the position directly.
     private final float x;
     private final float y;
+    private Body body;
 
     /**
      * Create a chest at the given position.
@@ -24,14 +25,14 @@ public class Exit implements Drawable {
         this.x = x;
         this.y = y;
         // Since the hitbox never moves, and we never need to change it, we don't need to store a reference to it.
-        createHitbox(world);
+        body=createHitbox(world);
     }
 
     /**
      * Create a Box2D body for the chest.
      * @param world The Box2D world to add the body to.
      */
-    private void createHitbox(World world) {
+    private Body createHitbox(World world) {
         // BodyDef is like a blueprint for the movement properties of the body.
         BodyDef bodyDef = new BodyDef();
         // Static bodies never move, but static bodies can collide with them.
@@ -49,8 +50,10 @@ public class Exit implements Drawable {
         body.createFixture(box, 1.0f);
         // We're done with the shape, so we should dispose of it to free up memory.
         box.dispose();
+        body.setActive(false);
         // Set the chest as the user data of the body so we can look up the chest from the body later.
         body.setUserData(this);
+        return body;
     }
 
     @Override
@@ -66,5 +69,13 @@ public class Exit implements Drawable {
     @Override
     public float getY() {
         return y;
+    }
+
+    public boolean isActive(){
+        return this.body.isActive();
+    }
+
+    public Body getBody() {
+        return body;
     }
 }

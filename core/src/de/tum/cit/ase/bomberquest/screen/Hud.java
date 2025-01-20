@@ -65,8 +65,13 @@ public class Hud {
         if(!map.enemiesCleared){
             font.draw(spriteBatch, "Clear enemies to unlock the exit!", 10, Gdx.graphics.getHeight() - 170);
         }else{
-            font.draw(spriteBatch, "Exit unlocked!", 10, Gdx.graphics.getHeight() - 170);
+            font.draw(spriteBatch, "EXIT UNLOCKED!", 10, Gdx.graphics.getHeight() - 170);
         }
+
+        if(!map.enemiesCleared) {
+            font.draw(spriteBatch, "Enemies left: " + map.getEnemies().size(), 10, Gdx.graphics.getHeight() - 210);
+        }
+
         // Finish drawing
         spriteBatch.end();
     }

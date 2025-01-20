@@ -44,6 +44,8 @@ public class BomberQuestGame extends Game {
      * because the map should not be destroyed if we temporarily switch to another screen.
      */
     private GameMap map;
+    private GameTimer gameTimer;  // Declare GameTimer here
+
 
     /**
      * Constructor for BomberQuestGame.
@@ -66,6 +68,7 @@ public class BomberQuestGame extends Game {
         this.spriteBatch = new SpriteBatch(); // Create SpriteBatch for rendering
         this.skin = new Skin(Gdx.files.internal("skin/craftacular/craftacular-ui.json")); // Load UI skin
         this.map = new GameMap(this); // Create a new game map (you should change this to load the map from a file instead)
+        this.gameTimer=new GameTimer(this);
         MusicTrack.MENUMUSIC.play(); // Play some background music
         goToStart();
     }
@@ -77,14 +80,16 @@ public class BomberQuestGame extends Game {
      * Switches to the menu screen.
      */
     public void goToPause() {
-        this.setScreen(new PauseScreen(this)); // Set the current screen to PauseScreen
+        gameTimer.pause();
+        this.setScreen(new PauseScreen(this,gameTimer)); // Set the current screen to PauseScreen
     }
 
     /**
      * Switches to the game screen.
      */
     public void goToGame() {
-        this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
+        gameTimer.resume();
+        this.setScreen(new GameScreen(this,gameTimer)); // Set the current screen to GameScreen
     }
 
     /** Returns the skin for UI elements. */
@@ -136,6 +141,7 @@ public class BomberQuestGame extends Game {
      */
     public void loadNewGame() throws IOException {
         map = new GameMap(this);// Load a new game map here (you might use fileChooser or default)
+        gameTimer.reset();
         MusicTrack.BACKGROUND.dispose();
         MusicTrack.BACKGROUND.play();
         goToGame();

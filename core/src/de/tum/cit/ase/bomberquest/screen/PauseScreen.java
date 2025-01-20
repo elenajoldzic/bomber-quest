@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
+import de.tum.cit.ase.bomberquest.GameTimer;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 
 import java.io.IOException;
@@ -25,18 +26,18 @@ import java.io.IOException;
 public class PauseScreen implements Screen {
 
     private final Stage stage;
-
+    private GameTimer gameTimer;
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
      *
      * @param game The main game class, used to access global resources and methods.
      */
-    public PauseScreen(BomberQuestGame game) {
+    public PauseScreen(BomberQuestGame game, GameTimer gameTimer) {
         /*MusicTrack.BACKGROUND.stop();
         MusicTrack.MENUMUSIC.play();*/
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
-
+        this.gameTimer=gameTimer;
         Viewport viewport = new ScreenViewport(camera); // Create a viewport with the camera
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 

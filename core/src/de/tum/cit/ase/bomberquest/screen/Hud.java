@@ -51,12 +51,13 @@ public class Hud {
 
 
         // Calculate and display the remaining time in MM:SS format
-        long elapsedTime = TimeUtils.timeSinceMillis(gameTimer.startTime);
+        long elapsedTime = TimeUtils.timeSinceMillis(gameTimer.getStartTime());
         long remainingTimeMillis = Math.max(0, GameTimer.TOTAL_TIME_MILLIS - elapsedTime);
         long minutes = remainingTimeMillis / 60000;
         long seconds = (remainingTimeMillis % 60000) / 1000;
         String timeText = String.format("Time Remaining: %02d:%02d", minutes, seconds);
         font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 50);
+
 
         font.draw(spriteBatch, "Bombs placeable: "+player.getConcurrentBombCount(), 10, Gdx.graphics.getHeight() - 90);
 

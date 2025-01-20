@@ -11,39 +11,38 @@ import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
  */
 public class GameTimer {
 
-    public static final long TOTAL_TIME_MILLIS = 100*10 * 1000; // 2:50 in milliseconds
+    public static final long TOTAL_TIME_MILLIS = 100 * 10 * 1000; // 2:50 in milliseconds
 
-    private final BomberQuestGame game; // Reference to the game instance
-    public final long startTime; // Time when the timer started
-    private final BitmapFont font; // Font for displaying the timer
+    private final BomberQuestGame game;
+    private long startTime;
+    private long pauseTime;
+    private boolean isPaused;
+    private final BitmapFont font;
 
-    /**
-     * Constructor for the GameTimer.
-     * @param game the main game instance
-     */
     public GameTimer(BomberQuestGame game) {
         this.game = game;
-        this.startTime = TimeUtils.millis();
-        this.font = new BitmapFont(); // Create a basic font for displaying the timer
+        this.startTime = TimeUtils.millis(); // Set the initial start time
+        this.font = new BitmapFont();
+        this.isPaused = false;
+        this.pauseTime = 0;
     }
 
     /**
      * Updates the game timer and checks for timeout.
      */
     public void update() {
-        long elapsedTime = TimeUtils.timeSinceMillis(startTime);
-        if (elapsedTime >= TOTAL_TIME_MILLIS) {
-            // Timer has run out; handle the player losing
-            handleTimeout();
+        if (!isPaused) {
+            long elapsedTime = TimeUtils.timeSinceMillis(startTime);
+            if (elapsedTime >= TOTAL_TIME_MILLIS) {
+                handleTimeout();
+            }
         }
     }
 
     /**
      * Renders the remaining time on the screen.
-     * @param spriteBatch the SpriteBatch used for rendering
      */
     public void render(SpriteBatch spriteBatch) {
-
         long elapsedTime = TimeUtils.timeSinceMillis(startTime);
         long remainingTimeMillis = Math.max(0, TOTAL_TIME_MILLIS - elapsedTime);
 
@@ -56,16 +55,13 @@ public class GameTimer {
         spriteBatch.begin();
         font.draw(spriteBatch, "Time Remaining: " + timeText, 10, Gdx.graphics.getHeight() - 10);
         spriteBatch.end();
-
     }
 
-
-
     /**
-     * Handles the timeout event by killing the player and switching to the YouLoseScreen.
+     * Handles the timeout event by transitioning to the game over screen.
      */
-    public void handleTimeout() {
-        game.setScreen(new YouLoseScreen(game)); // Switch to the YouLoseScreen
+    private void handleTimeout() {
+        game.setScreen(new YouLoseScreen(game)); // Switch to the YouLoseScreen when time runs out
     }
 
     /**
@@ -73,5 +69,33 @@ public class GameTimer {
      */
     public void dispose() {
         font.dispose();
+    }
+
+    /**
+     * Pauses the game timer. Stores the time when the game is paused.
+     */
+    public void pause() {
+        if (!isPaused) {
+            isPaused = true;
+            pauseTime = TimeUtils.millis(); // Record the time when the game is paused
+        }
+    }
+
+    /**
+     * Resumes the game timer. Adjusts the start time to account for the time paused.
+     */
+    public void resume() {
+        if (isPaused) {
+            isPaused = false;
+            long pauseDuration = TimeUtils.millis() - pauseTime; // Calculate how long the game was paused
+            startTime += pauseDuration; // Adjust the start time to continue from where we left off
+        }
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+    public void reset() {
+        startTime = TimeUtils.millis();  // Set the start time to the current time
     }
 }

@@ -1,5 +1,6 @@
 package de.tum.cit.ase.bomberquest.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -53,14 +54,14 @@ public class GameScreen implements Screen {
      *
      * @param game The main game class, used to access global resources and methods.
      */
-    public GameScreen(BomberQuestGame game) {
+    public GameScreen(BomberQuestGame game, GameTimer gameTimer) {
         this.game = game;
         this.spriteBatch = game.getSpriteBatch();
         this.map = game.getMap();
 
         // Initialize the timer
-        this.gameTimer = new GameTimer(game);
-
+        //this.gameTimer = new GameTimer(game);
+        this.gameTimer=gameTimer;
         this.player = map.getPlayer();
 
         this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"), gameTimer, player,map);

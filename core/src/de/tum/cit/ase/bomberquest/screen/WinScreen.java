@@ -43,6 +43,7 @@ public class WinScreen implements Screen {
         // Add a label as a title
         table.add(new Label("You Win!", game.getSkin(), "title")).padBottom(80).row();
 
+        /*
         // Create and add a button to restart the game
         TextButton tryAgainButton = new TextButton("Try Again", game.getSkin());
         table.add(tryAgainButton).width(300).row();
@@ -54,6 +55,7 @@ public class WinScreen implements Screen {
                 game.goToGame(); // Go to the game screen
             }
         });
+        */
         
         // Create and add a button to go to the main menu
         TextButton goToMenuButton = new TextButton("Go to Menu", game.getSkin());

@@ -101,7 +101,7 @@ public class GameMap {
 
         //this.destructibleWalls=new ArrayList<>();
         MapLoader mapLoader = new MapLoader();
-        mapLoader.loadMap("/Users/bcelik/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
+        mapLoader.loadMap("/Users/user/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
         //mapLoader.loadMap(mapPath);
         //System.out.println(mapLoader.getMapData());
         // Iterate through the map data and create objects
@@ -159,8 +159,8 @@ public class GameMap {
         */
 
 
-        // Create flowers in a 7x7 grid
-        this.flowers = new Flowers[7][7];
+        // Create flowers in a 20x20 grid
+        this.flowers = new Flowers[20][20];
         for (int i = 0; i < flowers.length; i++) {
             for (int j = 0; j < flowers[i].length; j++) {
                 this.flowers[i][j] = new Flowers(i, j);
@@ -442,4 +442,30 @@ public class GameMap {
     public boolean isEnemiesCleared() {
         return enemiesCleared;
     }
+    /**
+     * Counts the number of indestructible walls that form the borders of the map.
+     * Assumes the borders are defined by walls at the edges of the map grid.
+     *
+     * @return The number of indestructible walls around the map's borders.
+     */
+    public int countBorderIndestructibleWalls() {
+        int borderWallCount = 0;
+
+        // Define the boundaries of the map based on the flower grid
+        int mapWidth = flowers.length;
+        int mapHeight = flowers[0].length;
+
+        for (IndestructibleWall wall : indestructibleWalls) {
+            int wallX = MathUtils.floor(wall.getX());
+            int wallY = MathUtils.floor(wall.getY());
+
+            // Check if the wall is on the borders of the map
+            if (wallX == 0 || wallX == mapWidth - 1 || wallY == 0 || wallY == mapHeight - 1) {
+                borderWallCount++;
+            }
+        }
+
+        return borderWallCount;
+    }
+
 }

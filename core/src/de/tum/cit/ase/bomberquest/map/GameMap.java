@@ -99,7 +99,7 @@ public class GameMap {
 
         this.destructibleWalls=new ArrayList<>();
         MapLoader mapLoader = new MapLoader();
-        mapLoader.loadMap("/Users/bcelik/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
+        mapLoader.loadMap("/Users/user/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
         System.out.println(mapLoader.getMapData());
         // Iterate through the map data and create objects
         for (Map.Entry<String, Integer> entry : mapLoader.getMapData().entrySet()) {

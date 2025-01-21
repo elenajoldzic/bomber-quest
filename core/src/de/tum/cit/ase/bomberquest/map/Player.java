@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
+import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
@@ -29,9 +30,7 @@ public class Player implements Drawable {
     private int concurrentBombCount; // Maximum bombs the player can place
     private int blastRadius;         // Blast radius of bombs
 
-    // (Elena)
-    private Bomb carriedBomb;        // player carried bomb
-    private boolean isCarryingBomb = false;
+    private boolean isWalking = false;
 
 
     public Player(World world, float x, float y) {
@@ -105,22 +104,37 @@ public class Player implements Drawable {
         float speed = 3.5f; //create a constant speed value for player to move
         float xVelocity = 0;
         float yVelocity = 0;
+        boolean isArrowKeyPressed=false;
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.UP)) {
             currentDirection=Direction.UP;
             yVelocity = (float) speed;
+            isArrowKeyPressed=true;
         }
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.DOWN)) {
             currentDirection=Direction.DOWN;
             yVelocity = (float) -speed; //on the negative side of y axis, different direction
+            isArrowKeyPressed=true;
         }
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.LEFT)) {
             currentDirection=Direction.LEFT;
             xVelocity = (float) -speed; // Move left
+            isArrowKeyPressed=true;
         }
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.RIGHT)) {
             currentDirection=Direction.RIGHT;
             xVelocity = (float) speed;// Move right
+            isArrowKeyPressed=true;
         }
+
+
+        if (isArrowKeyPressed && !isWalking) {
+            MusicTrack.WALKING.play();
+        } else if (!isArrowKeyPressed && isWalking) {
+            MusicTrack.WALKING.dispose();
+        }
+
+        isWalking=isArrowKeyPressed;
+
         this.hitbox.setLinearVelocity(xVelocity, yVelocity); //method for making our player move
 
     }

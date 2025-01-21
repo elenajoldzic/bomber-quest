@@ -13,7 +13,7 @@ import com.badlogic.gdx.audio.Music;
  */
 public enum MusicTrack {
     
-    BACKGROUND("background.mp3", 0.2f,true),
+    BACKGROUND("background.mp3", 0.16f,true),
     BOMBEXPLODE("bombexplode.mp3",0.2f,false),
     ENEMYDIE("enemydie.mp3",0.2f,false),
     BUTTONSOUND("menubuttonsound.mp3",0.2f,false),
@@ -23,7 +23,9 @@ public enum MusicTrack {
     WINSOUND("winsound.mp3",0.8f,false),
     PLAYERDIE("playerdie.mp3",0.1f,false),
     PAUSEMUSIC("intro.mp3",0.3f,true),
-    BOMBPLACE("bombdropsound.mp3",0.06f,false)
+    BOMBPLACE("bombdropsound.mp3",0.06f,false),
+    EXITREVEAL("exitreveal.mp3",0.4f,false),
+    WALKING("walking.mp3",0.1f,true)
     ;
 
     

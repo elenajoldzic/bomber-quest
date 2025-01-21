@@ -102,7 +102,7 @@ public class GameMap {
 
         //this.destructibleWalls=new ArrayList<>();
         MapLoader mapLoader = new MapLoader();
-        mapLoader.loadMap("/Users/bcelik/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-1.properties");
+        mapLoader.loadMap("/Users/bcelik/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-2.properties");
         //mapLoader.loadMap(mapPath);
         //System.out.println(mapLoader.getMapData());
         // Iterate through the map data and create objects
@@ -256,6 +256,7 @@ public class GameMap {
         if(enemies.isEmpty()&& !exit.isActive()){
             exit.getBody().setActive(true);
             enemiesCleared=true;
+            MusicTrack.EXITREVEAL.play();
         }
     }
 

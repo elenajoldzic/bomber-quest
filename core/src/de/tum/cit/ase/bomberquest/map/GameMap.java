@@ -101,8 +101,33 @@ public class GameMap {
         //this.chest = new Chest(world, 3, 3);
 
         //this.destructibleWalls=new ArrayList<>();
+
+        /*
+        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
+        this.exit = new Exit(world, 6, 5); // INITIALIZED EXIT
+        this.entrance = new Entrance(world, 6, 6); // INITIALIZED ENTRANCE
+        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
+        addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
+        addPowerUp(new ConcurrentBomb(world, 5, 3));
+        addPowerUp(new BlastRadius(world, 4, 2));
+        addEnemies(new Enemy(world, 5, 2)); // INITIALIZED ENEMY
+        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
+        addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
+        */
+
+
+        // Create flowers in a 20x20 grid
+        this.flowers = new Flowers[20][20];
+        for (int i = 0; i < flowers.length; i++) {
+            for (int j = 0; j < flowers[i].length; j++) {
+                this.flowers[i][j] = new Flowers(i, j);
+            }
+        }
+    }
+
+    public void loadTheMap(String path){
         MapLoader mapLoader = new MapLoader();
-        mapLoader.loadMap("/Users/bcelik/IdeaProjects/itp2425itp2425projectwork-joldzicelenacelikibrahimberkay/maps/map-2.properties");
+        mapLoader.loadMap(path);
         //mapLoader.loadMap(mapPath);
         //System.out.println(mapLoader.getMapData());
         // Iterate through the map data and create objects
@@ -146,30 +171,7 @@ public class GameMap {
                     throw new RuntimeException("Unknown object type: " + objectType);
             }
         }
-        /*
-        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
-        this.exit = new Exit(world, 6, 5); // INITIALIZED EXIT
-        this.entrance = new Entrance(world, 6, 6); // INITIALIZED ENTRANCE
-        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
-        addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
-        addPowerUp(new ConcurrentBomb(world, 5, 3));
-        addPowerUp(new BlastRadius(world, 4, 2));
-        addEnemies(new Enemy(world, 5, 2)); // INITIALIZED ENEMY
-        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
-        addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
-        */
-
-
-        // Create flowers in a 20x20 grid
-        this.flowers = new Flowers[20][20];
-        for (int i = 0; i < flowers.length; i++) {
-            for (int j = 0; j < flowers[i].length; j++) {
-                this.flowers[i][j] = new Flowers(i, j);
-            }
-        }
     }
-
-
 
     /**
      * Updates the game state. This is called once per frame.

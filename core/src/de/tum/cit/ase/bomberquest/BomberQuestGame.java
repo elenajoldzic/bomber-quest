@@ -3,6 +3,7 @@ package de.tum.cit.ase.bomberquest;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
@@ -13,7 +14,10 @@ import de.tum.cit.ase.bomberquest.screen.PauseScreen;
 import de.tum.cit.ase.bomberquest.screen.StartScreen;
 import de.tum.cit.ase.bomberquest.screen.WinScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
+import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
+import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -140,11 +144,47 @@ public class BomberQuestGame extends Game {
      * Loads a new game map and starts the game.
      */
     public void loadNewGame() throws IOException {
-        map = new GameMap(this);// Load a new game map here (you might use fileChooser or default)
+        /*map = new GameMap(this);// Load a new game map here (you might use fileChooser or default)
         gameTimer.reset();
         MusicTrack.BACKGROUND.dispose();
         MusicTrack.BACKGROUND.play();
         goToGame();
+         */
+            NativeFileChooserConfiguration config = new NativeFileChooserConfiguration();
+            config.directory = new FileHandle(new File(System.getProperty("user.dir")));
+            NativeFileChooserCallback callback = new NativeFileChooserCallback() {
+                @Override
+                public void onFileChosen(FileHandle file) {
+                    if (file != null) {
+                        String filePath = file.path();  // Get the path of the selected file
+
+                        // Create a new GameMap instance and load the map data
+                        GameMap map = new GameMap(BomberQuestGame.this);
+                        map.loadTheMap(filePath);  // Load the map from the file
+
+                        // Set the loaded map to the current game map
+                        BomberQuestGame.this.map = map;
+                        gameTimer.reset();
+                        MusicTrack.BACKGROUND.dispose();
+                        MusicTrack.BACKGROUND.play();
+                        goToGame();
+                    }
+
+                }
+
+                @Override
+                public void onCancellation() {
+                    System.out.println("File selection was cancelled.");
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    System.err.println("Error loading map file: " + exception.getMessage());
+                    exception.printStackTrace();
+                }
+            };
+
+            fileChooser.chooseFile(config, callback);
 
     }
 

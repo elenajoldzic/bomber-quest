@@ -46,6 +46,7 @@ public class YouLoseScreen implements Screen {
         // Add a label as a title
         table.add(new Label("You lose!", game.getSkin(), "title")).padBottom(80).row();
 
+        /*
         // Create and add a button to go to the game screen
         TextButton goToGameButton = new TextButton("Try again", game.getSkin());
         table.add(goToGameButton).width(300).row();
@@ -57,6 +58,8 @@ public class YouLoseScreen implements Screen {
                 game.goToGame(); // Change to the game screen when button is pressed
             }
         });
+
+         */
 
         // Create and add a button to go to the main menu
         TextButton goToMenuButton = new TextButton("Go to Menu", game.getSkin());

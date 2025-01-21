@@ -9,10 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 import de.tum.cit.ase.bomberquest.map.MapFileSelector;
-import de.tum.cit.ase.bomberquest.screen.GameScreen;
-import de.tum.cit.ase.bomberquest.screen.PauseScreen;
-import de.tum.cit.ase.bomberquest.screen.StartScreen;
-import de.tum.cit.ase.bomberquest.screen.WinScreen;
+import de.tum.cit.ase.bomberquest.screen.*;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
@@ -123,20 +120,30 @@ public class BomberQuestGame extends Game {
             previousScreen.dispose();
         }
         if(screen instanceof GameScreen){
+            MusicTrack.WALKING.dispose();
             MusicTrack.MENUMUSIC.stop();
             MusicTrack.BACKGROUND.play();
         }
         if(screen instanceof StartScreen){
+            MusicTrack.WALKING.dispose();
             MusicTrack.BACKGROUND.stop();
+            MusicTrack.MENUMUSIC.dispose();
             MusicTrack.MENUMUSIC.play();
         }
         if (screen instanceof WinScreen){
+            MusicTrack.WALKING.dispose();
             MusicTrack.BACKGROUND.stop();
             MusicTrack.WINSOUND.play();
         }
         if (screen instanceof PauseScreen){
+            MusicTrack.WALKING.dispose();
             MusicTrack.BACKGROUND.stop();
             MusicTrack.MENUMUSIC.play();
+        }
+        if (screen instanceof YouLoseScreen){
+            MusicTrack.WALKING.dispose();
+            MusicTrack.BACKGROUND.stop();
+
         }
     }
 

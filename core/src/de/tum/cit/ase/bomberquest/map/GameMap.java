@@ -125,53 +125,55 @@ public class GameMap {
         }
     }
 
-    public void loadTheMap(String path){
+    public void loadTheMap(String path) {
         MapLoader mapLoader = new MapLoader();
         mapLoader.loadMap(path);
-        //mapLoader.loadMap(mapPath);
-        //System.out.println(mapLoader.getMapData());
+
         // Iterate through the map data and create objects
-        for (Map.Entry<String, Integer> entry : mapLoader.getMapData().entrySet()) {
+        for (Map.Entry<String, Set<Integer>> entry : mapLoader.getMapData().entrySet()) {
             String[] coordinates = entry.getKey().split(","); // "x,y"
             int x = Integer.parseInt(coordinates[0].trim());
             int y = Integer.parseInt(coordinates[1].trim());
-            int objectType = entry.getValue(); // Value indicates the object type
 
-            // Create objects based on the type
-            switch (objectType) {
-                case MapLoader.INDESTRUCTIBLE_WALL:
-                    indestructibleWalls.add(new IndestructibleWall(world, x, y));
-                    break;
+            // Iterate through all object types at this coordinate
+            for (int objectType : entry.getValue()) {
+                // Create objects based on the type
+                switch (objectType) {
+                    case MapLoader.INDESTRUCTIBLE_WALL:
+                        indestructibleWalls.add(new IndestructibleWall(world, x, y));
+                        break;
 
-                case MapLoader.DESTRUCTIBLE_WALL:
-                    destructibleWalls.add(new DestructibleWall(world, x, y));
-                    break;
+                    case MapLoader.DESTRUCTIBLE_WALL:
+                        destructibleWalls.add(new DestructibleWall(world, x, y));
+                        break;
 
-                case MapLoader.ENTRANCE:
-                    this.player = new Player(world, x, y);// Create the player object
-                    break;
+                    case MapLoader.ENTRANCE:
+                        this.player = new Player(world, x, y); // Create the player object
+                        break;
 
-                case MapLoader.EXIT:
-                    this.exit = new Exit(world, x, y); // Create the exit object
-                    break;
+                    case MapLoader.EXIT:
+                        this.exit = new Exit(world, x, y); // Create the exit object
+                        break;
 
-                case MapLoader.ENEMY:
-                    enemies.add(new Enemy(world, x, y)); // Create an enemy
-                    break;
+                    case MapLoader.ENEMY:
+                        enemies.add(new Enemy(world, x, y)); // Create an enemy
+                        break;
 
-                case MapLoader.BOMB_POWER_UP:
-                    powerUps.add(new ConcurrentBomb(world, x, y)); // Power-up (e.g., bomb power-up)
-                    break;
+                    case MapLoader.BOMB_POWER_UP:
+                        powerUps.add(new ConcurrentBomb(world, x, y)); // Power-up (e.g., bomb power-up)
+                        break;
 
-                case MapLoader.BLAST_RADIUS_POWER_UP:
-                    powerUps.add(new BlastRadius(world, x, y)); // Power-up (e.g., blast radius)
-                    break;
+                    case MapLoader.BLAST_RADIUS_POWER_UP:
+                        powerUps.add(new BlastRadius(world, x, y)); // Power-up (e.g., blast radius)
+                        break;
 
-                default:
-                    throw new RuntimeException("Unknown object type: " + objectType);
+                    default:
+                        throw new RuntimeException("Unknown object type: " + objectType);
+                }
             }
         }
     }
+
 
     /**
      * Updates the game state. This is called once per frame.

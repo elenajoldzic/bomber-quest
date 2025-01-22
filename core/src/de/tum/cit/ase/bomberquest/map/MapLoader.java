@@ -15,7 +15,8 @@ public class MapLoader {
     public static final int BOMB_POWER_UP = 5;
     public static final int BLAST_RADIUS_POWER_UP = 6;
 
-    private final Map<String, Integer> mapData = new HashMap<>();
+    // Updated to store multiple object types per coordinate
+    private final Map<String, Set<Integer>> mapData = new HashMap<>();
 
     /**
      * Loads a map file from a given file path and parses it.
@@ -46,7 +47,8 @@ public class MapLoader {
             String coordinates = keyValue[0].trim();
             int objectType = Integer.parseInt(keyValue[1].trim());
 
-            mapData.put(coordinates, objectType);
+            // Add the object type to the set for this coordinate
+            mapData.computeIfAbsent(coordinates, k -> new HashSet<>()).add(objectType);
         }
 
         // Ensure there is at least one exit
@@ -55,12 +57,16 @@ public class MapLoader {
 
     /**
      * Ensures there is at least one exit in the map by placing it under a random destructible wall.
+     * The destructible wall is preserved.
      */
     private void ensureExit() {
-        if (!mapData.containsValue(EXIT)) {
+        boolean exitExists = mapData.values().stream()
+                .anyMatch(objects -> objects.contains(EXIT));
+
+        if (!exitExists) {
             List<String> destructibleWalls = new ArrayList<>();
-            for (Map.Entry<String, Integer> entry : mapData.entrySet()) {
-                if (entry.getValue() == DESTRUCTIBLE_WALL) {
+            for (Map.Entry<String, Set<Integer>> entry : mapData.entrySet()) {
+                if (entry.getValue().contains(DESTRUCTIBLE_WALL)) {
                     destructibleWalls.add(entry.getKey());
                 }
             }
@@ -71,16 +77,16 @@ public class MapLoader {
 
             Random random = new Random();
             String randomWall = destructibleWalls.get(random.nextInt(destructibleWalls.size()));
-            mapData.put(randomWall, EXIT);
+            mapData.get(randomWall).add(EXIT); // Add exit without removing the destructible wall
         }
     }
 
     /**
      * Returns the parsed map data.
      *
-     * @return A map of coordinates to object types.
+     * @return A map of coordinates to sets of object types.
      */
-    public Map<String, Integer> getMapData() {
+    public Map<String, Set<Integer>> getMapData() {
         return mapData;
     }
 }

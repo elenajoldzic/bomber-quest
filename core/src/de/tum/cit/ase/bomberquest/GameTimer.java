@@ -11,7 +11,7 @@ import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
  */
 public class GameTimer {
 
-    public static final long TOTAL_TIME_MILLIS = 100 * 10 * 1000; // 2:50 in milliseconds
+    public static final long TOTAL_TIME_MILLIS = 5 * 60 * 1000; // 2:50 in milliseconds
 
     private final BomberQuestGame game;
     private long startTime;

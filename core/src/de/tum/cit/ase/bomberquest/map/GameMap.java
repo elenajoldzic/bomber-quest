@@ -62,7 +62,7 @@ public class GameMap {
 
     //private final Chest chest;
 
-    private final Flowers[][] flowers;
+    private Flowers[][] flowers;
 
     //private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
     private List<DestructibleWall> destructibleWalls= new ArrayList<>();;
@@ -90,7 +90,8 @@ public class GameMap {
     private List<DestructibleWall> wallsToRemove = new ArrayList<>();
     private List<Enemy> enemiesToRemove = new ArrayList<>();
     public boolean enemiesCleared=false;
-
+    public int width;
+    public int height;
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -117,24 +118,25 @@ public class GameMap {
 
 
         // Create flowers in a 20x20 grid
-        this.flowers = new Flowers[20][20];
-        for (int i = 0; i < flowers.length; i++) {
-            for (int j = 0; j < flowers[i].length; j++) {
-                this.flowers[i][j] = new Flowers(i, j);
-            }
-        }
+        System.err.println(this.width);
     }
 
     public void loadTheMap(String path) {
         MapLoader mapLoader = new MapLoader();
         mapLoader.loadMap(path);
-
+        int maxX = 0;
+        int maxY = 0;
         // Iterate through the map data and create objects
         for (Map.Entry<String, Set<Integer>> entry : mapLoader.getMapData().entrySet()) {
             String[] coordinates = entry.getKey().split(","); // "x,y"
             int x = Integer.parseInt(coordinates[0].trim());
             int y = Integer.parseInt(coordinates[1].trim());
-
+            if(x > maxX){
+                maxX = x;
+            }
+            if(y > maxY){
+                maxY = y;
+            }
             // Iterate through all object types at this coordinate
             for (int objectType : entry.getValue()) {
                 // Create objects based on the type
@@ -170,6 +172,14 @@ public class GameMap {
                     default:
                         throw new RuntimeException("Unknown object type: " + objectType);
                 }
+            }
+            this.width = maxX;
+            this.height = maxY;
+        }
+        this.flowers = new Flowers[width][height];
+        for (int i = 0; i < flowers.length; i++) {
+            for (int j = 0; j < flowers[i].length; j++) {
+                this.flowers[i][j] = new Flowers(i, j);
             }
         }
     }

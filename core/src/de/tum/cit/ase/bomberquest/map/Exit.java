@@ -45,7 +45,7 @@ public class Exit implements Drawable {
         // We'll use a polygon shape for the chest.
         PolygonShape box = new PolygonShape();
         // Make the polygon a square with a side length of 1 tile.
-        box.setAsBox(0.5f, 0.5f);
+        box.setAsBox(0.4f, 0.4f);
         // Attach the shape to the body as a fixture.
         body.createFixture(box, 1.0f);
         // We're done with the shape, so we should dispose of it to free up memory.

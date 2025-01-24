@@ -51,6 +51,7 @@ public class MapLoader {
             mapData.computeIfAbsent(coordinates, k -> new HashSet<>()).add(objectType);
         }
 
+        ensurePowerUpsHidden();
         // Ensure there is at least one exit
         ensureExit();
     }
@@ -78,6 +79,20 @@ public class MapLoader {
             Random random = new Random();
             String randomWall = destructibleWalls.get(random.nextInt(destructibleWalls.size()));
             mapData.get(randomWall).add(EXIT); // Add exit without removing the destructible wall
+        }
+    }
+
+    /**
+     * Ensures that every power-up is hidden underneath a destructible wall.
+     */
+    private void ensurePowerUpsHidden() {
+        for (Map.Entry<String, Set<Integer>> entry : mapData.entrySet()) {
+            Set<Integer> objectTypes = entry.getValue();
+
+            // If there is any power-up, add a destructible wall
+            if (objectTypes.contains(BOMB_POWER_UP) || objectTypes.contains(BLAST_RADIUS_POWER_UP)) {
+                objectTypes.add(DESTRUCTIBLE_WALL);
+            }
         }
     }
 

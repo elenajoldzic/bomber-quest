@@ -31,7 +31,7 @@ public abstract class PowerUp implements Drawable {
         this.body = world.createBody(bodyDef);
 
         PolygonShape box = new PolygonShape();
-        box.setAsBox(0.5f, 0.5f);
+        box.setAsBox(0.4f, 0.4f);
 
         body.createFixture(box, 1.0f);
         box.dispose();

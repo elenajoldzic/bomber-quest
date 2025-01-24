@@ -124,29 +124,29 @@ public class GameMap {
     public void loadTheMap(String path) {
         MapLoader mapLoader = new MapLoader();
         mapLoader.loadMap(path);
+
         int maxX = 0;
         int maxY = 0;
+
         // Iterate through the map data and create objects
         for (Map.Entry<String, Set<Integer>> entry : mapLoader.getMapData().entrySet()) {
             String[] coordinates = entry.getKey().split(","); // "x,y"
             int x = Integer.parseInt(coordinates[0].trim());
             int y = Integer.parseInt(coordinates[1].trim());
-            if(x > maxX){
-                maxX = x;
-            }
-            if(y > maxY){
-                maxY = y;
-            }
-            // Iterate through all object types at this coordinate
+
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+
+            boolean hasDestructibleWall = entry.getValue().contains(MapLoader.DESTRUCTIBLE_WALL);
+
+            // Iterate through all object types except destructible walls
             for (int objectType : entry.getValue()) {
+                if (objectType == MapLoader.DESTRUCTIBLE_WALL) continue;
+
                 // Create objects based on the type
                 switch (objectType) {
                     case MapLoader.INDESTRUCTIBLE_WALL:
                         indestructibleWalls.add(new IndestructibleWall(world, x, y));
-                        break;
-
-                    case MapLoader.DESTRUCTIBLE_WALL:
-                        destructibleWalls.add(new DestructibleWall(world, x, y));
                         break;
 
                     case MapLoader.ENTRANCE:
@@ -162,7 +162,8 @@ public class GameMap {
                         break;
 
                     case MapLoader.BOMB_POWER_UP:
-                        powerUps.add(new ConcurrentBomb(world, x, y)); // Power-up (e.g., bomb power-up)
+                        powerUps.add(new ConcurrentBomb(world, x, y));// Power-up (e.g., bomb power-up)
+                        
                         break;
 
                     case MapLoader.BLAST_RADIUS_POWER_UP:
@@ -173,9 +174,17 @@ public class GameMap {
                         throw new RuntimeException("Unknown object type: " + objectType);
                 }
             }
-            this.width = maxX;
-            this.height = maxY;
+
+            // Always add the destructible wall last if it exists
+            if (hasDestructibleWall) {
+                destructibleWalls.add(new DestructibleWall(world, x, y));
+            }
         }
+
+        this.width = maxX + 1; // Adjust dimensions
+        this.height = maxY + 1;
+
+        // Initialize flowers array
         this.flowers = new Flowers[width][height];
         for (int i = 0; i < flowers.length; i++) {
             for (int j = 0; j < flowers[i].length; j++) {

@@ -156,6 +156,14 @@ public class GameScreen implements Screen {
             game.goToPause();
         }
 
+        // Adjust camera zoom with '+' and '-'
+        if (Gdx.input.isKeyPressed(Input.Keys.PLUS) || Gdx.input.isKeyPressed(Input.Keys.EQUALS)) {
+            mapCamera.zoom = Math.max(mapCamera.zoom - 0.02f, 0.5f); // Zoom in (min zoom level: 0.5)
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.MINUS)) {
+            mapCamera.zoom = Math.min(mapCamera.zoom + 0.02f, 2f); // Zoom out (max zoom level: 2)
+        }
+
         // Elena
         // Check for space key press to plant a bomb
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -213,7 +221,7 @@ public class GameScreen implements Screen {
             lastPlayerX = playerX;
             lastPlayerY = playerY;
         }
-
+        mapCamera.update();
     }
 
     private void renderMap() {

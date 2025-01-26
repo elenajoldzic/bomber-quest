@@ -43,20 +43,6 @@ public class WinScreen implements Screen {
         // Add a label as a title
         table.add(new Label("You Win!", game.getSkin(), "title")).padBottom(80).row();
 
-        /*
-        // Create and add a button to restart the game
-        TextButton tryAgainButton = new TextButton("Try Again", game.getSkin());
-        table.add(tryAgainButton).width(300).row();
-        tryAgainButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                MusicTrack.BUTTONSOUND.play();
-                game.create(); // Restart the game
-                game.goToGame(); // Go to the game screen
-            }
-        });
-        */
-        
         // Create and add a button to go to the main menu
         TextButton goToMenuButton = new TextButton("Go to Menu", game.getSkin());
         table.add(goToMenuButton).width(300).row();
@@ -68,8 +54,6 @@ public class WinScreen implements Screen {
                 game.goToStart(); // Go to the main menu screen when button is pressed
             }
         });
-
-
     }
 
     /**
@@ -80,7 +64,7 @@ public class WinScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         float frameTime = Math.min(deltaTime, 0.250f); // Cap frame time to 250ms to prevent spiral of death
-        ScreenUtils.clear(Color.BLACK); // Clear the screen with a black color
+        ScreenUtils.clear(Color.GREEN); // Clear the screen with a black color
         stage.act(frameTime); // Update the stage
         stage.draw(); // Draw the stage
     }

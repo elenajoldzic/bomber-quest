@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
-import de.tum.cit.ase.bomberquest.GameTimer;
+import de.tum.cit.ase.bomberquest.gamemechanism.GameTimer;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 import de.tum.cit.ase.bomberquest.map.Player;
 
@@ -24,7 +24,6 @@ public class Hud {
     /** The camera used to render the HUD. */
     private final OrthographicCamera camera;
     private final GameTimer gameTimer;
-
     private final Player player;
     private final GameMap map;
     
@@ -48,7 +47,9 @@ public class Hud {
         // Start drawing
         spriteBatch.begin();
         font.getData().setScale(0.75f,0.75f);
+
         // Draw the HUD elements
+        //Draw "Press Esc to Pause!" text
         font.draw(spriteBatch, "Press Esc to Pause!", 10, Gdx.graphics.getHeight() - 10);
 
         // Calculate and display the remaining time in MM:SS format
@@ -59,14 +60,17 @@ public class Hud {
         String timeText = String.format("Time Remaining: %02d:%02d", minutes, seconds);
         font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 40);
 
+        //Draw concurrent bomb count in HUD (yellow)
         font.setColor(Color.YELLOW);
         font.draw(spriteBatch, "Bombs placeable: "+player.getConcurrentBombCount(), 10, Gdx.graphics.getHeight() - 80);
         font.setColor(Color.WHITE);
 
+        //Draw blast radius value in HUD (yellow)
         font.setColor(Color.YELLOW);
         font.draw(spriteBatch, "Blast radius:  "+player.getBlastRadius(), 10, Gdx.graphics.getHeight() - 110);
         font.setColor(Color.WHITE);
 
+        //Draw the "Clear enemies to unlock the exit!" warning, if enemies are cleared, draw the "exit unlocked" text
         if(!map.enemiesCleared){
             font.setColor(Color.RED);
             font.draw(spriteBatch, "Clear enemies to unlock the exit!", 10, Gdx.graphics.getHeight() - 150);
@@ -77,6 +81,7 @@ public class Hud {
             font.setColor(Color.WHITE);
         }
 
+        //Draw the count for remaining enemies
         if(!map.enemiesCleared) {
             font.draw(spriteBatch, "Enemies left: " + map.getEnemies().size(), 10, Gdx.graphics.getHeight() - 180);
         }

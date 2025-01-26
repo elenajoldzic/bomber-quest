@@ -1,17 +1,16 @@
 package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
+import de.tum.cit.ase.bomberquest.gamemechanism.MapLoader;
 import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
 import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;
 import de.tum.cit.ase.bomberquest.powerups.PowerUp;
-import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
 
 import java.util.*;
 
@@ -26,7 +25,6 @@ public class GameMap {
         // Initialize the Box2D physics engine.
         com.badlogic.gdx.physics.box2d.Box2D.init();
     }
-
     // Box2D physics simulation parameters (you can experiment with these if you want, but they work well as they are)
     /**
      * The time step for the physics simulation.
@@ -56,90 +54,38 @@ public class GameMap {
      * The Box2D world for physics simulation.
      */
     private final World world;
-
-    // Game objects
     private Player player;
-
-    //private final Chest chest;
-
     private Flowers[][] flowers;
-
-    //private final DestructibleWall destructibleWalls; //THESE ARE THE WALLS
     private List<DestructibleWall> destructibleWalls= new ArrayList<>();;
-
-    //private final IndestructibleWall indestructibleWalls; //THESE ARE THE WALLS
     private List<IndestructibleWall> indestructibleWalls= new ArrayList<>();
     private List<ExplosionTile> explosionTiles = new ArrayList<>();
-
-    private Exit exit; // THIS IS THE EXIT
-
-    //private Entrance entrance; // THIS IS THE ENTRANCE
-
-    //private final ConcurrentBomb concurrentBomb; // THIS IS THE CONCURRENT BOMB
-
-    //private final BlastRadius blastRadius; // THIS IS THE BLAST RADIUS
-
+    private Exit exit;
     private List<PowerUp> powerUps = new ArrayList<>();
-
-    //private final Enemy enemy; // THIS IS THE ENEMY
     private List<Enemy> enemies = new ArrayList<>();
-
     private List<Bomb> bombs = new ArrayList<>();
-
-    List<Body> bodiesToDestroy = new ArrayList<>();  // Queue to hold bodies to remove
+    private List<Body> bodiesToDestroy = new ArrayList<>();  // Queue to hold bodies to remove
     private List<DestructibleWall> wallsToRemove = new ArrayList<>();
     private List<Enemy> enemiesToRemove = new ArrayList<>();
     public boolean enemiesCleared=false;
-    public int width;
-    public int height;
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
         this.world = new World(Vector2.Zero, true);
-        // Create a player with initial position (1, 3)
-        //this.player = new Player(this.world, 1, 3);
-        // Create a chest in the middle of the map
-        //this.chest = new Chest(world, 3, 3);
-
-        //this.destructibleWalls=new ArrayList<>();
-
-        /*
-        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
-        this.exit = new Exit(world, 6, 5); // INITIALIZED EXIT
-        this.entrance = new Entrance(world, 6, 6); // INITIALIZED ENTRANCE
-        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
-        addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
-        addPowerUp(new ConcurrentBomb(world, 5, 3));
-        addPowerUp(new BlastRadius(world, 4, 2));
-        addEnemies(new Enemy(world, 5, 2)); // INITIALIZED ENEMY
-        addIndestructibleWalls (new IndestructibleWall(world, 5, 5)); // INITIALIZED WALLS
-        addDestructibleWalls(new DestructibleWall(world, 4, 5)); // INITIALIZED WALLS
-        */
-
-
-        // Create flowers in a 20x20 grid
-        System.err.println(this.width);
     }
 
     public void loadTheMap(String path) {
         MapLoader mapLoader = new MapLoader();
         mapLoader.loadMap(path);
 
-        int maxX = 0;
-        int maxY = 0;
-
-        // Iterate through the map data and create objects
+        // Iterate through the map properties file and split the digits into x and y coordinates
         for (Map.Entry<String, Set<Integer>> entry : mapLoader.getMapData().entrySet()) {
             String[] coordinates = entry.getKey().split(","); // "x,y"
             int x = Integer.parseInt(coordinates[0].trim());
             int y = Integer.parseInt(coordinates[1].trim());
 
-            if (x > maxX) maxX = x;
-            if (y > maxY) maxY = y;
-
             boolean hasDestructibleWall = entry.getValue().contains(MapLoader.DESTRUCTIBLE_WALL);
 
-            // Iterate through all object types except destructible walls
+            // Iterate through all object types except destructible walls (we will create them latest to ensure they spawn on top of everything
             for (int objectType : entry.getValue()) {
                 if (objectType == MapLoader.DESTRUCTIBLE_WALL) continue;
 
@@ -163,7 +109,6 @@ public class GameMap {
 
                     case MapLoader.BOMB_POWER_UP:
                         powerUps.add(new ConcurrentBomb(world, x, y));// Power-up (e.g., bomb power-up)
-                        
                         break;
 
                     case MapLoader.BLAST_RADIUS_POWER_UP:
@@ -181,11 +126,8 @@ public class GameMap {
             }
         }
 
-        this.width = maxX + 1; // Adjust dimensions
-        this.height = maxY + 1;
-
         // Initialize flowers array
-        this.flowers = new Flowers[width][height];
+        this.flowers = new Flowers[50][50];
         for (int i = 0; i < flowers.length; i++) {
             for (int j = 0; j < flowers[i].length; j++) {
                 this.flowers[i][j] = new Flowers(i, j);
@@ -203,7 +145,6 @@ public class GameMap {
 
     //WE NEED TO PUT UPDATE METHODS IN HERE IN ORDER ANIMATIONS TO WORK
     public void tick(float frameTime) {
-        //this.player.tick(frameTime);
         updateEnemies(frameTime);
         this.player.update(frameTime);
         updateBombs(frameTime);
@@ -225,53 +166,29 @@ public class GameMap {
         }
     }
 
-    public World getWorld() {
-        return world;
-    }
-
-    /**
-     * Returns the player on the map.
-     */
-    public Player getPlayer() {
-        return player;
-    }
-
-    /**
-     * Returns the chest on the map.
-     */
-    /*public Chest getChest() {
-        return chest;
-    }*/
-
-
-    public Exit getExit() {
-        return exit;
-    }
-    public List<Enemy> getEnemies() {
-        return enemies;
-    }
-
-    public void addPowerUp(PowerUp powerUp) {
-        powerUps.add(powerUp);
-    }
-
-    public void addEnemies(Enemy enemy){
-        enemies.add(enemy);
-    }
-
-    public void removeEnemies(Enemy enemy) {
-        if (enemy == null) return;
-
-        // Safely destroy the physics body associated with the wall
-        if (enemy.getBody() != null) {
-            bodiesToDestroy.add(enemy.getBody());
+    //Update methods
+    //CHECKS THE BOMB AND IF IT IS EXPLODED, REMOVES FROM THE LIST AND ALSO REMOVES THE BODY
+    public void updateBombs(float deltaTime) {
+        Iterator<Bomb> iterator = bombs.iterator();
+        while (iterator.hasNext()) {
+            Bomb bomb = iterator.next();
+            bomb.update(deltaTime);
+            if (bomb.isExploded()) {
+                iterator.remove();
+                bomb.removeBomb(bomb);// Remove exploded bombs
+            }
         }
-        // Remove the wall from the list of destructible walls
-        getEnemies().remove(enemy);
     }
-
-
-
+    public void updateExplosionTiles(float deltaTime){
+        Iterator<ExplosionTile> iterator = explosionTiles.iterator();
+        while (iterator.hasNext()) {
+            ExplosionTile tile = iterator.next();
+            tile.update(deltaTime);
+            if (tile.isAnimationFinished()) {
+                iterator.remove();
+            }
+        }
+    }
     public void updateEnemies(float deltaTime) {
         for (Enemy enemy : enemies) {
             enemy.update(deltaTime);
@@ -283,17 +200,51 @@ public class GameMap {
         }
     }
 
-    public void addDestructibleWalls(DestructibleWall destructibleWall) {
-        destructibleWalls.add(destructibleWall);
+//Getters
+    public World getWorld() {
+        return world;
     }
-
+    /**
+     * Returns the player on the map.
+     */
+    public Player getPlayer() {
+        return player;
+    }
+    public Exit getExit() {
+        return exit;
+    }
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
     public List<DestructibleWall> getDestructibleWalls() {
         return destructibleWalls;
     }
+    public List<IndestructibleWall> getIndestructibleWalls() {
+        return indestructibleWalls;
+    }
+    public List<PowerUp> getPowerUps() {
+        return powerUps;
+    }
+    public List<ExplosionTile> getExplosionTiles() {
+        return explosionTiles;
+    }
+    /**
+     * Returns the flowers on the map.
+     */
+    public List<Flowers> getFlowers() {
+        return Arrays.stream(flowers).flatMap(Arrays::stream).toList();
+    }
+    public List<Bomb> getBombs() {
+        return bombs;
+    }
+    public BomberQuestGame getGame() {
+        return game;
+    }
 
+
+//Removers
     public void removeDestructibleWalls(DestructibleWall wall) {
         if (wall == null) return;
-
         // Safely destroy the physics body associated with the wall
         if (wall.getBody() != null) {
             bodiesToDestroy.add(wall.getBody());
@@ -301,16 +252,6 @@ public class GameMap {
         // Remove the wall from the list of destructible walls
         getDestructibleWalls().remove(wall);
     }
-
-    public void addIndestructibleWalls(IndestructibleWall indestructibleWall) {
-        indestructibleWalls.add(indestructibleWall);
-    }
-
-    public List<IndestructibleWall> getIndestructibleWalls() {
-        return indestructibleWalls;
-    }
-
-
     public void removePowerUp(PowerUp powerUp) {
         if (powerUp == null) return;
 
@@ -318,133 +259,49 @@ public class GameMap {
             bodiesToDestroy.add(powerUp.getBody()); // Queue the body for destruction
             powerUp.setBody(null); // Nullify to avoid reuse of the destroyed body
         }
-
         powerUps.remove(powerUp); // Remove the power-up from the game list
+    }
+    public void removeEnemies(Enemy enemy) {
+        if (enemy == null) return;
 
+        // Safely destroy the physics body associated with the wall
+        if (enemy.getBody() != null) {
+            bodiesToDestroy.add(enemy.getBody());
+        }
+        // Remove the wall from the list of destructible walls
+        getEnemies().remove(enemy);
     }
 
-
-
-    public List<PowerUp> getPowerUps() {
-        return powerUps;
-    }
-
-    public List<ExplosionTile> getExplosionTiles() {
-        return explosionTiles;
-    }
-
-    /**
-     * Returns the flowers on the map.
-     */
-    public List<Flowers> getFlowers() {
-        return Arrays.stream(flowers).flatMap(Arrays::stream).toList();
-    }
-
-    public List<Bomb> getBombs() {
-        return bombs;
-    }
-
-    public BomberQuestGame getGame() {
-        return game;
-    }
-
-    public void addBomb(Bomb bomb) {
-        bombs.add(bomb);
-    }
-
-    public void removeBomb(Bomb bomb) {
-            // Trigger explosion effects (e.g., damaging nearby objects)
-
-            // Queue the bomb's body for destruction
-
-
-            // Remove the bomb from the list of active bombs
-            bombs.remove(bomb);
-
-    }
-
+//Bomb placing on map
     public void placeBomb() {
         if (getBombs().size() < player.getConcurrentBombCount()) {
             float bombX = MathUtils.round(player.getX());
             float bombY = MathUtils.round(player.getY());
-            Bomb bomb = new Bomb(world,bombX, bombY, player.getBlastRadius(),this); // 2 seconds timer
-            addBomb(bomb);
+            Bomb bomb = new Bomb(bombX, bombY, player.getBlastRadius(),this); // 2 seconds timer
+            bombs.add(bomb);
             MusicTrack.BOMBPLACE.play();
         }
     }
 
-    //CHECKS THE BOMB AND IF IT IS EXPLODED, REMOVES FROM THE LIST AND ALSO REMOVES THE BODY
-    public void updateBombs(float deltaTime) {
-        Iterator<Bomb> iterator = bombs.iterator();
-        while (iterator.hasNext()) {
-            Bomb bomb = iterator.next();
-            bomb.update(deltaTime);
-            if (bomb.isExploded()) {
-                iterator.remove();
-                removeBomb(bomb);// Remove exploded bombs
-            }
-        }
-    }
 
-    public void updateExplosionTiles(float deltaTime){
-        Iterator<ExplosionTile> iterator = explosionTiles.iterator();
-        while (iterator.hasNext()) {
-            ExplosionTile tile = iterator.next();
-            tile.update(deltaTime);
-            if (tile.isAnimationFinished()) {
-                iterator.remove();
-            }
-        }
-    }
-
-    public void handleExplosion(Vector2 position, int blastRadius,Bomb bomb) {
-        /*
-        // Horizontal explosion
-        for (int i = 1; i <= blastRadius; i++) {
-            // Right
-            if (!bomb.isTileAvailable(position.x + i, position.y)) break;
-            bomb.checkTile(position.x + i, position.y);
-
-            // Left
-            if (!bomb.isTileAvailable(position.x - i, position.y)) break;
-            bomb.checkTile(position.x - i, position.y);
-        }
-
-        // Vertical explosion
-        for (int i = 1; i <= blastRadius; i++) {
-            // Up
-            if (!bomb.isTileAvailable(position.x, position.y + i)) break;
-            bomb.checkTile(position.x, position.y + i);
-
-            // Down
-            if (!bomb.isTileAvailable(position.x, position.y - i)) break;
-            bomb.checkTile(position.x, position.y - i);
-        }
-
-         */
-
-
-
-    }
-
-
-    //THESE ARE FOR REMOVING OBJECTS
+    //Queuers for removals
     public void queueWallForRemoval(DestructibleWall wall) {
         if (!wallsToRemove.contains(wall)) {
             wallsToRemove.add(wall);
         }
     }
+    public void queueEnemyForRemoval(Enemy enemy) {
+        if (!enemiesToRemove.contains(enemy)) {
+            enemiesToRemove.add(enemy);
+        }
+    }
+
+    //Processing the removal queues
     public void processPendingWallRemovals() {
         for (DestructibleWall wall : wallsToRemove) {
             removeDestructibleWalls(wall);
         }
         wallsToRemove.clear();
-    }
-
-    public void queueEnemyForRemoval(Enemy enemy) {
-        if (!enemiesToRemove.contains(enemy)) {
-            enemiesToRemove.add(enemy);
-        }
     }
     public void processPendingEnemyRemovals() {
         for (Enemy enemy: enemiesToRemove) {
@@ -452,7 +309,6 @@ public class GameMap {
         }
         enemiesToRemove.clear();
     }
-
     public void processPendingBodyDestruction() {
         for (Body body : bodiesToDestroy) {
             try {
@@ -464,35 +320,6 @@ public class GameMap {
             }
         }
         bodiesToDestroy.clear(); // Clear the list after processing
-    }
-
-    public boolean isEnemiesCleared() {
-        return enemiesCleared;
-    }
-    /**
-     * Counts the number of indestructible walls that form the borders of the map.
-     * Assumes the borders are defined by walls at the edges of the map grid.
-     *
-     * @return The number of indestructible walls around the map's borders.
-     */
-    public int countBorderIndestructibleWalls() {
-        int borderWallCount = 0;
-
-        // Define the boundaries of the map based on the flower grid
-        int mapWidth = flowers.length;
-        int mapHeight = flowers[0].length;
-
-        for (IndestructibleWall wall : indestructibleWalls) {
-            int wallX = MathUtils.floor(wall.getX());
-            int wallY = MathUtils.floor(wall.getY());
-
-            // Check if the wall is on the borders of the map
-            if (wallX == 0 || wallX == mapWidth - 1 || wallY == 0 || wallY == mapHeight - 1) {
-                borderWallCount++;
-            }
-        }
-
-        return borderWallCount;
     }
 
 }

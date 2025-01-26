@@ -1,13 +1,9 @@
 package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
 
-import static de.tum.cit.ase.bomberquest.screen.GameScreen.SCALE;
-import static de.tum.cit.ase.bomberquest.screen.GameScreen.TILE_SIZE_PX;
 
 public class ExplosionTile implements Drawable {
     private float x, y;
@@ -45,8 +41,5 @@ public class ExplosionTile implements Drawable {
         return y;
     }
 
-    public void render(SpriteBatch batch) {
-        batch.draw(getCurrentAppearance(), x * TILE_SIZE_PX * SCALE, y * TILE_SIZE_PX * SCALE);
-    }
 }
 

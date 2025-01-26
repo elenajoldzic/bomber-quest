@@ -46,21 +46,6 @@ public class YouLoseScreen implements Screen {
         // Add a label as a title
         table.add(new Label("You lose!", game.getSkin(), "title")).padBottom(80).row();
 
-        /*
-        // Create and add a button to go to the game screen
-        TextButton goToGameButton = new TextButton("Try again", game.getSkin());
-        table.add(goToGameButton).width(300).row();
-        goToGameButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                MusicTrack.BUTTONSOUND.play();
-                game.create();
-                game.goToGame(); // Change to the game screen when button is pressed
-            }
-        });
-
-         */
-
         // Create and add a button to go to the main menu
         TextButton goToMenuButton = new TextButton("Go to Menu", game.getSkin());
         table.add(goToMenuButton).width(300).row();
@@ -82,7 +67,7 @@ public class YouLoseScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         float frameTime = Math.min(deltaTime, 0.250f); // Cap frame time to 250ms to prevent spiral of death        ScreenUtils.clear(Color.BLACK);
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.RED);
         stage.act(frameTime); // Update the stage
         stage.draw(); // Draw the stage
     }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.map.GameMap;
-import de.tum.cit.ase.bomberquest.map.MapFileSelector;
+import de.tum.cit.ase.bomberquest.gamemechanism.GameTimer;
 import de.tum.cit.ase.bomberquest.screen.*;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
@@ -82,7 +82,7 @@ public class BomberQuestGame extends Game {
      */
     public void goToPause() {
         gameTimer.pause();
-        this.setScreen(new PauseScreen(this,gameTimer)); // Set the current screen to PauseScreen
+        this.setScreen(new PauseScreen(this)); // Set the current screen to PauseScreen
     }
 
     /**
@@ -151,12 +151,7 @@ public class BomberQuestGame extends Game {
      * Loads a new game map and starts the game.
      */
     public void loadNewGame() throws IOException {
-        /*map = new GameMap(this);// Load a new game map here (you might use fileChooser or default)
-        gameTimer.reset();
-        MusicTrack.BACKGROUND.dispose();
-        MusicTrack.BACKGROUND.play();
-        goToGame();
-         */
+
             NativeFileChooserConfiguration config = new NativeFileChooserConfiguration();
             config.directory = new FileHandle(new File(System.getProperty("user.dir")));
             NativeFileChooserCallback callback = new NativeFileChooserCallback() {

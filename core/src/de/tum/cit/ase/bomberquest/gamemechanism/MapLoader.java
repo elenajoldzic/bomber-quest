@@ -1,4 +1,4 @@
-package de.tum.cit.ase.bomberquest.map;
+package de.tum.cit.ase.bomberquest.gamemechanism;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

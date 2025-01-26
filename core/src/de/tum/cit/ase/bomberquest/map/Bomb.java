@@ -1,26 +1,18 @@
 package de.tum.cit.ase.bomberquest.map;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.World;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
 import de.tum.cit.ase.bomberquest.texture.Animations;
 import de.tum.cit.ase.bomberquest.texture.Drawable;
-
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Represents a bomb that can be placed by the player in the game.
  */
 
-// (Elena)
+
 public class Bomb implements Drawable {
     private float x, y;
     private float timer=3; // Time until explosion
@@ -28,16 +20,12 @@ public class Bomb implements Drawable {
     private float elapsedTime = 0; // For animation purposes
     private boolean isExploded = false;
     private final GameMap gameMap;
-    //private final Body body;
 
 
-    public Bomb(World world, float x, float y, int blastRadius, GameMap gameMap) {
+    public Bomb(float x, float y, int blastRadius, GameMap gameMap) {
         this.x = x;
         this.y = y;
-        //this.timer = timer;
         this.blastRadius = blastRadius;
-        //this.body=createBody(world);
-
         this.gameMap = gameMap;
     }
 
@@ -54,7 +42,7 @@ public class Bomb implements Drawable {
                 explode();
             }
         }
-        if (isExploded) {
+        /*if (isExploded) {
             Iterator<ExplosionTile> iterator = gameMap.getExplosionTiles().iterator();
             while (iterator.hasNext()) {
                 ExplosionTile tile = iterator.next();
@@ -64,11 +52,11 @@ public class Bomb implements Drawable {
                 }
             }
         }
-    }
 
+         */
+    }
     /**
      * Triggers the bomb's explosion.
-     * @paramworld The Box2D world.
      */
     private void explode() {
         isExploded = true;
@@ -76,14 +64,15 @@ public class Bomb implements Drawable {
         MusicTrack.BOMBEXPLODE.play();
         createExplosionTiles();
         Vector2 bombPosition = new Vector2(x, y);
-        //gameMap.handleExplosion(bombPosition, blastRadius,this);
         handleExplosion(bombPosition, blastRadius,this);
-
         for (ExplosionTile tile : gameMap.getExplosionTiles()) {
             checkTile(tile.getX(), tile.getY());
         }
     }
 
+    //For the reachable radius of bombs, checks every tile in 4 direction.
+    //First, checks if the tile is available, if not, it checks if it is a destructible wall.
+    //If they dont hold, proceeds with checktile(removing the items)
     public void handleExplosion(Vector2 position, int blastRadius, Bomb bomb) {
         for (int i = 1; i <= blastRadius; i++) {
             // Right
@@ -130,34 +119,14 @@ public class Bomb implements Drawable {
         }
     }
 
-
-    /**
-     * Creates the physical body of the bomb in the game world.
-     * @param world The Box2D world.
-     * @return The created body.
-     */
-    private Body createBody(World world) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(x, y);
-
-        Body body = world.createBody(bodyDef);
-        CircleShape shape = new CircleShape();
-        shape.setRadius(0.5f); // Bomb size
-
-        body.createFixture(shape, 1.0f).setUserData(this);
-        shape.dispose();
-
-        return body;
-    }
-
+//This method checks the tile on x,y and returns false if there is a wall on that tile
     public boolean isTileAvailable(float x, float y) {
         for (IndestructibleWall wall : gameMap.getIndestructibleWalls()) {
             if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
                 return false; // Blocked by a wall
             }
         }
-        // Check for destructible walls
+        // Check for destructible walls (this is for stopping explosion after hittin destructible wall)
         for (DestructibleWall wall : gameMap.getDestructibleWalls()) {
             if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
                 return false; // Blocked by a destructible wall (for continuation logic)
@@ -165,6 +134,34 @@ public class Bomb implements Drawable {
         }
         return true; // The tile is available
     }
+
+    //This method checks the tiles for enemies, destructible walls or player, and removes them if they encounter with explosion
+    public void checkTile(float x, float y) {
+        if(!isTileAvailable(x,y)){
+            return;
+        }
+
+        // Check for enemies, walls, or the player at (x, y)
+        for (Enemy enemy : gameMap.getEnemies()) {
+            if (Math.round(enemy.getX()) == x && Math.round(enemy.getY()) == y) {
+                MusicTrack.ENEMYDIE.play();
+                gameMap.queueEnemyForRemoval(enemy);
+            }
+        }
+        for (DestructibleWall wall : gameMap.getDestructibleWalls()) {
+            if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
+                gameMap.queueWallForRemoval(wall);
+            }
+        }
+        if (Math.round(gameMap.getPlayer().getX()) == x && Math.round(gameMap.getPlayer().getY()) == y) {
+            MusicTrack.PLAYERDIE.play();
+            gameMap.getGame().setScreen(new YouLoseScreen(gameMap.getGame())); // Game over
+        }
+    }
+
+
+
+
 
     private boolean isDestructibleWall(float x, float y) {
         for (DestructibleWall wall : gameMap.getDestructibleWalls()) {
@@ -175,10 +172,10 @@ public class Bomb implements Drawable {
         return false; // No destructible wall on the tile
     }
 
+    //Creates explosion animations in 4 directions
     private void createExplosionTiles() {
         // Center
         gameMap.getExplosionTiles().add(new ExplosionTile(x, y, Animations.EXPLOSION_CENTER));
-
         // Boolean values indicating whether the explosion stopped in each 4 directions.
         boolean RightStop=false;
         boolean LeftStop=false;
@@ -253,38 +250,16 @@ public class Bomb implements Drawable {
         return null; // No destructible wall found
     }
 
-    public boolean isExploded() {
-        return isExploded;
+    public void removeBomb(Bomb bomb) {
+        // Remove the bomb from the list of active bombs
+        gameMap.getBombs().remove(bomb);
     }
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        /*if (isExploded) {
-            return Animations.BOMB_EXPLOSION.getKeyFrame(elapsedTime, false);
-        }*/
         return Animations.BOMB_IDLE.getKeyFrame(elapsedTime, true);
     }
 
-    /**
-     * Gets the blast radius of the bomb.
-     * @return The blast radius.
-     */
-    public int getBlastRadius() {
-        return blastRadius;
-    }
-
-    public void renderExplosion(SpriteBatch batch) {
-        if (isExploded) {
-            for (ExplosionTile tile : gameMap.getExplosionTiles()) {
-                batch.draw(tile.getCurrentAppearance(), tile.getX(), tile.getY(), 1, 1); // Tile size = 1x1
-                if (tile.isAnimationFinished()) {
-                    gameMap.getExplosionTiles().remove(tile);
-                }
-            }
-
-        }
-
-    }
     @Override
     public float getX() {
         return x;
@@ -294,48 +269,7 @@ public class Bomb implements Drawable {
     public float getY() {
         return y;
     }
-
-    public float getTimer() {
-        return timer;
+    public boolean isExploded() {
+        return isExploded;
     }
-
-    public void setTimer(float timer) {
-        this.timer = timer;
-    }
-
-    /*public Body getBody() {
-        return body;
-    }*/
-    /**
-     * Destroys the bomb's physical body in the game world.
-     * @paramworld The Box2D world.
-     */
-
-    public void checkTile(float x, float y) {
-
-        if(!isTileAvailable(x,y)){
-            return;
-        }
-
-        // Check for enemies, walls, or the player at (x, y)
-        for (Enemy enemy : gameMap.getEnemies()) {
-            if (Math.round(enemy.getX()) == x && Math.round(enemy.getY()) == y) {
-                MusicTrack.ENEMYDIE.play();
-                gameMap.queueEnemyForRemoval(enemy);
-
-            }
-        }
-
-        for (DestructibleWall wall : gameMap.getDestructibleWalls()) {
-            if (Math.round(wall.getX()) == x && Math.round(wall.getY()) == y) {
-                gameMap.queueWallForRemoval(wall);
-            }
-        }
-
-        if (Math.round(gameMap.getPlayer().getX()) == x && Math.round(gameMap.getPlayer().getY()) == y) {
-            MusicTrack.PLAYERDIE.play();
-            gameMap.getGame().setScreen(new YouLoseScreen(gameMap.getGame())); // Game over
-        }
-    }
-
 }

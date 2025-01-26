@@ -32,8 +32,6 @@ public class StartScreen implements Screen {
      * @param game The main game class, used to access global resources and methods.
      */
     public StartScreen(BomberQuestGame game) {
-        /*MusicTrack.BACKGROUND.stop();
-        MusicTrack.MENUMUSIC.play();*/
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
 
@@ -46,6 +44,12 @@ public class StartScreen implements Screen {
 
         // Add a label as a title
         table.add(new Label("Welcome to the game!", game.getSkin(), "title")).padBottom(80).row();
+        table.add(new Label("How to play:",game.getSkin(),"default")).padBottom(20).row();
+        table.add(new Label("1. Press Arrow keys to move",game.getSkin(),"default")).padBottom(20).row();
+        table.add(new Label("2. Press SPACE to plant bomb",game.getSkin(),"default")).padBottom(20).row();
+        table.add(new Label("3. Kill all enemies and reach the exit",game.getSkin(),"default")).padBottom(80).row();
+        table.add(new Label("Select map file below: ",game.getSkin(),"default")).padBottom(20).row();
+
 
         // New Game button
         TextButton newGameButton = new TextButton("New Game", game.getSkin());
@@ -83,7 +87,7 @@ public class StartScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         float frameTime = Math.min(deltaTime, 0.250f); // Cap frame time to 250ms to prevent spiral of death        ScreenUtils.clear(Color.BLACK);
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.ORANGE);
         stage.act(frameTime); // Update the stage
         stage.draw(); // Draw the stage
     }

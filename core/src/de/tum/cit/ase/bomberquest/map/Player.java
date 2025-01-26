@@ -2,7 +2,6 @@ package de.tum.cit.ase.bomberquest.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -71,24 +70,6 @@ public class Player implements Drawable {
         return body;
     }
 
-    /**
-     * Move the player around in a circle by updating the linear velocity of its hitbox every frame.
-     * This doesn't actually move the player, but it tells the physics engine how the player should move next frame.
-     *
-     */
-    /*
-    public void tick(float frameTime) {
-        this.elapsedTime += frameTime;
-        // Make the player move in a circle with radius 2 tiles
-        // You can change this to make the player move differently, e.g. in response to user input.
-        // See Gdx.input.isKeyPressed() for keyboard input
-        float xVelocity = (float) Math.sin(this.elapsedTime) * 2;
-        float yVelocity = (float) Math.cos(this.elapsedTime) * 2;
-        this.hitbox.setLinearVelocity(xVelocity, yVelocity);
-    }
-*/
-
-
     //ENUM FOR DEFINING PLAYERS MOVING DIRECTION
     public enum Direction{
         UP,
@@ -107,25 +88,24 @@ public class Player implements Drawable {
         boolean isArrowKeyPressed=false;
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.UP)) {
             currentDirection=Direction.UP;
-            yVelocity = (float) speed;
+            yVelocity = speed;
             isArrowKeyPressed=true;
         }
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.DOWN)) {
             currentDirection=Direction.DOWN;
-            yVelocity = (float) -speed; //on the negative side of y axis, different direction
+            yVelocity = -speed; //on the negative side of y axis, different direction
             isArrowKeyPressed=true;
         }
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.LEFT)) {
             currentDirection=Direction.LEFT;
-            xVelocity = (float) -speed; // Move left
+            xVelocity = -speed; // Move left
             isArrowKeyPressed=true;
         }
         if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.RIGHT)) {
             currentDirection=Direction.RIGHT;
-            xVelocity = (float) speed;// Move right
+            xVelocity = speed;// Move right
             isArrowKeyPressed=true;
         }
-
 
         if (isArrowKeyPressed && !isWalking) {
             MusicTrack.WALKING.play();
@@ -135,10 +115,9 @@ public class Player implements Drawable {
 
         isWalking=isArrowKeyPressed;
 
-        this.hitbox.setLinearVelocity(xVelocity, yVelocity); //method for making our player move
+        this.hitbox.setLinearVelocity(xVelocity, yVelocity); //set the final velocity of hitbox
 
     }
-
 
     @Override
     public TextureRegion getCurrentAppearance() {

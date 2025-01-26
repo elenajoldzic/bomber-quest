@@ -1,6 +1,5 @@
 package de.tum.cit.ase.bomberquest.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -11,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.BomberQuestGame;
-import de.tum.cit.ase.bomberquest.GameTimer;
+import de.tum.cit.ase.bomberquest.gamemechanism.GameTimer;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.map.*;
 import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
@@ -58,16 +57,12 @@ public class GameScreen implements Screen {
         this.game = game;
         this.spriteBatch = game.getSpriteBatch();
         this.map = game.getMap();
-
-        // Initialize the timer
-        //this.gameTimer = new GameTimer(game);
         this.gameTimer=gameTimer;
         this.player = map.getPlayer();
-
         this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"), gameTimer, player,map);
-        // Create and configure the camera for the game view
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false);
+        this.mapCamera.zoom=1.2f;
 
         // Set up the collision listener
         setupCollisionListener();
@@ -101,7 +96,7 @@ public class GameScreen implements Screen {
                         (userDataB instanceof Player && userDataA instanceof PowerUp)) {
                     Player player = (userDataA instanceof Player) ? (Player) userDataA : (Player) userDataB;
                     PowerUp powerUp = (userDataA instanceof PowerUp) ? (PowerUp) userDataA : (PowerUp) userDataB;
-
+                    //call handling method
                     handlePowerUpPickup(player, powerUp);
                 }
             }
@@ -109,37 +104,30 @@ public class GameScreen implements Screen {
 
 
         private void handlePowerUpPickup(Player player, PowerUp powerUp) {
-            /*if (!map.getPowerUps().contains(powerUp)) {
-                return; // Power-up already picked up or removed
-            }*/
-
+            //Check if the powerup is BlastRadius
             if (powerUp instanceof BlastRadius) {
                 MusicTrack.POWERUPSOUND.play();
+                //Increase blast radius of bombs by 1
                 player.setBlastRadius(Math.min(player.getBlastRadius() + 1, 9));
-            } else if (powerUp instanceof ConcurrentBomb) {
+            }
+            //Check if the powerup is ConcurrentBomb
+            else if (powerUp instanceof ConcurrentBomb) {
                 MusicTrack.POWERUPSOUND.play();
+                //Increase concurrent bomb count by 1
                 player.setConcurrentBombCount(Math.min(player.getConcurrentBombCount() + 1, 9));
             }
-
             // Remove the power-up from the map
             map.removePowerUp(powerUp);
         }
-
-
-
         @Override
             public void endContact(Contact contact) {
 
             }
-
             @Override
             public void preSolve(Contact contact, Manifold manifold) {
-
             }
-
             @Override
             public void postSolve(Contact contact, ContactImpulse contactImpulse) {
-
             }
         });
     }
@@ -156,7 +144,7 @@ public class GameScreen implements Screen {
             game.goToPause();
         }
 
-        // Adjust camera zoom with '+' and '-'
+        // Adjust camera zoom with '*' and '-'
         if (Gdx.input.isKeyPressed(Input.Keys.PLUS) || Gdx.input.isKeyPressed(Input.Keys.EQUALS)) {
             mapCamera.zoom = Math.max(mapCamera.zoom - 0.02f, 0.5f); // Zoom in (min zoom level: 0.5)
         }
@@ -164,7 +152,6 @@ public class GameScreen implements Screen {
             mapCamera.zoom = Math.min(mapCamera.zoom + 0.02f, 2f); // Zoom out (max zoom level: 2)
         }
 
-        // Elena
         // Check for space key press to plant a bomb
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             map.placeBomb();
@@ -179,7 +166,6 @@ public class GameScreen implements Screen {
         // Update the map state
         map.tick(frameTime);
 
-        //map.renderExplosions(spriteBatch);
         // Process deferred body destructions
         map.processPendingBodyDestruction();
         map.processPendingWallRemovals();
@@ -200,7 +186,7 @@ public class GameScreen implements Screen {
 
     /**
      * Updates the camera to match the current state of the game.
-     * Currently, this just centers the camera at the origin.
+     * Centers the camera around player at all times.
      */
     private float lastPlayerX = -1, lastPlayerY = -1;
     private void updateCamera() {
@@ -225,46 +211,40 @@ public class GameScreen implements Screen {
         spriteBatch.begin();
 
         // Render everything in the map here, in order from lowest to highest (later things appear on top)
+        //Draw flowers
         for (Flowers flowers : map.getFlowers()) {
             draw(spriteBatch, flowers);
         }
-        //draw(spriteBatch, map.getChest());
+       //Draws exit if it is active
         if (map.getExit().isActive()) {
             draw(spriteBatch, map.getExit());
-        }// DRAWS THE EXIT
-        //Draw Powerups
+        }
+        //Draws Powerups
         for (PowerUp powerUp : map.getPowerUps()) {
             draw(spriteBatch, powerUp);
         }
-
+        //Draw destructible walls
         for(DestructibleWall destructibleWall: map.getDestructibleWalls()){
             draw(spriteBatch, destructibleWall);
         }
-
-        //draw(spriteBatch, map.getIndestructibleWalls()); // DRAWS THE INDESTRUCTIBLE WALL
+       //Draw indestructible walls
         for(IndestructibleWall indestructibleWall: map.getIndestructibleWalls()){
             draw(spriteBatch, indestructibleWall);
         }
-
-
-
-        // Elena
         // Draw bombs
         for (Bomb bomb : map.getBombs()) {
             draw(spriteBatch, bomb);
         }
-
-
-
-        //draw(spriteBatch, map.getEnemy()); // DRAWS THE ENEMY
+        //Draw enemies
         for (Enemy enemy : map.getEnemies()) {
             draw(spriteBatch, enemy);
         }
+        //Draw explosion tiles
         for (ExplosionTile tile : map.getExplosionTiles()) {
             draw(spriteBatch, tile);
         }
+        //Draw player
         draw(spriteBatch, map.getPlayer());
-
 
         // Finish drawing, i.e., send the drawn items to the graphics card
         spriteBatch.end();
@@ -286,16 +266,6 @@ public class GameScreen implements Screen {
         float height = texture.getRegionHeight() * SCALE;
         spriteBatch.draw(texture, x, y, width, height);
     }
-
-    /*private void placeBomb() {
-        if (map.getBombs().size() < player.getConcurrentBombCount()) {
-            float bombX = MathUtils.round(player.getX());
-            float bombY = MathUtils.round(player.getY());
-            Bomb bomb = new Bomb(bombX, bombY, player.getBlastRadius()); // 2 seconds timer
-            map.addBomb(bomb);
-        }
-    }*/
-
 
 
 

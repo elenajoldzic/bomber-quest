@@ -9,15 +9,14 @@ import de.tum.cit.ase.bomberquest.texture.Textures;
  * A chest is a static object with a hitbox, so the player cannot walk through it.
  */
 public class Exit implements Drawable {
-
-    // We would normally get the position from the hitbox, but since we don't need to move the chest, we can store the position directly.
+    // We would normally get the position from the hitbox, but since we don't need to move the exit, we can store the position directly.
     private final float x;
     private final float y;
     private Body body;
 
     /**
-     * Create a chest at the given position.
-     * @param world The Box2D world to add the chest's hitbox to.
+     * Create an exit at the given position.
+     * @param world The Box2D world to add the exit's hitbox to.
      * @param x The X position.
      * @param y The Y position.
      */
@@ -29,7 +28,7 @@ public class Exit implements Drawable {
     }
 
     /**
-     * Create a Box2D body for the chest.
+     * Create a Box2D body for the exit.
      * @param world The Box2D world to add the body to.
      */
     private Body createHitbox(World world) {

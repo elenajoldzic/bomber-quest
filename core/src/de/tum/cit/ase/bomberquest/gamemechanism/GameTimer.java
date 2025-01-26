@@ -1,9 +1,8 @@
-package de.tum.cit.ase.bomberquest;
+package de.tum.cit.ase.bomberquest.gamemechanism;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
+import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
 
 /**
@@ -37,24 +36,6 @@ public class GameTimer {
                 handleTimeout();
             }
         }
-    }
-
-    /**
-     * Renders the remaining time on the screen.
-     */
-    public void render(SpriteBatch spriteBatch) {
-        long elapsedTime = TimeUtils.timeSinceMillis(startTime);
-        long remainingTimeMillis = Math.max(0, TOTAL_TIME_MILLIS - elapsedTime);
-
-        // Calculate minutes and seconds remaining
-        long minutes = remainingTimeMillis / 60000;
-        long seconds = (remainingTimeMillis % 60000) / 1000;
-
-        // Display the time in "MM:SS" format
-        String timeText = String.format("%02d:%02d", minutes, seconds);
-        spriteBatch.begin();
-        font.draw(spriteBatch, "Time Remaining: " + timeText, 10, Gdx.graphics.getHeight() - 10);
-        spriteBatch.end();
     }
 
     /**

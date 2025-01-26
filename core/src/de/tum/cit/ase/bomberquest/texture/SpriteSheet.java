@@ -20,8 +20,10 @@ public enum SpriteSheet {
     /** The basic tiles spritesheet, which has a grid size of 16x16. */
     BASIC_TILES("basictiles.png", 16, 16),
 
-    ORIGINAL_BOMBERMAN("original-bomberman.png", 16, 16);
-
+    ORIGINAL_BOMBERMAN("original-bomberman.png", 16, 16),
+    ROCK("rock.png",18,18),
+    SAND("sand.png",18,18),
+    STONE("stone.png",18,18);
 
     /**
      * The bomb spritesheet, which has a grid size of 16x16.

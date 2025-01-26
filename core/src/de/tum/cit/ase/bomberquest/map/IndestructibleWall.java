@@ -14,6 +14,11 @@ public class IndestructibleWall extends Wall {
     }
 
     @Override
+    public void update(float deltaTime) {
+
+    }
+
+    @Override
     public TextureRegion getCurrentAppearance() {
         return Textures.INDESTRUCTIBLEWALL;
     }

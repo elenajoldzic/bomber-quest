@@ -2,7 +2,6 @@ package de.tum.cit.ase.bomberquest.gamemechanism;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.TimeUtils;
-import de.tum.cit.ase.bomberquest.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
 
 /**
@@ -73,10 +72,18 @@ public class GameTimer {
         }
     }
 
+    /**
+     * Gets the start time of the game timer.
+     */
     public long getStartTime() {
         return startTime;
     }
+
+
+    /**
+     * Resets the game timer. Set the start time to the current time
+     */
     public void reset() {
-        startTime = TimeUtils.millis();  // Set the start time to the current time
+        startTime = TimeUtils.millis();
     }
 }

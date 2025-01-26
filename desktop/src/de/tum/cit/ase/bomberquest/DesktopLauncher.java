@@ -3,6 +3,7 @@ package de.tum.cit.ase.bomberquest;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import de.tum.cit.ase.bomberquest.gamemechanism.BomberQuestGame;
 import games.spooky.gdx.nativefilechooser.desktop.DesktopFileChooser;
 
 /**

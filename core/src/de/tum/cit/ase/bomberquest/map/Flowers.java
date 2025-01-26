@@ -9,7 +9,7 @@ import de.tum.cit.ase.bomberquest.texture.Textures;
  * They do not have a hitbox, so the player does not collide with them.
  * They are purely decorative and serve as a nice floor decoration.
  */
-public abstract class Flowers extends GameObject implements Drawable {
+public class Flowers extends GameObject implements Drawable {
     
     private final int x;
     private final int y;
@@ -19,7 +19,12 @@ public abstract class Flowers extends GameObject implements Drawable {
         this.x = x;
         this.y = y;
     }
-    
+
+    @Override
+    public void update(float deltaTime) {
+
+    }
+
     @Override
     public TextureRegion getCurrentAppearance() {
         return Textures.FLOWERS;

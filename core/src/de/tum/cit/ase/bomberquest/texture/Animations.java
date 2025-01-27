@@ -59,12 +59,17 @@ public class Animations {
      * The enemy walks using a sequence of frames from the sprite sheet.
      */
     public static final Animation<TextureRegion> ENEMY_WALK = new Animation<>(0.1f,
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 1),
+            /*SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 1),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 2),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 3),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 4),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 5),
             SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 6)
+
+             */
+            SpriteSheet.MOBS.at(5,4),
+            SpriteSheet.MOBS.at(5,5),
+            SpriteSheet.MOBS.at(5,6)
     );
 
     /**

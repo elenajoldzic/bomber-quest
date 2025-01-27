@@ -23,7 +23,8 @@ public enum SpriteSheet {
     ORIGINAL_BOMBERMAN("original-bomberman.png", 16, 16),
     ROCK("rock.png",18,18),
     SAND("sand.png",18,18),
-    STONE("stone.png",18,18);
+    STONE("stone.png",18,18),
+    MOBS("mobs.png",16,16);
 
     /**
      * The bomb spritesheet, which has a grid size of 16x16.

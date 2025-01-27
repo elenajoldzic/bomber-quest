@@ -21,7 +21,7 @@ public enum MusicTrack {
     POWERUPSOUND("electronicpowerup.mp3", 0.1f, false),
     GAMEOVERSOUND("electronicdeath.mp3", 0.07f, false),
     MENUMUSIC("electronicmenumusic.mp3", 0.3f, true),
-    WINSOUND("winsound.mp3", 0.8f, false),
+    WINSOUND("electronicyouwin.mp3", 0.8f, false),
     PLAYERDIE("playerdie.mp3", 0.1f, false),
     PAUSEMUSIC("intro.mp3", 0.3f, true),
     BOMBPLACE("bombdropsound.mp3", 0.06f, false),

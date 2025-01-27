@@ -1,4 +1,4 @@
-package de.tum.cit.ase.bomberquest.screen;
+package de.tum.cit.ase.bomberquest.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

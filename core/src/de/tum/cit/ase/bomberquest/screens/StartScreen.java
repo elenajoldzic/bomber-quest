@@ -47,7 +47,8 @@ public class StartScreen implements Screen {
         table.add(new Label("How to play:",game.getSkin(),"default")).padBottom(20).row();
         table.add(new Label("1. Press Arrow keys to move",game.getSkin(),"default")).padBottom(20).row();
         table.add(new Label("2. Press SPACE to plant bomb",game.getSkin(),"default")).padBottom(20).row();
-        table.add(new Label("3. Kill all enemies and reach the exit",game.getSkin(),"default")).padBottom(80).row();
+        table.add(new Label("3. Press ? and - to zoom in/out",game.getSkin(),"default")).padBottom(20).row();
+        table.add(new Label("4. Kill all enemies and reach the exit",game.getSkin(),"default")).padBottom(80).row();
         table.add(new Label("Select map file below: ",game.getSkin(),"default")).padBottom(20).row();
 
 

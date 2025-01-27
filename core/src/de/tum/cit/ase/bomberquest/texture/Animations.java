@@ -79,8 +79,7 @@ public class Animations {
     public static final Animation<TextureRegion> BOMB_IDLE = new Animation<>(0.1f,
             SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 1), // Bomb frame 1
             SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 2), // Bomb frame 2
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 3),  // Bomb frame 3
-            SpriteSheet.ORIGINAL_BOMBERMAN.at(6, 2)  // Bomb frame 4
+            SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 3)  // Bomb frame 3
     );
 
     /**

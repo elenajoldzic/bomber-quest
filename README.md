@@ -40,6 +40,10 @@ Arrow Keys: Move the player (Up, Down, Left, Right).
 
 Spacebar: Place a bomb.
 
+? and -: Zoom in or out.
+
+Escape: Pause the game.
+
 ### Gameplay:
 
 Avoid the blast radius of your own bombs.
@@ -52,9 +56,9 @@ Watch out for enemies and use bombs to eliminate them.
 
 Defeat all enemies and locate the exit to progress to the next level.
 
-Game Features
+## Game Features
 
-Power-Ups
+### Power-Ups
 
 ### Blast Radius:
 
@@ -64,17 +68,21 @@ Increases the range of your bomb explosions, allowing you to destroy more obstac
 
 Increases the number of bombs you can place simultaneously on the map.
 
-## Dynamic Explosions
+### Dynamic Explosions
 
 Bomb explosions propagate in all four directions, stopping at walls and destructible obstacles.
 
-## Enemies and Obstacles
+### Enemies and Obstacles
 
 Face challenging enemies that move around the map.
 
 Break destructible walls to uncover hidden areas or items.
 
-## Sound Effects and Music
+### Visual Effects
+
+Explosions trigger screen shakes for improved visual immersion.
+
+### Sound Effects and Music
 
 Enjoy immersive background music and sound effects, including explosions, power-ups, and player actions.
 

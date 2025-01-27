@@ -27,7 +27,7 @@ public class Flowers extends GameObject implements Drawable {
 
     @Override
     public TextureRegion getCurrentAppearance() {
-        return Textures.FLOWERS;
+        return Textures.TILES;
     }
     
     @Override

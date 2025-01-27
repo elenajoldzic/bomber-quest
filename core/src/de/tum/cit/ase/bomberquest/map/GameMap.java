@@ -307,14 +307,29 @@ public class GameMap {
         return game;
     }
 
+    /**
+     * Returns the remaining shake duration.
+     *
+     * @return shake duration
+     */
     public float getShakeDuration() {
         return shakeDuration;
     }
 
+    /**
+     * Returns the camera shake intensity.
+     *
+     * @return shake intensity
+     */
     public float getShakeIntensity() {
         return shakeIntensity;
     }
 
+    /**
+     * Changes the remaining shake duration for camera.
+     *
+     * @param shakeDuration new shake duration to set
+     */
     public void setShakeDuration(float shakeDuration) {
         this.shakeDuration = shakeDuration;
     }

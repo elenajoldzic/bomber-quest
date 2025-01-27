@@ -19,6 +19,14 @@ public class Animations {
             SpriteSheet.CHARACTER.at(1, 2),
             SpriteSheet.CHARACTER.at(1, 3),
             SpriteSheet.CHARACTER.at(1, 4)
+
+             /*
+            SpriteSheet.MOBS.at(1, 7),
+            SpriteSheet.MOBS.at(1, 8),
+            SpriteSheet.MOBS.at(1, 9)
+
+              */
+
     );
 
     /**
@@ -30,6 +38,13 @@ public class Animations {
             SpriteSheet.CHARACTER.at(2, 2),
             SpriteSheet.CHARACTER.at(2, 3),
             SpriteSheet.CHARACTER.at(2, 4)
+
+            /*
+            SpriteSheet.MOBS.at(3, 7),
+            SpriteSheet.MOBS.at(3, 8),
+            SpriteSheet.MOBS.at(3, 9)
+
+             */
     );
 
     /**
@@ -41,6 +56,13 @@ public class Animations {
             SpriteSheet.CHARACTER.at(3, 2),
             SpriteSheet.CHARACTER.at(3, 3),
             SpriteSheet.CHARACTER.at(3, 4)
+
+
+            /*SpriteSheet.MOBS.at(4, 7),
+            SpriteSheet.MOBS.at(4, 8),
+            SpriteSheet.MOBS.at(4, 9)
+
+             */
     );
 
     /**
@@ -52,6 +74,13 @@ public class Animations {
             SpriteSheet.CHARACTER.at(4, 2),
             SpriteSheet.CHARACTER.at(4, 3),
             SpriteSheet.CHARACTER.at(4, 4)
+
+
+            /*SpriteSheet.MOBS.at(2, 7),
+            SpriteSheet.MOBS.at(2, 8),
+            SpriteSheet.MOBS.at(2, 9)
+
+             */
     );
 
     /**
@@ -67,9 +96,11 @@ public class Animations {
             SpriteSheet.ORIGINAL_BOMBERMAN.at(19, 6)
 
              */
-            SpriteSheet.MOBS.at(5,4),
-            SpriteSheet.MOBS.at(5,5),
-            SpriteSheet.MOBS.at(5,6)
+            SpriteSheet.MOBS.at(5,7),
+            SpriteSheet.MOBS.at(5,8),
+            SpriteSheet.MOBS.at(5,9)
+
+
     );
 
     /**

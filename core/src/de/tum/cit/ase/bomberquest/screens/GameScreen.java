@@ -48,10 +48,6 @@ public class GameScreen implements Screen {
     private GameTimer gameTimer;
     private Player player;
     private float normalZoom = 1.3f; // Normal zoom value
-    private float zoomAmount = 0.02f; // Amount to zoom in/out per frame
-    private float zoomSpeed = 0.06f; // Speed of zooming (how fast it zooms in/out)
-    private boolean zoomingIn = false; // Track if any arrow key is pressed
-    private float targetZoom; // The target zoom level
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -68,7 +64,6 @@ public class GameScreen implements Screen {
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false);
         this.mapCamera.zoom=normalZoom;
-        this.targetZoom = normalZoom;
         // Set up the collision listener
         setupCollisionListener();
     }
@@ -147,26 +142,6 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             MusicTrack.BUTTONSOUND.play();
             game.goToPause();
-        }
-
-        // Check for arrow key presses to zoom in
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.DOWN) ||
-                Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            // If any arrow key is pressed, zoom in gradually
-            targetZoom = Math.max(targetZoom - zoomAmount, normalZoom-0.15f); // Limit the zoom-in level
-            zoomingIn = true;
-        } else {
-            // If no key is pressed, zoom back to the normal value gradually
-            targetZoom = normalZoom;
-            zoomingIn = false;
-        }
-
-        // Smooth zoom transition towards the target zoom
-        if (Math.abs(mapCamera.zoom - targetZoom) > 0.01f) { // Small threshold to stop when zooming is close
-            float zoomChange = (targetZoom - mapCamera.zoom) * zoomSpeed;
-            mapCamera.zoom += zoomChange; // Gradual zoom in/out
-        } else {
-            mapCamera.zoom = targetZoom; // Ensure we reach the exact target zoom
         }
 
         // Adjust camera zoom with '*' and '-'

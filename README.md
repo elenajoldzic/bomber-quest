@@ -81,7 +81,6 @@ Break destructible walls to uncover hidden areas or items.
 ### Visual Effects
 
 Explosions trigger screen shakes for improved visual immersion.
-Character movement triggers camera zoom for action effect.
 
 ### Sound Effects and Music
 

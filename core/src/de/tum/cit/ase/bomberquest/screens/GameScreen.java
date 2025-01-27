@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
         this.hud = new Hud(spriteBatch, game.getSkin().getFont("font"), gameTimer, player,map);
         this.mapCamera = new OrthographicCamera();
         this.mapCamera.setToOrtho(false);
-        this.mapCamera.zoom=1.2f;
+        this.mapCamera.zoom=1.3f;
 
         // Set up the collision listener
         setupCollisionListener();
@@ -187,20 +187,37 @@ public class GameScreen implements Screen {
 
     /**
      * Updates the camera to match the current state of the game.
-     * Centers the camera around player at all times.
+     * Camera moves when player goes out of defined safe zone in the middle of screen.
      */
-    private float lastPlayerX = -1, lastPlayerY = -1;
     private void updateCamera() {
-        float playerX = map.getPlayer().getX();
-        float playerY = map.getPlayer().getY();
+        // Define the safe zone size (in pixels)
+        float safeZoneWidth = 100 * SCALE;  // Width of the safe zone
+        float safeZoneHeight = 100 * SCALE; // Height of the safe zone
 
-        if (playerX != lastPlayerX || playerY != lastPlayerY) {
-            mapCamera.position.x = playerX * TILE_SIZE_PX * SCALE;
-            mapCamera.position.y = playerY * TILE_SIZE_PX * SCALE;
-            mapCamera.update();
-            lastPlayerX = playerX;
-            lastPlayerY = playerY;
+        // Get the player's position
+        float playerX = map.getPlayer().getX() * TILE_SIZE_PX * SCALE;
+        float playerY = map.getPlayer().getY() * TILE_SIZE_PX * SCALE;
+
+        // Calculate the safe zone bounds relative to the camera's center
+        float safeZoneLeft = mapCamera.position.x - safeZoneWidth / 2f;
+        float safeZoneRight = mapCamera.position.x + safeZoneWidth / 2f;
+        float safeZoneBottom = mapCamera.position.y - safeZoneHeight / 2f;
+        float safeZoneTop = mapCamera.position.y + safeZoneHeight / 2f;
+
+        // Check if the player is outside the safe zone
+        if (playerX < safeZoneLeft) {
+            mapCamera.position.x -= (safeZoneLeft - playerX);
+        } else if (playerX > safeZoneRight) {
+            mapCamera.position.x += (playerX - safeZoneRight);
         }
+
+        if (playerY < safeZoneBottom) {
+            mapCamera.position.y -= (safeZoneBottom - playerY);
+        } else if (playerY > safeZoneTop) {
+            mapCamera.position.y += (playerY - safeZoneTop);
+        }
+
+        // Update the camera
         mapCamera.update();
     }
 
@@ -267,7 +284,6 @@ public class GameScreen implements Screen {
         float height = texture.getRegionHeight() * SCALE;
         spriteBatch.draw(texture, x, y, width, height);
     }
-
 
 
     /**

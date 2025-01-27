@@ -217,6 +217,19 @@ public class GameScreen implements Screen {
             mapCamera.position.y += (playerY - safeZoneTop);
         }
 
+        // Apply screen shake effect if active
+        if (map.getShakeDuration() > 0) {
+            map.setShakeDuration(map.getShakeDuration()-Gdx.graphics.getDeltaTime()); // Decrease shake time
+
+            // Generate random offsets within the intensity range
+            float shakeOffsetX = (float) (Math.random() * 2 - 1) * map.getShakeIntensity();
+            float shakeOffsetY = (float) (Math.random() * 2 - 1) * map.getShakeIntensity();
+
+            // Apply offsets to the camera position
+            mapCamera.position.x += shakeOffsetX;
+            mapCamera.position.y += shakeOffsetY;
+        }
+
         // Update the camera
         mapCamera.update();
     }

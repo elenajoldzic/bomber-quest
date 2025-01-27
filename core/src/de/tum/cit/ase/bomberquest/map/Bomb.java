@@ -55,6 +55,7 @@ public class Bomb extends GameObject implements Drawable {
         for (ExplosionTile tile : gameMap.getExplosionTiles()) {
             checkTile(tile.getX(), tile.getY()); // Interact with the objects at each explosion tile
         }
+        gameMap.triggerScreenShake(0.4f, 4f);
     }
 
     /**

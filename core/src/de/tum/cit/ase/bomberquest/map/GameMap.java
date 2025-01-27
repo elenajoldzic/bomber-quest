@@ -46,6 +46,9 @@ public class GameMap {
     private List<DestructibleWall> wallsToRemove = new ArrayList<>();
     private List<Enemy> enemiesToRemove = new ArrayList<>();
     public boolean enemiesCleared = false;
+    // Variables for screen shake
+    private float shakeDuration = 0f;   // Remaining time of the shake
+    private float shakeIntensity = 0f; // Intensity of the shake
 
     public GameMap(BomberQuestGame game) {
         this.game = game;
@@ -146,6 +149,12 @@ public class GameMap {
             this.physicsTime -= TIME_STEP;
         }
     }
+
+    public void triggerScreenShake(float duration, float intensity) {
+        this.shakeDuration = duration;
+        this.shakeIntensity = intensity;
+    }
+
 
     /**
      * Updates all the bombs in the game.
@@ -296,6 +305,18 @@ public class GameMap {
      */
     public BomberQuestGame getGame() {
         return game;
+    }
+
+    public float getShakeDuration() {
+        return shakeDuration;
+    }
+
+    public float getShakeIntensity() {
+        return shakeIntensity;
+    }
+
+    public void setShakeDuration(float shakeDuration) {
+        this.shakeDuration = shakeDuration;
     }
 
     /**

@@ -1,4 +1,4 @@
-package de.tum.cit.ase.bomberquest.screen;
+package de.tum.cit.ase.bomberquest.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -16,11 +16,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.ase.bomberquest.gamemechanism.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 
+import java.io.IOException;
+
 /**
  * The MenuScreen class is responsible for displaying the main menu of the game.
  * It extends the LibGDX Screen class and sets up the UI components for the menu.
  */
-public class YouLoseScreen implements Screen {
+public class StartScreen implements Screen {
 
     private final Stage stage;
 
@@ -29,10 +31,7 @@ public class YouLoseScreen implements Screen {
      *
      * @param game The main game class, used to access global resources and methods.
      */
-    public YouLoseScreen(BomberQuestGame game) {
-        MusicTrack.MENUMUSIC.stop();
-        MusicTrack.BACKGROUND.stop();
-        MusicTrack.GAMEOVERSOUND.play();
+    public StartScreen(BomberQuestGame game) {
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
 
@@ -44,20 +43,41 @@ public class YouLoseScreen implements Screen {
         stage.addActor(table); // Add the table to the stage
 
         // Add a label as a title
-        table.add(new Label("You lose!", game.getSkin(), "title")).padBottom(80).row();
+        table.add(new Label("Welcome to the game!", game.getSkin(), "title")).padBottom(80).row();
+        table.add(new Label("How to play:",game.getSkin(),"default")).padBottom(20).row();
+        table.add(new Label("1. Press Arrow keys to move",game.getSkin(),"default")).padBottom(20).row();
+        table.add(new Label("2. Press SPACE to plant bomb",game.getSkin(),"default")).padBottom(20).row();
+        table.add(new Label("3. Kill all enemies and reach the exit",game.getSkin(),"default")).padBottom(80).row();
+        table.add(new Label("Select map file below: ",game.getSkin(),"default")).padBottom(20).row();
 
-        // Create and add a button to go to the main menu
-        TextButton goToMenuButton = new TextButton("Go to Menu", game.getSkin());
-        table.add(goToMenuButton).width(300).row();
-        goToMenuButton.addListener(new ChangeListener() {
+
+        // New Game button
+        TextButton newGameButton = new TextButton("New Game", game.getSkin());
+        table.add(newGameButton).width(300).row();
+        newGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    MusicTrack.BUTTONSOUND.play();
+                    game.loadNewGame(); // Load a new game map and start the game
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        // Exit button
+        TextButton exitButton = new TextButton("Exit", game.getSkin());
+        table.add(exitButton).width(300).row();
+        exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 MusicTrack.BUTTONSOUND.play();
-                game.create();
-                game.goToStart(); // Go to the main menu screen when button is pressed
+                Gdx.app.exit(); // Exit the game
             }
         });
     }
+
 
     /**
      * The render method is called every frame to render the menu screen.
@@ -67,7 +87,7 @@ public class YouLoseScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         float frameTime = Math.min(deltaTime, 0.250f); // Cap frame time to 250ms to prevent spiral of death        ScreenUtils.clear(Color.BLACK);
-        ScreenUtils.clear(Color.RED);
+        ScreenUtils.clear(Color.ORANGE);
         stage.act(frameTime); // Update the stage
         stage.draw(); // Draw the stage
     }

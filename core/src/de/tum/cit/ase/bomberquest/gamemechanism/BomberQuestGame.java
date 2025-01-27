@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 import de.tum.cit.ase.bomberquest.map.GameMap;
-import de.tum.cit.ase.bomberquest.screen.*;
+import de.tum.cit.ase.bomberquest.screens.*;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;

@@ -29,7 +29,8 @@ public class GameMap {
     private static final int VELOCITY_ITERATIONS = 6;
     private static final int POSITION_ITERATIONS = 2;
     private float physicsTime = 0;
-
+    private int width = 0;
+    private int height = 0;
     private final BomberQuestGame game;
     private final World world;
     private Player player;
@@ -60,12 +61,16 @@ public class GameMap {
     public void loadTheMap(String path) {
         MapLoader mapLoader = new MapLoader();
         mapLoader.loadMap(path);
-
         for (Map.Entry<String, Set<Integer>> entry : mapLoader.getMapData().entrySet()) {
             String[] coordinates = entry.getKey().split(",");
             int x = Integer.parseInt(coordinates[0].trim());
             int y = Integer.parseInt(coordinates[1].trim());
-
+            if(x > this.width){
+                this.width = x;
+            }
+            if(y > this.height ){
+                this.height = y;
+            }
             boolean hasDestructibleWall = entry.getValue().contains(MapLoader.DESTRUCTIBLE_WALL);
 
             for (int objectType : entry.getValue()) {
@@ -106,7 +111,7 @@ public class GameMap {
             }
         }
 
-        this.flowers = new Flowers[50][50];
+        this.flowers = new Flowers[this.width][this.height];
         for (int i = 0; i < flowers.length; i++) {
             for (int j = 0; j < flowers[i].length; j++) {
                 this.flowers[i][j] = new Flowers(i, j);

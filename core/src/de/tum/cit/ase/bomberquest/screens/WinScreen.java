@@ -1,4 +1,4 @@
-package de.tum.cit.ase.bomberquest.screen;
+package de.tum.cit.ase.bomberquest.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -16,24 +16,23 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.ase.bomberquest.gamemechanism.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
 
-import java.io.IOException;
-
 /**
- * The MenuScreen class is responsible for displaying the main menu of the game.
- * It extends the LibGDX Screen class and sets up the UI components for the menu.
+ * The WinScreen class is responsible for displaying the win screen of the game.
+ * It extends the LibGDX Screen class and sets up the UI components for the win screen.
  */
-public class PauseScreen implements Screen {
+public class WinScreen implements Screen {
 
     private final Stage stage;
-    //private GameTimer gameTimer;
+
     /**
-     * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
+     * Constructor for WinScreen. Sets up the camera, viewport, stage, and UI elements.
      *
      * @param game The main game class, used to access global resources and methods.
      */
-    public PauseScreen(BomberQuestGame game) {
+    public WinScreen(BomberQuestGame game) {
         var camera = new OrthographicCamera();
         camera.zoom = 1.5f; // Set camera zoom for a closer view
+
         Viewport viewport = new ScreenViewport(camera); // Create a viewport with the camera
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
@@ -42,59 +41,34 @@ public class PauseScreen implements Screen {
         stage.addActor(table); // Add the table to the stage
 
         // Add a label as a title
-        table.add(new Label("Game Paused", game.getSkin(), "title")).padBottom(80).row();
+        table.add(new Label("You Win!", game.getSkin(), "title")).padBottom(80).row();
 
-        // Continue Game button
-        TextButton continueButton = new TextButton("Continue Game", game.getSkin());
-        table.add(continueButton).width(300).row();
-        continueButton.addListener(new ChangeListener() {
+        // Create and add a button to go to the main menu
+        TextButton goToMenuButton = new TextButton("Go to Menu", game.getSkin());
+        table.add(goToMenuButton).width(300).row();
+        goToMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 MusicTrack.BUTTONSOUND.play();
-                game.goToGame(); // Resume the current game
-            }
-        });
-
-        // New Game button
-        TextButton newGameButton = new TextButton("New Game", game.getSkin());
-        table.add(newGameButton).width(300).row();
-        newGameButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                try {
-                    MusicTrack.BUTTONSOUND.play();
-                    game.loadNewGame(); // Load a new game map and start the game
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-        // Exit button
-        TextButton exitButton = new TextButton("Exit", game.getSkin());
-        table.add(exitButton).width(300).row();
-        exitButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.exit(); // Exit the game
+                game.create();
+                game.goToStart(); // Go to the main menu screen when button is pressed
             }
         });
     }
 
-
     /**
-     * The render method is called every frame to render the menu screen.
+     * The render method is called every frame to render the win screen.
      * It clears the screen and draws the stage.
      * @param deltaTime The time in seconds since the last render.
      */
     @Override
     public void render(float deltaTime) {
-        float frameTime = Math.min(deltaTime, 0.250f); // Cap frame time to 250ms to prevent spiral of death        ScreenUtils.clear(Color.BLACK);
-        ScreenUtils.clear(Color.BLACK);
+        float frameTime = Math.min(deltaTime, 0.250f); // Cap frame time to 250ms to prevent spiral of death
+        ScreenUtils.clear(Color.GREEN); // Clear the screen with a black color
         stage.act(frameTime); // Update the stage
         stage.draw(); // Draw the stage
     }
-    
+
     /**
      * Resize the stage when the screen is resized.
      * @param width The new width of the screen.

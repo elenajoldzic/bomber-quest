@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Textures {
     
-    public static final TextureRegion FLOWERS = SpriteSheet.BASIC_TILES.at(9, 1);
+    public static final TextureRegion FLOWERS = SpriteSheet.BASIC_TILES.at(2, 5);
 
     public static final TextureRegion DESTRUCTIBLEWALL = SpriteSheet.ORIGINAL_BOMBERMAN.at(4, 5);
 

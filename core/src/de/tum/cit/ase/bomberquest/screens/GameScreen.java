@@ -1,4 +1,4 @@
-package de.tum.cit.ase.bomberquest.screen;
+package de.tum.cit.ase.bomberquest.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import de.tum.cit.ase.bomberquest.gamemechanism.BomberQuestGame;
 import de.tum.cit.ase.bomberquest.gamemechanism.GameTimer;
 import de.tum.cit.ase.bomberquest.audio.MusicTrack;
+import de.tum.cit.ase.bomberquest.hud.Hud;
 import de.tum.cit.ase.bomberquest.map.*;
 import de.tum.cit.ase.bomberquest.powerups.BlastRadius;
 import de.tum.cit.ase.bomberquest.powerups.ConcurrentBomb;

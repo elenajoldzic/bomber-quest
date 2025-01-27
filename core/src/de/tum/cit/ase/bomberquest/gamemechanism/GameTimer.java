@@ -2,7 +2,7 @@ package de.tum.cit.ase.bomberquest.gamemechanism;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.TimeUtils;
-import de.tum.cit.ase.bomberquest.screen.YouLoseScreen;
+import de.tum.cit.ase.bomberquest.screens.YouLoseScreen;
 
 /**
  * Represents a game timer that tracks remaining time and handles the timeout event.

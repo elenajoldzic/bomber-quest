@@ -19,8 +19,8 @@ public interface Drawable {
     /**
      * Gets the X coordinate of the drawable in the game world grid.
      * Note that this is a TILE coordinate, not a pixel coordinate.
-     * It must be multiplied by {@link de.tum.cit.ase.bomberquest.screen.GameScreen#TILE_SIZE_PX}
-     * and {@link de.tum.cit.ase.bomberquest.screen.GameScreen#SCALE} to get the pixel coordinate.
+     * It must be multiplied by {@link de.tum.cit.ase.bomberquest.screens.GameScreen#TILE_SIZE_PX}
+     * and {@link de.tum.cit.ase.bomberquest.screens.GameScreen#SCALE} to get the pixel coordinate.
      * @return The X coordinate of the drawable.
      */
     float getX();
@@ -28,8 +28,8 @@ public interface Drawable {
     /**
      * Gets the Y coordinate of the drawable in the game world grid.
      * Note that this is a TILE coordinate, not a pixel coordinate.
-     * It must be multiplied by {@link de.tum.cit.ase.bomberquest.screen.GameScreen#TILE_SIZE_PX}
-     * and {@link de.tum.cit.ase.bomberquest.screen.GameScreen#SCALE} to get the pixel coordinate.
+     * It must be multiplied by {@link de.tum.cit.ase.bomberquest.screens.GameScreen#TILE_SIZE_PX}
+     * and {@link de.tum.cit.ase.bomberquest.screens.GameScreen#SCALE} to get the pixel coordinate.
      * @return The Y coordinate of the drawable.
      */
     float getY();

@@ -57,25 +57,26 @@ public class Hud {
         long remainingTimeMillis = Math.max(0, GameTimer.TOTAL_TIME_MILLIS - elapsedTime);
         long minutes = remainingTimeMillis / 60000;
         long seconds = (remainingTimeMillis % 60000) / 1000;
+        font.setColor(Color.LIGHT_GRAY);
         String timeText = String.format("Time Remaining: %02d:%02d", minutes, seconds);
-        font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 40);
+        font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 45);
 
-        //Draw concurrent bomb count in HUD (yellow)
-        font.setColor(Color.GOLD);
+        //Draw concurrent bomb count in HUD
+        font.setColor(Color.WHITE);
         font.draw(spriteBatch, "Bombs placeable: " + player.getConcurrentBombCount(), 10, Gdx.graphics.getHeight() - 80);
-        font.setColor(Color.GOLD);
+        font.setColor(Color.WHITE);
 
-        //Draw blast radius value in HUD (yellow)
-        font.setColor(Color.GOLD);
+        //Draw blast radius value in HUD
+        font.setColor(Color.WHITE);
         font.draw(spriteBatch, "Blast radius:  " + player.getBlastRadius(), 10, Gdx.graphics.getHeight() - 110);
-        font.setColor(Color.GOLD);
+        font.setColor(Color.WHITE);
 
         //Draw the "Clear enemies to unlock the exit!" warning, if enemies are cleared, draw the "exit unlocked" text
-        if(!map.enemiesCleared){
-            font.setColor(Color.FIREBRICK);
-            font.draw(spriteBatch, "Clear enemies to unlock the exit!", 10, Gdx.graphics.getHeight() - 150);
+        if (!map.enemiesCleared) {
+            font.setColor(Color.RED);
+            font.draw(spriteBatch, "Clear enemies\nto unlock the exit!", 10, Gdx.graphics.getHeight() - 150);
             font.setColor(Color.WHITE);
-        }else{
+        } else {
             font.setColor(Color.GREEN);
             font.draw(spriteBatch, "EXIT UNLOCKED!", 10, Gdx.graphics.getHeight() - 180);
             font.setColor(Color.WHITE);
@@ -83,7 +84,7 @@ public class Hud {
 
         //Draw the count for remaining enemies
         if(!map.enemiesCleared) {
-            font.draw(spriteBatch, "Enemies left: " + map.getEnemies().size(), 10, Gdx.graphics.getHeight() - 180);
+            font.draw(spriteBatch, "Enemies left: " + map.getEnemies().size(), 10, Gdx.graphics.getHeight() - 220);
         }
 
         // Finish drawing

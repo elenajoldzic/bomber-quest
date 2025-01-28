@@ -14,13 +14,13 @@ import com.badlogic.gdx.audio.Music;
 public enum MusicTrack {
 
     /** Enum constants for different music and sound effects in the game. Each constant maps to a specific file. */
-    BACKGROUND("darkergameplay.mp3", 0.16f, true),
+    BACKGROUND("background.mp3", 0.16f, true),
     BOMBEXPLODE("bombexplode.mp3", 0.2f, false),
     ENEMYDIE("enemydie.mp3", 0.1f, false),
     BUTTONSOUND("menubuttonsound.mp3", 0.2f, false),
     POWERUPSOUND("electronicpowerup.mp3", 0.1f, false),
     GAMEOVERSOUND("gameoversound.mp3", 0.07f, false),
-    MENUMUSIC("electronicmenumusic.mp3", 0.3f, true),
+    MENUMUSIC("menumusic.mp3", 0.3f, true),
     WINSOUND("winsound.mp3", 0.8f, false),
     PLAYERDIE("playerdie.mp3", 0.1f, false),
     PAUSEMUSIC("intro.mp3", 0.3f, true),

@@ -105,7 +105,7 @@ public class StartScreen implements Screen {
     }
 
     /**
-     * Resize the stage when the screen is resized.
+     * Called when the screen size changes. Updates the stage's viewport.
      *
      * @param width  The new width of the screen.
      * @param height The new height of the screen.
@@ -115,29 +115,44 @@ public class StartScreen implements Screen {
         stage.getViewport().update(width, height, true); // Update the stage viewport on resize
     }
 
+    /**
+     * Disposes of assets and resources used by this screen.
+     * This includes the stage, SpriteBatch, and background texture.
+     */
     @Override
     public void dispose() {
-        // Dispose of the stage and assets when screen is disposed
         stage.dispose();
         spriteBatch.dispose();
         backgroundTexture.dispose();
     }
 
+    /**
+     * Called when this screen becomes the current screen for the game.
+     * Sets the input processor to the stage so it can handle user input.
+     */
     @Override
     public void show() {
-        // Set the input processor so the stage can receive input events
         Gdx.input.setInputProcessor(stage);
     }
 
-    // The following methods are part of the Screen interface but are not used in this screen.
+    /**
+     * Called when the application is paused. Not used in this screen.
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * Called when the application is resumed. Not used in this screen.
+     */
     @Override
     public void resume() {
     }
 
+    /**
+     * Called when this screen is no longer the current screen.
+     * Not used in this screen.
+     */
     @Override
     public void hide() {
     }

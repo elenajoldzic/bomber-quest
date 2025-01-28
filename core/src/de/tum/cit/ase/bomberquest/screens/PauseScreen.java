@@ -105,19 +105,26 @@ public class PauseScreen implements Screen {
         stage.getViewport().update(width, height, true); // Update the stage viewport on resize
     }
 
+    /**
+    * Dispose of the stage when screen is disposed
+     */
     @Override
     public void dispose() {
-        // Dispose of the stage when screen is disposed
         stage.dispose();
     }
 
+    /**
+     * Set the input processor so the stage can receive input events
+     */
     @Override
     public void show() {
-        // Set the input processor so the stage can receive input events
+
         Gdx.input.setInputProcessor(stage);
     }
 
-    // The following methods are part of the Screen interface but are not used in this screen.
+    /** The following methods are part of the Screen interface,
+     *  but are not used in this screen.
+     */
     @Override
     public void pause() {
     }

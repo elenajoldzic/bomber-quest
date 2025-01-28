@@ -68,7 +68,6 @@ public class Enemy extends GameObject implements Drawable {
     /**
      * Retrieves the current graphical appearance of the enemy.
      * The enemy's appearance is determined based on elapsed time and animations.
-     *
      * @return The texture region representing the current appearance of the enemy.
      */
     @Override

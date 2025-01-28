@@ -79,27 +79,42 @@ public class WinScreen implements Screen {
         stage.getViewport().update(width, height, true); // Update the stage viewport on resize
     }
 
+    /**
+     * Disposes of assets and resources used by this screen.
+     */
     @Override
     public void dispose() {
         // Dispose of the stage when screen is disposed
         stage.dispose();
     }
 
+    /**
+     * Called when this screen becomes the current screen for the game.
+     * Sets the input processor to the stage so it can handle user input.
+     */
     @Override
     public void show() {
-        // Set the input processor so the stage can receive input events
         Gdx.input.setInputProcessor(stage);
     }
 
-    // The following methods are part of the Screen interface but are not used in this screen.
+    /**
+     * Called when the application is paused. Not used in this screen.
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * Called when the application is resumed. Not used in this screen.
+     */
     @Override
     public void resume() {
     }
 
+    /**
+     * Called when this screen is no longer the current screen.
+     * Not used in this screen.
+     */
     @Override
     public void hide() {
     }

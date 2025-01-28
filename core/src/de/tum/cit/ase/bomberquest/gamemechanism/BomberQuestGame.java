@@ -73,6 +73,9 @@ public class BomberQuestGame extends Game {
         goToStart();
     }
 
+    /**
+     * Switches to the start screen.
+     */
     public void goToStart() {
         this.setScreen(new StartScreen(this)); // Set the current screen to MenuScreen
     }

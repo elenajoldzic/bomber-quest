@@ -182,20 +182,31 @@ public class Player extends GameObject implements Drawable {
         return hitbox.getPosition().y;  // Get the Y position from the Box2D hitbox.
     }
 
-    // Getter and setter methods for concurrentBombCount and blastRadius.
-
+    /**
+     *  Getter method for concurrentBombCount
+     */
     public int getConcurrentBombCount() {
         return concurrentBombCount;
     }
+
+    /**
+     *  Setter method for concurrentBombCount
+     */
 
     public void setConcurrentBombCount(int concurrentBombCount) {
         this.concurrentBombCount = concurrentBombCount;
     }
 
+    /**
+     *  Getter method for blastRadius
+     */
     public int getBlastRadius() {
         return blastRadius;
     }
 
+    /**
+     * Setter method for blastRadius
+     */
     public void setBlastRadius(int blastRadius) {
         this.blastRadius = blastRadius;
     }

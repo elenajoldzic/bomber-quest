@@ -20,4 +20,5 @@ public class Textures {
     public static final TextureRegion CONCURRENTBOMB = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 1);
 
     public static final TextureRegion BLASTRADIUS = SpriteSheet.ORIGINAL_BOMBERMAN.at(15, 2);
+
 }

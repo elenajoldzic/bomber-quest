@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import de.tum.cit.ase.bomberquest.gamemechanism.GameTimer;
 import de.tum.cit.ase.bomberquest.map.GameMap;
 import de.tum.cit.ase.bomberquest.map.Player;
+import de.tum.cit.ase.bomberquest.texture.Textures;
 
 /**
  * A Heads-Up Display (HUD) that displays information on the screen.
@@ -46,10 +47,9 @@ public class Hud {
 
         // Start drawing
         spriteBatch.begin();
-        font.getData().setScale(0.75f,0.75f);
+        font.getData().setScale(0.75f, 0.75f);
 
         // Draw the HUD elements
-        //Draw "Press Esc to Pause!" text
         font.draw(spriteBatch, "Press Esc to Pause!", 10, Gdx.graphics.getHeight() - 10);
 
         // Calculate and display the remaining time in MM:SS format
@@ -58,20 +58,20 @@ public class Hud {
         long minutes = remainingTimeMillis / 60000;
         long seconds = (remainingTimeMillis % 60000) / 1000;
         font.setColor(Color.LIGHT_GRAY);
+
         String timeText = String.format("Time Remaining: %02d:%02d", minutes, seconds);
         font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 45);
 
-        //Draw concurrent bomb count in HUD
+        // Draw concurrent bomb count with image
         font.setColor(Color.WHITE);
-        font.draw(spriteBatch, "Bombs placeable: " + player.getConcurrentBombCount(), 10, Gdx.graphics.getHeight() - 80);
-        font.setColor(Color.WHITE);
+        spriteBatch.draw(Textures.CONCURRENTBOMB, 10, Gdx.graphics.getHeight() - 95);
+        font.draw(spriteBatch, "Bombs placeable: " + player.getConcurrentBombCount(), 40, Gdx.graphics.getHeight() - 80);
 
-        //Draw blast radius value in HUD
-        font.setColor(Color.WHITE);
-        font.draw(spriteBatch, "Blast radius:  " + player.getBlastRadius(), 10, Gdx.graphics.getHeight() - 110);
-        font.setColor(Color.WHITE);
+        // Draw blast radius value with image
+        spriteBatch.draw(Textures.BLASTRADIUS, 10, Gdx.graphics.getHeight() - 125);
+        font.draw(spriteBatch, "Blast radius:  " + player.getBlastRadius(), 40, Gdx.graphics.getHeight() - 110);
 
-        //Draw the "Clear enemies to unlock the exit!" warning, if enemies are cleared, draw the "exit unlocked" text
+        // Draw the "Clear enemies to unlock the exit!" warning, if enemies are cleared, draw the "exit unlocked" text
         if (!map.enemiesCleared) {
             font.setColor(Color.RED);
             font.draw(spriteBatch, "Clear enemies\nto unlock the exit!", 10, Gdx.graphics.getHeight() - 150);
@@ -82,15 +82,16 @@ public class Hud {
             font.setColor(Color.WHITE);
         }
 
-        //Draw the count for remaining enemies
-        if(!map.enemiesCleared) {
+        // Draw the count for remaining enemies
+        if (!map.enemiesCleared) {
             font.draw(spriteBatch, "Enemies left: " + map.getEnemies().size(), 10, Gdx.graphics.getHeight() - 220);
         }
 
         // Finish drawing
         spriteBatch.end();
     }
-    
+
+
     /**
      * Resizes the HUD when the screen size changes.
      * This is called when the window is resized.

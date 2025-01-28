@@ -14,7 +14,7 @@ import com.badlogic.gdx.audio.Music;
 public enum MusicTrack {
 
     /** Enum constants for different music and sound effects in the game. Each constant maps to a specific file. */
-    BACKGROUND("electronicgameplaymusic2.mp3", 0.16f, true),
+    BACKGROUND("darkergameplay.mp3", 0.16f, true),
     BOMBEXPLODE("bombexplode.mp3", 0.2f, false),
     ENEMYDIE("enemydie.mp3", 0.1f, false),
     BUTTONSOUND("menubuttonsound.mp3", 0.2f, false),

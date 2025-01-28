@@ -64,7 +64,7 @@ public class WinScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         float frameTime = Math.min(deltaTime, 0.250f); // Cap frame time to 250ms to prevent spiral of death
-        ScreenUtils.clear(Color.GREEN); // Clear the screen with a black color
+        ScreenUtils.clear(Color.FOREST); // Clear the screen with a black color
         stage.act(frameTime); // Update the stage
         stage.draw(); // Draw the stage
     }

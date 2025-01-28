@@ -67,7 +67,7 @@ public class YouLoseScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         float frameTime = Math.min(deltaTime, 0.250f); // Cap frame time to 250ms to prevent spiral of death        ScreenUtils.clear(Color.BLACK);
-        ScreenUtils.clear(Color.RED);
+        ScreenUtils.clear(Color.FIREBRICK);
         stage.act(frameTime); // Update the stage
         stage.draw(); // Draw the stage
     }

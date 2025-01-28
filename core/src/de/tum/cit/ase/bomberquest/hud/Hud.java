@@ -61,18 +61,18 @@ public class Hud {
         font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 40);
 
         //Draw concurrent bomb count in HUD (yellow)
-        font.setColor(Color.YELLOW);
-        font.draw(spriteBatch, "Bombs placeable: "+player.getConcurrentBombCount(), 10, Gdx.graphics.getHeight() - 80);
-        font.setColor(Color.WHITE);
+        font.setColor(Color.GOLD);
+        font.draw(spriteBatch, "Bombs placeable: " + player.getConcurrentBombCount(), 10, Gdx.graphics.getHeight() - 80);
+        font.setColor(Color.GOLD);
 
         //Draw blast radius value in HUD (yellow)
-        font.setColor(Color.YELLOW);
-        font.draw(spriteBatch, "Blast radius:  "+player.getBlastRadius(), 10, Gdx.graphics.getHeight() - 110);
-        font.setColor(Color.WHITE);
+        font.setColor(Color.GOLD);
+        font.draw(spriteBatch, "Blast radius:  " + player.getBlastRadius(), 10, Gdx.graphics.getHeight() - 110);
+        font.setColor(Color.GOLD);
 
         //Draw the "Clear enemies to unlock the exit!" warning, if enemies are cleared, draw the "exit unlocked" text
         if(!map.enemiesCleared){
-            font.setColor(Color.RED);
+            font.setColor(Color.FIREBRICK);
             font.draw(spriteBatch, "Clear enemies to unlock the exit!", 10, Gdx.graphics.getHeight() - 150);
             font.setColor(Color.WHITE);
         }else{

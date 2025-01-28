@@ -49,8 +49,12 @@ public class Hud {
         spriteBatch.begin();
         font.getData().setScale(0.75f, 0.75f);
 
-        // Draw the HUD elements
+        // Set smaller font scale for "Press Esc to Pause!"
+        font.getData().setScale(0.5f, 0.5f);  // Adjust scale as needed
         font.draw(spriteBatch, "Press Esc to Pause!", 10, Gdx.graphics.getHeight() - 10);
+
+        // Restore font scale for the rest of the text
+        font.getData().setScale(0.75f, 0.75f);
 
         // Calculate and display the remaining time in MM:SS format
         long elapsedTime = TimeUtils.timeSinceMillis(gameTimer.getStartTime());
@@ -60,7 +64,7 @@ public class Hud {
         font.setColor(Color.LIGHT_GRAY);
 
         String timeText = String.format("Time Remaining: %02d:%02d", minutes, seconds);
-        font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 45);
+        font.draw(spriteBatch, timeText, 10, Gdx.graphics.getHeight() - 40);
 
         // Draw concurrent bomb count with image
         font.setColor(Color.WHITE);

@@ -96,3 +96,10 @@ Each level is progressively harder, so strategize your movements and bomb usage 
 
 Enjoy playing Bomberman! If you encounter any issues, feel free to reach out to the development team(Elena Joldzic, Berkay Ibrahim Çelik).
 
+<img width="1154" height="742" alt="Screenshot 2025-09-13 at 14 21 00" src="https://github.com/user-attachments/assets/f3d3d4c2-e424-43c1-8b5c-5c5a592a9ab6" />
+
+<img width="1151" height="743" alt="Screenshot 2025-09-13 at 14 21 40" src="https://github.com/user-attachments/assets/03576f43-a22e-455e-83fa-0161a3a5656c" />
+
+
+<img width="1147" height="745" alt="Screenshot 2025-09-13 at 14 24 43" src="https://github.com/user-attachments/assets/7bf49969-85e1-458c-8d57-893ba1a69f4a" />
+

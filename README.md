@@ -94,5 +94,5 @@ Some walls are indestructible and will block the blast radius.
 
 Each level is progressively harder, so strategize your movements and bomb usage carefully.
 
-Enjoy playing Bomberman! If you encounter any issues, feel free to reach out to the development team.
+Enjoy playing Bomberman! If you encounter any issues, feel free to reach out to the development team(Elena Joldzic, Berkay Ibrahim Çelik).
 

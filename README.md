@@ -1,6 +1,13 @@
 # Bomber Quest Game
 
-Welcome to Bomber Quest Game! This README will guide you on how to run and play the game, along with an overview of its features!
+Welcome to the Bomber Quest Game - inspired by the Bomberman game! This README will guide you on how to run and play the game, along with an overview of its features!
+
+<img width="1154" height="742" alt="Screenshot 2025-09-13 at 14 21 00" src="https://github.com/user-attachments/assets/f3d3d4c2-e424-43c1-8b5c-5c5a592a9ab6" />
+
+<img width="1151" height="743" alt="Screenshot 2025-09-13 at 14 21 40" src="https://github.com/user-attachments/assets/03576f43-a22e-455e-83fa-0161a3a5656c" />
+
+
+<img width="1147" height="745" alt="Screenshot 2025-09-13 at 14 24 43" src="https://github.com/user-attachments/assets/7bf49969-85e1-458c-8d57-893ba1a69f4a" />
 
 ## How to Run the Game
 
@@ -96,10 +103,16 @@ Each level is progressively harder, so strategize your movements and bomb usage 
 
 Enjoy playing Bomberman! If you encounter any issues, feel free to reach out to the development team(Elena Joldzic, Berkay Ibrahim Çelik).
 
-<img width="1154" height="742" alt="Screenshot 2025-09-13 at 14 21 00" src="https://github.com/user-attachments/assets/f3d3d4c2-e424-43c1-8b5c-5c5a592a9ab6" />
+## Copyright & Attribution
 
-<img width="1151" height="743" alt="Screenshot 2025-09-13 at 14 21 40" src="https://github.com/user-attachments/assets/03576f43-a22e-455e-83fa-0161a3a5656c" />
+This project was created as a student project and is intended for **educational and portfolio purposes only**.  
 
+Some assets (images, sounds, and code libraries) were obtained from third-party sources:  
+- LibGDX framework (open-source)  
+- Sound effects and images from FreeSound.org and OpenGameArt.org  
 
-<img width="1147" height="745" alt="Screenshot 2025-09-13 at 14 24 43" src="https://github.com/user-attachments/assets/7bf49969-85e1-458c-8d57-893ba1a69f4a" />
+All third-party materials are used **under their respective licenses** (e.g., MIT, CC0, or Creative Commons).  
+
+This project is **not intended for commercial use**. The author(s) are not responsible for any misuse of third-party content.
+
 

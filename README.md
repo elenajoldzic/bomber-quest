@@ -1,6 +1,6 @@
 # Bomber Quest Game
 
-Welcome to the Bomber Quest Game - inspired by the Bomberman game! This README will guide you on how to run and play the game, along with an overview of its features!
+Welcome to the Bomber Quest Game! This README will guide you on how to run and play the game, along with an overview of its features!
 
 <img width="1154" height="742" alt="Screenshot 2025-09-13 at 14 21 00" src="https://github.com/user-attachments/assets/f3d3d4c2-e424-43c1-8b5c-5c5a592a9ab6" />
 
